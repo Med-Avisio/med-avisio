@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>med-avisio – Online-Sprechstunde für trockene Augen</title>
+  <meta name="description" content="Online-Sprechstunde für trockene Augen. Persönliche Beratung, Einordnung von Beschwerden und Auswertung vorhandener Befunde." />
+  <style>
+    :root{
+      --blue:#1d4ed8;
+      --blue-dark:#1e40af;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#cbd5e1;
+      --bg:#f8fafc;
+      --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.6;
+    }
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+    .hero{
+      background:linear-gradient(to bottom,#ffffff,#eef2f7);
+      border-bottom:1px solid var(--line);
+      padding:48px 0 56px;
+    }
+    .brand{
+      font-size:40px;
+      font-weight:700;
+      line-height:1.2;
+      margin-bottom:38px;
+    }
+    .brand span{color:var(--blue)}
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.1fr 0.9fr;
+      gap:36px;
+      align-items:center;
+    }
+    h1{
+      font-size:44px;
+      line-height:1.15;
+      margin:0 0 18px;
+    }
+    h1 .sub{
+      display:block;
+      color:var(--blue);
+      font-size:28px;
+      margin-top:14px;
+    }
+    p.lead{
+      font-size:20px;
+      color:var(--muted);
+      margin:0 0 28px;
+    }
+    .button-row{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:24px;
+    }
+    .btn{
+      flex:1;
+      min-width:220px;
+      background:var(--blue);
+      color:#fff;
+      text-decoration:none;
+      text-align:center;
+      font-weight:700;
+      font-size:19px;
+      padding:16px 18px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+    }
+    .btn:hover{background:var(--blue-dark)}
+    .hero-image{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 8px 24px rgba(15,23,42,.08);
+      min-height:420px;
+    }
+    .hero-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    section{
+      padding:64px 0;
+    }
+    .section-white{
+      background:#fff;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+    h2{
+      font-size:34px;
+      margin:0 0 16px;
+    }
+    .intro{
+      max-width:760px;
+      color:var(--muted);
+      margin-bottom:28px;
+    }
+    .grid-2{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:28px;
+    }
+    .grid-3{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+    .cards{
+      display:grid;
+      gap:14px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px;
+    }
+    .card h3{
+      margin:0 0 8px;
+      font-size:20px;
+    }
+    .small{
+      color:var(--muted);
+      font-size:15px;
+    }
+    .image-box{
+      border-radius:18px;
+      overflow:hidden;
+      box-shadow:0 8px 24px rgba(15,23,42,.08);
+      min-height:360px;
+      background:#fff;
+      border:1px solid var(--line);
+    }
+    .image-box img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+    .split{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:32px;
+      align-items:start;
+    }
+    .stack{display:grid;gap:12px}
+    .info{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:14px 16px;
+    }
+    .muted{color:var(--muted)}
+    .form-box{
+      display:grid;
+      gap:14px;
+    }
+    input, textarea{
+      width:100%;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      font-size:16px;
+      font-family:inherit;
+      background:#fff;
+    }
+    label{
+      font-size:14px;
+      color:var(--muted);
+      display:block;
+      margin-bottom:6px;
+    }
+    .footer{
+      border-top:1px solid var(--line);
+      text-align:center;
+      padding:28px 0;
+      color:#64748b;
+      font-size:14px;
+    }
+    @media (max-width: 900px){
+      .hero-grid,.grid-2,.grid-3,.split{grid-template-columns:1fr}
+      .brand{font-size:28px}
+      h1{font-size:34px}
+      h1 .sub{font-size:24px}
+      .btn{min-width:100%}
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="container">
+      <div class="brand">
+        med-avisio <span>– Online-Sprechstunde für trockene Augen</span>
+      </div>
+
+      <div class="hero-grid">
+        <div>
+          <h1>
+            Trockene Augen, brennende Augen oder tränende Augen verstehen
+            <span class="sub">Online-Sprechstunde zur individuellen Beratung</span>
+          </h1>
+
+          <p class="lead">
+            Viele Betroffene kennen das: Die Beschwerden sind da, verändern sich über den Tag,
+            und trotz verschiedener Ansätze entsteht keine klare Linie.<br><br>
+            Hier geht es nicht um schnelle Lösungen, sondern um eine individuelle Einordnung der Situation –
+            mit dem Ziel, nachvollziehbar zu verstehen, welche Faktoren eine Rolle spielen
+            und welche nächsten Schritte sinnvoll sind.
+          </p>
+
+          <div class="button-row">
+            <a class="btn" href="#kontakt">Anfrage / Befunde hochladen</a>
+            <a class="btn" href="#kontakt">Termin für Videosprechstunde vereinbaren</a>
+            <a class="btn" href="#ablauf">Ablauf</a>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200" alt="Trockenes Auge künstlerisch dargestellt">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Trockene Augen zeigen sich nicht immer gleich</h2>
+      <p class="intro">
+        Genau das macht das Thema für viele so belastend: Die Beschwerden wechseln,
+        passen nicht immer auf den ersten Blick zusammen und haben nicht nur eine einzige Ursache.
+        Deshalb lohnt es sich, die einzelnen Bausteine sauber auseinanderzunehmen.
+      </p>
+
+      <div class="grid-2">
+        <div class="cards">
+          <div class="card"><h3>Brennen oder Stechen</h3><div class="small">häufig bei Reizung der Augenoberfläche oder erhöhter Verdunstung</div></div>
+          <div class="card"><h3>Schwankender Visus</h3><div class="small">typisch, wenn der Tränenfilm instabil ist – oft besonders am Bildschirm</div></div>
+          <div class="card"><h3>Müde, gereizte Augen</h3><div class="small">kommt oft im Tagesverlauf oder in trockener Luft stärker zum Vorschein</div></div>
+          <div class="card"><h3>Tränen trotz Trockenheit</h3><div class="small">paradoxe Reizreaktion – das Auge tränt, obwohl die Oberfläche nicht stabil versorgt ist</div></div>
+          <div class="card"><h3>Probleme beim Lesen, Autofahren oder mit Kontaktlinsen</h3><div class="small">feine Störungen des Tränenfilms fallen gerade in solchen Situationen auf</div></div>
+          <div class="card"><h3>Keine klare Besserung trotz Tropfen oder Therapieversuchen</h3><div class="small">oft Hinweis darauf, dass mehrere Mechanismen gleichzeitig eine Rolle spielen</div></div>
+        </div>
+
+        <div class="image-box">
+          <img src="https://images.unsplash.com/photo-1520206183501-b80df61043c2?q=80&w=1200" alt="Konzentriertes Arbeiten mit visueller Belastung">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-white">
+    <div class="container">
+      <h2>Warum die Beschwerden so unterschiedlich sein können</h2>
+      <p class="intro">
+        Der Tränenfilm besteht nicht nur aus Wasser. Er ist ein fein abgestimmtes System.
+        Wenn eine Schicht gestört ist, kann sich das anders anfühlen als bei einer Störung in einer anderen Schicht.
+        Und oft greifen mehrere Ebenen ineinander.
+      </p>
+
+      <div class="split">
+        <div class="stack">
+          <div class="info"><strong>Lipidschicht:</strong> schützt vor zu schneller Verdunstung</div>
+          <div class="info"><strong>Wässrige Schicht:</strong> befeuchtet und versorgt die Oberfläche</div>
+          <div class="info"><strong>Muzinschicht:</strong> hilft, den Tränenfilm gleichmäßig zu verteilen</div>
+        </div>
+
+        <div class="cards">
+          <div class="card">
+            <h3>Lipidschicht</h3>
+            <div class="small"><strong>Funktion:</strong> bremst die Verdunstung</div>
+            <div class="small" style="margin-top:8px;"><strong>Typische Folge:</strong> häufig Brennen, Reizung, Beschwerden in trockener Luft oder am Bildschirm</div>
+          </div>
+          <div class="card">
+            <h3>Wässrige Schicht</h3>
+            <div class="small"><strong>Funktion:</strong> befeuchtet und versorgt die Oberfläche</div>
+            <div class="small" style="margin-top:8px;"><strong>Typische Folge:</strong> eher Trockenheitsgefühl, Reiben, Fremdkörpergefühl und rasche Ermüdung</div>
+          </div>
+          <div class="card">
+            <h3>Muzinschicht</h3>
+            <div class="small"><strong>Funktion:</strong> sorgt dafür, dass sich der Tränenfilm gleichmäßig verteilt</div>
+            <div class="small" style="margin-top:8px;"><strong>Typische Folge:</strong> oft fluktuierender Visus und ein unruhiges Sehgefühl</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <h2>Auslöser und Einflussfaktoren greifen oft ineinander</h2>
+      <p class="intro">
+        Bei trockenen Augen liegt selten nur ein einziger Grund vor. Häufig kommt mehreres zusammen:
+        Alltag, Lidrand, Umwelt, Medikamente, hormonelle Einflüsse oder andere Begleiterkrankungen.
+      </p>
+
+      <div class="grid-3">
+        <div class="card"><h3>Umwelt und Alltag</h3><div class="small">Bildschirmarbeit, trockene Luft, Zugluft, lange Konzentrationsphasen oder wenig Schlaf können Beschwerden deutlich verstärken.</div></div>
+        <div class="card"><h3>Lidrand und Drüsenfunktion</h3><div class="small">Wenn die Fettphase des Tränenfilms nicht stabil ist, verdunstet die Feuchtigkeit schneller.</div></div>
+        <div class="card"><h3>Innere und äußere Einflüsse</h3><div class="small">Hormone, Medikamente, Allergien, Hauterkrankungen oder Allgemeinerkrankungen können mit hineinspielen.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-white" id="ablauf">
+    <div class="container">
+      <h2>Ablauf</h2>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Anfrage & Befunde</h3>
+          <div class="small">Sie senden eine kurze Anfrage und – falls vorhanden – Befunde (PDF/Bilder).</div>
+        </div>
+        <div class="card">
+          <h3>2. Terminbuchung online</h3>
+          <div class="small">Die Terminvereinbarung erfolgt online über das eingebundene Buchungstool. Die Videosprechstunde erfolgt über einen zertifizierten Videodienstanbieter.</div>
+        </div>
+        <div class="card">
+          <h3>3. Videoberatung & nächste Schritte</h3>
+          <div class="small">Persönliches Gespräch mit Einordnung Ihrer Situation. Sie erhalten verständliche Empfehlungen für das weitere Vorgehen.</div>
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:28px;">
+        <div class="card">
+          <h3>Datenschutz & Einwilligung</h3>
+          <div class="small">
+            Vor Absenden der Anfrage ist eine ausdrückliche Einwilligung in die Verarbeitung von Gesundheitsdaten erforderlich.
+            Die Übermittlung sollte über ein verschlüsseltes Formular oder einen geschützten Upload erfolgen – nicht über ungesicherte E-Mail.
+          </div>
+        </div>
+        <div class="card">
+          <h3>Kosten & Abrechnung</h3>
+          <div class="small">
+            Die Beratung erfolgt als privatärztliche Leistung nach GOÄ. Eine Abrechnung über die gesetzliche Krankenversicherung ist nicht möglich.
+            Für eine Beratung ohne vorliegende Befunde können Sie mit Kosten um etwa 60 Euro rechnen, für eine Beratung mit Auswertung vorliegender Befunde mit Kosten um etwa 90 Euro.
+            Die konkrete Rechnung richtet sich nach Art und Umfang der ärztlichen Leistung. Eine schriftliche Zusammenfassung ist auf Wunsch möglich und wird gesondert berechnet.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="kontakt">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <h2>Termin zur Videosprechstunde anfragen</h2>
+          <p class="muted">Kurze Schilderung genügt. Sie erhalten eine Rückmeldung, ob eine Beratung sinnvoll ist.</p>
+          <p class="small">Hinweis: Bei akuten Beschwerden bitte direkt augenärztlich vorstellen.</p>
+        </div>
+
+        <div class="form-box">
+          <input type="text" placeholder="Name">
+          <input type="email" placeholder="E-Mail">
+          <textarea rows="5" placeholder="Beschwerden"></textarea>
+          <div>
+            <label>Befunde hochladen</label>
+            <input type="file" multiple>
+          </div>
+
+          <div class="button-row">
+            <button class="btn" type="button">Anfrage senden</button>
+            <a class="btn" href="#kontakt">Termin für Videosprechstunde vereinbaren</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">med-avisio</div>
+
+</body>
+</html>
