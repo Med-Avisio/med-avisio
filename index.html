@@ -5,177 +5,247 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>med-avisio – Online-Sprechstunde für trockene Augen</title>
   <meta name="description" content="Online-Sprechstunde für trockene Augen. Persönliche Beratung, Einordnung von Beschwerden und Auswertung vorhandener Befunde." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
   <style>
     :root{
-      --blue:#1d4ed8;
-      --blue-dark:#1e40af;
+      --brand:#2FA4A9;
+      --brand-dark:#278b8f;
       --text:#0f172a;
       --muted:#475569;
-      --line:#cbd5e1;
-      --bg:#f8fafc;
+      --line:#d7e0e4;
+      --bg:#F9FAFB;
       --card:#ffffff;
+      --hero-top:#ffffff;
+      --hero-bottom:#f1f7f7;
+      --shadow:0 10px 28px rgba(15,23,42,.07);
+      --shadow-soft:0 6px 18px rgba(15,23,42,.05);
     }
+
     *{box-sizing:border-box}
     html{scroll-behavior:smooth}
+
     body{
       margin:0;
-      font-family:Arial, Helvetica, sans-serif;
+      font-family:'Inter', Arial, Helvetica, sans-serif;
       color:var(--text);
       background:var(--bg);
       line-height:1.6;
     }
+
     .container{
       max-width:1100px;
       margin:0 auto;
       padding:0 24px;
     }
+
     .hero{
-      background:linear-gradient(to bottom,#ffffff,#eef2f7);
+      background:linear-gradient(to bottom,var(--hero-top),var(--hero-bottom));
       border-bottom:1px solid var(--line);
-      padding:48px 0 56px;
+      padding:48px 0 64px;
     }
+
     .brand{
-      font-size:40px;
-      font-weight:700;
-      line-height:1.2;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:baseline;
+      gap:8px;
       margin-bottom:38px;
+      line-height:1.1;
     }
-    .brand span{color:var(--blue)}
+
+    .brand .logo-word{
+      font-family:'Inter', Arial, Helvetica, sans-serif;
+      font-size:32px;
+      font-weight:500;
+      letter-spacing:-0.8px;
+      color:var(--brand);
+    }
+
+    .brand .brand-sub{
+      font-family:'Inter', Arial, Helvetica, sans-serif;
+      font-size:22px;
+      font-weight:600;
+      color:var(--text);
+      letter-spacing:-0.2px;
+    }
+
     .hero-grid{
       display:grid;
-      grid-template-columns:1.1fr 0.9fr;
-      gap:36px;
+      grid-template-columns:1.08fr 0.92fr;
+      gap:40px;
       align-items:center;
     }
+
     h1{
       font-size:44px;
-      line-height:1.15;
+      line-height:1.12;
       margin:0 0 18px;
+      letter-spacing:-0.02em;
     }
+
     h1 .sub{
       display:block;
-      color:var(--blue);
-      font-size:28px;
+      color:var(--brand);
+      font-size:27px;
+      font-weight:600;
       margin-top:14px;
     }
+
     p.lead{
-      font-size:20px;
+      font-size:19px;
       color:var(--muted);
       margin:0 0 28px;
+      max-width:700px;
     }
+
     .button-row{
       display:flex;
       gap:14px;
       flex-wrap:wrap;
       margin-top:24px;
     }
+
     .btn{
       flex:1;
       min-width:220px;
-      background:var(--blue);
+      background:var(--brand);
       color:#fff;
       text-decoration:none;
       text-align:center;
       font-weight:700;
-      font-size:19px;
-      padding:16px 18px;
+      font-size:18px;
+      padding:16px 20px;
       border-radius:14px;
       display:flex;
       align-items:center;
       justify-content:center;
       border:none;
       cursor:pointer;
+      transition:background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+      box-shadow:0 8px 20px rgba(47,164,169,.16);
     }
-    .btn:hover{background:var(--blue-dark)}
+
+    .btn:hover{
+      background:var(--brand-dark);
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(39,139,143,.18);
+    }
+
     .hero-image{
       background:#fff;
       border:1px solid var(--line);
-      border-radius:18px;
+      border-radius:20px;
       overflow:hidden;
-      box-shadow:0 8px 24px rgba(15,23,42,.08);
+      box-shadow:var(--shadow);
     }
+
     .hero-image img{
       width:100%;
       height:auto;
       display:block;
     }
+
     section{
-      padding:64px 0;
+      padding:68px 0;
     }
+
     .section-white{
       background:#fff;
       border-top:1px solid var(--line);
       border-bottom:1px solid var(--line);
     }
+
     h2{
       font-size:34px;
       margin:0 0 16px;
+      letter-spacing:-0.02em;
     }
+
     .intro{
       max-width:760px;
       color:var(--muted);
       margin-bottom:28px;
+      font-size:17px;
     }
+
     .grid-2{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:28px;
     }
+
     .grid-3{
       display:grid;
       grid-template-columns:repeat(3,1fr);
       gap:22px;
     }
+
     .cards{
       display:grid;
       gap:14px;
     }
+
     .card{
       background:var(--card);
       border:1px solid var(--line);
       border-radius:16px;
       padding:18px;
+      box-shadow:var(--shadow-soft);
     }
+
     .card h3{
       margin:0 0 8px;
       font-size:20px;
+      letter-spacing:-0.01em;
     }
+
     .small{
       color:var(--muted);
       font-size:15px;
     }
+
     .image-box{
-      border-radius:18px;
+      border-radius:20px;
       overflow:hidden;
-      box-shadow:0 8px 24px rgba(15,23,42,.08);
+      box-shadow:var(--shadow);
       min-height:360px;
       background:#fff;
       border:1px solid var(--line);
     }
+
     .image-box img{
       width:100%;
       height:100%;
       object-fit:cover;
       display:block;
     }
+
     .split{
       display:grid;
       grid-template-columns:1fr 1fr;
       gap:32px;
       align-items:start;
     }
+
     .stack{display:grid;gap:12px}
+
     .info{
       background:#fff;
       border:1px solid var(--line);
       border-radius:14px;
       padding:14px 16px;
+      box-shadow:var(--shadow-soft);
     }
+
     .muted{color:var(--muted)}
+
     .form-box{
       display:grid;
       gap:14px;
     }
+
     input, textarea{
       width:100%;
       padding:14px;
@@ -184,26 +254,68 @@
       font-size:16px;
       font-family:inherit;
       background:#fff;
+      color:var(--text);
+      transition:border-color .18s ease, box-shadow .18s ease;
     }
+
+    input:focus, textarea:focus{
+      outline:none;
+      border-color:#8ed0d3;
+      box-shadow:0 0 0 4px rgba(47,164,169,.10);
+    }
+
+    input[type="file"]{
+      padding:12px;
+    }
+
     label{
       font-size:14px;
       color:var(--muted);
       display:block;
       margin-bottom:6px;
     }
+
+    .profile-name{
+      font-size:18px;
+      font-weight:700;
+      margin-bottom:8px;
+      color:var(--text);
+    }
+
+    .profile-role{
+      color:var(--brand-dark);
+      font-weight:600;
+      margin-bottom:18px;
+    }
+
     .footer{
       border-top:1px solid var(--line);
       text-align:center;
       padding:28px 0;
       color:#64748b;
       font-size:14px;
+      background:var(--bg);
     }
+
     @media (max-width: 900px){
       .hero-grid,.grid-2,.grid-3,.split{grid-template-columns:1fr}
-      .brand{font-size:28px}
+
+      .brand{
+        gap:6px;
+      }
+
+      .brand .logo-word{
+        font-size:28px;
+      }
+
+      .brand .brand-sub{
+        font-size:18px;
+      }
+
       h1{font-size:34px}
-      h1 .sub{font-size:24px}
+      h1 .sub{font-size:23px}
       .btn{min-width:100%}
+      .hero{padding:40px 0 54px}
     }
   </style>
 </head>
@@ -212,14 +324,15 @@
   <section class="hero">
     <div class="container">
       <div class="brand">
-        med-avisio <span>– Online-Sprechstunde für trockene Augen</span>
+        <span class="logo-word">med-avisio</span>
+        <span class="brand-sub">– Online-Sprechstunde für trockene Augen</span>
       </div>
 
       <div class="hero-grid">
         <div>
           <h1>
             Trockene Augen, brennende Augen oder tränende Augen verstehen
-            <span class="sub">Online-Sprechstunde zur individuellen Beratung</span>
+            <span class="sub">Individuelle telemedizinische Beratung</span>
           </h1>
 
           <p class="lead">
@@ -238,7 +351,7 @@
         </div>
 
         <div class="hero-image">
-          <img src="trockenes Auge.jpg">
+          <img src="trockenes Auge.jpg" alt="Künstlerische Darstellung eines trockenen Auges">
         </div>
       </div>
     </div>
@@ -322,33 +435,32 @@
       </div>
     </div>
   </section>
-<section>
-  <div class="container">
-    <div class="grid-2" style="align-items:center;">
-      <div class="image-box">
-        <img src="dein-foto.jpg" alt="Portrait" />
-      </div>
 
-      <div>
-        <h2>Über mich</h2>
-        <p class="lead" style="font-size:18px; margin-bottom:18px;">
-          Dr. Daniela Erhard
-        
-        </p>
+  <section>
+    <div class="container">
+      <div class="grid-2" style="align-items:center;">
+        <div class="image-box">
+          <img src="dein-foto.jpg" alt="Portrait von Dr. Daniela Erhard" />
+        </div>
 
-        <p class="muted">
-          Fachärztin für Augenheilkunde mit langjähriger Tätigkeit in verschiedenen Augenzentren.
-Schwerpunkt trockene Augen – mit besonderem Fokus auf eine strukturierte, verständliche Einordnung komplexer Beschwerden.
+        <div>
+          <h2>Über mich</h2>
+          <div class="profile-name">Dr. Daniela Erhard</div>
+          <div class="profile-role">Fachärztin für Augenheilkunde</div>
 
-        </p>
+          <p class="muted">
+            Fachärztin für Augenheilkunde mit langjähriger Tätigkeit in verschiedenen Augenzentren.
+            Schwerpunkt trockene Augen – mit besonderem Fokus auf eine strukturierte, verständliche Einordnung komplexer Beschwerden.
+          </p>
 
-        <p class="muted">
-         Die Online-Sprechstunde erfolgt unabhängig von meiner Tätigkeit in einer augenärztlichen Praxis.
-        </p>
+          <p class="muted">
+            Die Online-Sprechstunde erfolgt unabhängig von meiner Tätigkeit in einer augenärztlichen Praxis.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <section class="section-white" id="ablauf">
     <div class="container">
       <h2>Ablauf</h2>
@@ -414,32 +526,34 @@ Schwerpunkt trockene Augen – mit besonderem Fokus auf eine strukturierte, vers
       </div>
     </div>
   </section>
-<section class="section-white">
-  <div class="container">
-    <div class="grid-2">
-      <div>
-        <h2>Impressum</h2>
-        <p class="muted">
-          Dr. [Dein Name]<br>
-          Fachärztin für Augenheilkunde<br>
-          [Adresse oder Praxisanschrift]<br>
-          [E-Mail]<br>
-          [Telefon]
-        </p>
-      </div>
 
-      <div>
-        <h2>Datenschutz</h2>
-        <p class="muted">
-          Vor Absenden einer Anfrage ist eine ausdrückliche Einwilligung in die Verarbeitung
-          von Gesundheitsdaten erforderlich. Die Übermittlung von Befunden sollte nur über
-          geschützte und verschlüsselte Wege erfolgen. Eine ausführliche Datenschutzerklärung
-          wird vor dem endgültigen Livegang ergänzt.
-        </p>
+  <section class="section-white">
+    <div class="container">
+      <div class="grid-2">
+        <div>
+          <h2>Impressum</h2>
+          <p class="muted">
+            Dr. [Dein Name]<br>
+            Fachärztin für Augenheilkunde<br>
+            [Adresse oder Praxisanschrift]<br>
+            [E-Mail]<br>
+            [Telefon]
+          </p>
+        </div>
+
+        <div>
+          <h2>Datenschutz</h2>
+          <p class="muted">
+            Vor Absenden einer Anfrage ist eine ausdrückliche Einwilligung in die Verarbeitung
+            von Gesundheitsdaten erforderlich. Die Übermittlung von Befunden sollte nur über
+            geschützte und verschlüsselte Wege erfolgen. Eine ausführliche Datenschutzerklärung
+            wird vor dem endgültigen Livegang ergänzt.
+          </p>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+
   <div class="footer">med-avisio</div>
 
 </body>
