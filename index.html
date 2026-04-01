@@ -534,24 +534,23 @@
       </div>
     </div>
   </section>
-
-  <section id="impressum" class="section-white">
-  <div class="container">
-    <h2>Impressum</h2>
-    <p class="muted">
-      Dr. [Dein Name]<br>
-      Fachärztin für Augenheilkunde<br>
-      [Adresse oder Praxisanschrift]<br>
-      [E-Mail]<br>
+<section id="impressum" className="bg-white border-t border-slate-200">
+  <div className="mx-auto max-w-4xl px-6 py-20">
+    <h2 className="text-2xl font-semibold mb-4">Impressum</h2>
+    <p className="text-slate-700">
+      Dr. [Dein Name]<br />
+      Fachärztin für Augenheilkunde<br />
+      [Adresse oder Praxisanschrift]<br />
+      [E-Mail]<br />
       [Telefon]
     </p>
   </div>
 </section>
 
-<section id="datenschutz" class="section-white">
-  <div class="container">
-    <h2>Datenschutz</h2>
-    <p class="muted">
+<section id="datenschutz" className="bg-white border-t border-slate-200">
+  <div className="mx-auto max-w-4xl px-6 py-20">
+    <h2 className="text-2xl font-semibold mb-4">Datenschutz</h2>
+    <p className="text-slate-700">
       Vor Absenden einer Anfrage ist eine ausdrückliche Einwilligung in die Verarbeitung
       von Gesundheitsdaten erforderlich. Die Übermittlung von Befunden sollte nur über
       geschützte und verschlüsselte Wege erfolgen. Eine ausführliche Datenschutzerklärung
@@ -560,11 +559,12 @@
   </div>
 </section>
 
-<div class="footer">
-  <a href="#impressum">Impressum</a> |
-  <a href="#datenschutz">Datenschutz</a> |
+<footer className="border-t border-slate-200 py-10 text-center text-sm text-slate-500">
+  <a href="#impressum" className="mx-2 hover:underline">Impressum</a> |
+  <a href="#datenschutz" className="mx-2 hover:underline">Datenschutz</a> |
   © 2026 med-avisio
-</div>
-
-</body>
-</html>
+</footer>
+  
+    </div>
+  );
+}
