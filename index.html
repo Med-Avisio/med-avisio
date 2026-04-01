@@ -509,48 +509,49 @@
 </section>
 
   <section id="kontakt">
-    <div class="container">
-      <div class="grid-2">
+  <div class="container">
+    <div class="grid-2">
+      <div>
+        <h2>Termin zur Videosprechstunde anfragen</h2>
+        <p class="muted">Kurze Schilderung genügt. Sie erhalten eine Rückmeldung, ob eine Beratung sinnvoll ist.</p>
+        <p class="small">Hinweis: Bei akuten Beschwerden bitte direkt augenärztlich vorstellen.</p>
+      </div>
+
+      <div class="form-box">
+        <input type="text" placeholder="Name">
+        <input type="email" placeholder="E-Mail">
+        <textarea rows="5" placeholder="Beschwerden"></textarea>
         <div>
-          <h2>Termin zur Videosprechstunde anfragen</h2>
-          <p class="muted">Kurze Schilderung genügt. Sie erhalten eine Rückmeldung, ob eine Beratung sinnvoll ist.</p>
-          <p class="small">Hinweis: Bei akuten Beschwerden bitte direkt augenärztlich vorstellen.</p>
+          <label>Befunde hochladen</label>
+          <input type="file" multiple>
         </div>
 
-        <div class="form-box">
-          <input type="text" placeholder="Name">
-          <input type="email" placeholder="E-Mail">
-          <textarea rows="5" placeholder="Beschwerden"></textarea>
-          <div>
-            <label>Befunde hochladen</label>
-            <input type="file" multiple>
-          </div>
-
-          <div class="button-row">
-            <button class="btn" type="button">Anfrage senden</button>
-            <a class="btn" href="#kontakt">Termin für Videosprechstunde vereinbaren</a>
-          </div>
+        <div class="button-row">
+          <button class="btn" type="button">Anfrage senden</button>
+          <a class="btn" href="#kontakt">Termin für Videosprechstunde vereinbaren</a>
         </div>
       </div>
     </div>
-  </section>
-<section id="impressum" className="bg-white border-t border-slate-200">
-  <div className="mx-auto max-w-4xl px-6 py-20">
-    <h2 className="text-2xl font-semibold mb-4">Impressum</h2>
-    <p className="text-slate-700">
-      Dr. [Dein Name]<br />
-      Fachärztin für Augenheilkunde<br />
-      [Adresse oder Praxisanschrift]<br />
-      [E-Mail]<br />
+  </div>
+</section>
+
+<section id="impressum" class="section-white">
+  <div class="container">
+    <h2>Impressum</h2>
+    <p class="muted">
+      Dr. [Dein Name]<br>
+      Fachärztin für Augenheilkunde<br>
+      [Adresse oder Praxisanschrift]<br>
+      [E-Mail]<br>
       [Telefon]
     </p>
   </div>
 </section>
 
-<section id="datenschutz" className="bg-white border-t border-slate-200">
-  <div className="mx-auto max-w-4xl px-6 py-20">
-    <h2 className="text-2xl font-semibold mb-4">Datenschutz</h2>
-    <p className="text-slate-700">
+<section id="datenschutz" class="section-white">
+  <div class="container">
+    <h2>Datenschutz</h2>
+    <p class="muted">
       Vor Absenden einer Anfrage ist eine ausdrückliche Einwilligung in die Verarbeitung
       von Gesundheitsdaten erforderlich. Die Übermittlung von Befunden sollte nur über
       geschützte und verschlüsselte Wege erfolgen. Eine ausführliche Datenschutzerklärung
@@ -559,12 +560,11 @@
   </div>
 </section>
 
-<footer className="border-t border-slate-200 py-10 text-center text-sm text-slate-500">
-  <a href="#impressum" className="mx-2 hover:underline">Impressum</a> |
-  <a href="#datenschutz" className="mx-2 hover:underline">Datenschutz</a> |
+<div class="footer">
+  <a href="#impressum">Impressum</a> |
+  <a href="#datenschutz">Datenschutz</a> |
   © 2026 med-avisio
-</footer>
-  
-    </div>
-  );
-}
+</div>
+
+</body>
+</html>
