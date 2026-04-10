@@ -302,6 +302,50 @@
       background:var(--bg);
     }
 
+select{
+  width:100%;
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  font-size:16px;
+  font-family:inherit;
+  background:#fff;
+  color:var(--text);
+  transition:border-color .18s ease, box-shadow .18s ease;
+}
+
+select:focus{
+  outline:none;
+  border-color:#8ed0d3;
+  box-shadow:0 0 0 4px rgba(47,164,169,.10);
+}
+
+.consent-box{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px;
+  box-shadow:var(--shadow-soft);
+  display:grid;
+  gap:14px;
+}
+
+.check{
+  display:flex;
+  align-items:flex-start;
+  gap:12px;
+  font-size:15px;
+  color:var(--text);
+  line-height:1.55;
+}
+
+.check input{
+  width:18px;
+  height:18px;
+  margin-top:3px;
+  flex:0 0 18px;
+}
+    
     @media (max-width: 900px){
      .hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}
 
@@ -478,29 +522,39 @@
 
     <div class="grid-3">
       <div class="card">
-        <h3>1. Anfrage & Befunde</h3>
-        <div class="small">Sie senden eine kurze Anfrage und – falls vorhanden – Befunde (PDF/Bilder).</div>
+        <h3>1. Terminart auswählen</h3>
+        <div class="small">
+          Sie wählen zunächst aus, ob bereits Vorbefunde vorliegen oder ob Sie die Beschwerden zunächst ohne Unterlagen ärztlich einordnen lassen möchten.
+        </div>
       </div>
+
       <div class="card">
-        <h3>2. Terminbuchung online</h3>
-        <div class="small">Die Terminvereinbarung erfolgt online über das eingebundene Buchungstool. Die Videosprechstunde erfolgt über einen zertifizierten Videodienstanbieter.</div>
+        <h3>2. Termin anfragen</h3>
+        <div class="small">
+          Je nach Auswahl dauert die Beratung in der Regel etwa 20 Minuten oder 30 Minuten. Nach Ihrer Anfrage werden die Angaben ärztlich geprüft und der Termin anschließend bestätigt.
+        </div>
       </div>
+
       <div class="card">
-        <h3>3. Videoberatung & nächste Schritte</h3>
-        <div class="small">Persönliches Gespräch mit Einordnung Ihrer Situation. Sie erhalten verständliche Empfehlungen für das weitere Vorgehen.</div>
+        <h3>3. Unterlagen, kurze Angaben und Videosprechstunde</h3>
+        <div class="small">
+          Falls vorhanden, können Sie vorab Befunde hochladen. Zusätzlich werden einige kurze Angaben zu Ihren Beschwerden abgefragt. Danach erfolgt die Videosprechstunde mit ärztlicher Einordnung und Empfehlungen für das weitere Vorgehen.
+        </div>
       </div>
     </div>
 
     <div class="grid-2" style="margin-top:28px;">
       <div class="card">
-        <h3>Datenschutz & Einwilligung</h3>
+        <h3>Datenschutz, Einwilligung und Fernbehandlung</h3>
         <div class="small">
-          Vor Absenden der Anfrage ist eine ausdrückliche Einwilligung in die Verarbeitung von Gesundheitsdaten erforderlich.
-          Die Übermittlung sollte über ein verschlüsseltes Formular oder einen geschützten Upload erfolgen – nicht über ungesicherte E-Mail.
+          Vor Absenden des Terminwunsches ist eine ausdrückliche Einwilligung in die Verarbeitung personenbezogener Daten, einschließlich Gesundheitsdaten, erforderlich. 
+          Zudem ist eine Einwilligung in die Durchführung der Beratung im Rahmen einer Videosprechstunde erforderlich. 
+          Die Online-Beratung ersetzt eine Untersuchung vor Ort nicht in jedem Fall.
         </div>
       </div>
+
       <div class="card">
-        <h3>Kosten & Abrechnung</h3>
+        <h3>Kosten &amp; Abrechnung</h3>
         <div class="small">
           Die Beratung erfolgt als privatärztliche Leistung nach GOÄ. Eine Abrechnung über die gesetzliche Krankenversicherung ist nicht möglich.
           Für eine Beratung ohne vorliegende Befunde können Sie mit Kosten um etwa 60 Euro rechnen, für eine Beratung mit Auswertung vorliegender Befunde mit Kosten um etwa 90 Euro.
@@ -510,33 +564,106 @@
     </div>
 
     <p class="small" style="margin-top:24px; max-width:800px;">
-      Die Online-Sprechstunde dient der ärztlichen Beratung und Einordnung von Beschwerden und ersetzt keine vollständige augenärztliche Untersuchung vor Ort. Je nach Fragestellung kann eine persönliche Vorstellung bei einer Augenärztin oder einem Augenarzt erforderlich sein.
+      Die Online-Sprechstunde dient der ärztlichen Beratung und Einordnung von Beschwerden. Sie ersetzt keine vollständige augenärztliche Untersuchung vor Ort. Je nach Fragestellung oder Befundkonstellation kann eine persönliche Vorstellung bei einer Augenärztin, einem Augenarzt oder in einer Klinik erforderlich sein.
     </p>
-
   </div>
 </section>
 
-  <section id="kontakt">
+<section id="kontakt">
   <div class="container">
     <div class="grid-2">
       <div>
         <h2>Termin zur Videosprechstunde anfragen</h2>
-        <p class="muted">Kurze Schilderung genügt. Sie erhalten eine Rückmeldung, ob eine Beratung sinnvoll ist.</p>
-        <p class="small">Hinweis: Bei akuten Beschwerden bitte direkt augenärztlich vorstellen.</p>
+        <p class="muted">
+          Wählen Sie die passende Terminart, geben Sie Ihre Kontaktdaten an und bestätigen Sie die erforderlichen Einwilligungen.
+        </p>
+        <p class="small">
+          Nach Eingang Ihrer Anfrage und ggf. Ihrer Unterlagen wird geprüft, ob eine Beratung im Rahmen der Videosprechstunde sinnvoll und ärztlich vertretbar ist. Anschließend wird der Termin bestätigt.
+        </p>
+        <p class="small">
+          Hinweis: Bei akuten Beschwerden, plötzlicher Sehverschlechterung, starken Schmerzen, Verletzungen oder anderen dringenden Augenproblemen bitte direkt augenärztlich oder notfallmäßig vor Ort vorstellen.
+        </p>
       </div>
 
       <div class="form-box">
+        <div>
+          <label for="terminart">Terminart auswählen</label>
+          <select id="terminart" name="terminart">
+            <option>Bitte auswählen</option>
+            <option>Beratung ohne Vorbefunde – ca. 20 Minuten – ca. 60 €</option>
+            <option>Beratung mit Vorbefunden – ca. 30 Minuten – ca. 90 €</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="terminhinweis">Hinweis</label>
+          <div id="terminhinweis" class="small" style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px;">
+            Die endgültige Terminbestätigung erfolgt nach Prüfung Ihrer Angaben und ggf. Ihrer vorliegenden Unterlagen.
+          </div>
+        </div>
+
         <input type="text" placeholder="Name">
         <input type="email" placeholder="E-Mail">
-        <textarea rows="5" placeholder="Beschwerden"></textarea>
+        <input type="text" placeholder="Telefon (optional)">
+
         <div>
-          <label>Befunde hochladen</label>
-          <input type="file" multiple>
+          <label for="beschwerden">Kurze Schilderung Ihrer Beschwerden</label>
+          <textarea id="beschwerden" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
+        </div>
+
+        <div>
+          <label for="befunde">Vorbefunde hochladen (falls vorhanden)</label>
+          <input id="befunde" type="file" multiple>
+          <div class="small" style="margin-top:6px;">
+            Bitte laden Sie medizinische Unterlagen ausschließlich über die dafür vorgesehene Upload-Funktion hoch und nicht per unverschlüsselter E-Mail.
+          </div>
+        </div>
+
+        <div>
+          <label for="beginn">Seit wann bestehen die Beschwerden?</label>
+          <input id="beginn" type="text" placeholder="z. B. seit 3 Monaten">
+        </div>
+
+        <div>
+          <label for="augen">Ein Auge oder beide Augen?</label>
+          <input id="augen" type="text" placeholder="z. B. beide Augen">
+        </div>
+
+        <div>
+          <label for="kontaktlinsen">Tragen Sie Kontaktlinsen?</label>
+          <input id="kontaktlinsen" type="text" placeholder="z. B. nein / weiche Kontaktlinsen">
+        </div>
+
+        <div>
+          <label for="therapie">Bisherige Behandlungen / Augentropfen</label>
+          <textarea id="therapie" rows="4" placeholder="z. B. bisher verwendete Tropfen oder Maßnahmen"></textarea>
+        </div>
+
+        <div class="consent-box">
+          <label class="check">
+            <input type="checkbox" required>
+            <span>
+              Ich willige ein, dass meine im Rahmen der Anfrage, Terminvereinbarung, Befundübermittlung und Videosprechstunde mitgeteilten personenbezogenen Daten, einschließlich meiner Gesundheitsdaten, zum Zweck der Anbahnung, Durchführung und Dokumentation der ärztlichen Beratung verarbeitet werden.
+            </span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" required>
+            <span>
+              Ich wünsche die Durchführung der angefragten ärztlichen Beratung im Rahmen einer Videosprechstunde / Fernbehandlung. Mir ist bekannt, dass die ausschließliche Beratung oder Behandlung über Kommunikationsmedien nur erfolgt, wenn dies im konkreten Einzelfall ärztlich vertretbar ist.
+            </span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" required>
+            <span>
+              Ich wurde darüber informiert, dass eine Online-Beratung bzw. Videosprechstunde eine körperliche Untersuchung vor Ort nicht in jedem Fall ersetzen kann. Mir ist bekannt, dass sich hieraus Einschränkungen bei Beurteilung, Diagnosestellung und Therapieempfehlung ergeben können und dass eine Untersuchung in einer Praxis oder Klinik erforderlich werden kann.
+            </span>
+          </label>
         </div>
 
         <div class="button-row">
-          <button class="btn" type="button">Anfrage senden</button>
-          <a class="btn" href="#kontakt">Termin für Videosprechstunde vereinbaren</a>
+          <button class="btn" type="button">Terminwunsch absenden</button>
         </div>
       </div>
     </div>
