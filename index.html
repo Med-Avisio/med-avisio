@@ -528,7 +528,7 @@ select:focus{
     </div>
   </section>
 
- <section class="section-white" id="ablauf">
+<section class="section-white" id="ablauf">
   <div class="container">
     <h2>Ablauf</h2>
 
@@ -541,16 +541,16 @@ select:focus{
       </div>
 
       <div class="card">
-        <h3>2. Termin anfragen</h3>
+        <h3>2. Termin anfragen und Angaben übermitteln</h3>
         <div class="small">
-          Je nach Auswahl dauert die Beratung in der Regel etwa 20 Minuten oder 30 Minuten. Nach Ihrer Anfrage werden die Angaben ärztlich geprüft und der Termin anschließend bestätigt.
+          Je nach Auswahl dauert die Beratung in der Regel etwa 20 Minuten oder 30 Minuten. Nach Ihrer Anfrage werden Ihre Angaben und ggf. Ihre Unterlagen ärztlich geprüft.
         </div>
       </div>
 
       <div class="card">
-        <h3>3. Unterlagen, kurze Angaben und Videosprechstunde</h3>
+        <h3>3. Terminbestätigung, Vorauszahlung und Videosprechstunde</h3>
         <div class="small">
-          Falls vorhanden, können Sie vorab Befunde hochladen. Zusätzlich werden einige kurze Angaben zu Ihren Beschwerden abgefragt. Danach erfolgt die Videosprechstunde mit ärztlicher Einordnung und Empfehlungen für das weitere Vorgehen.
+          Wenn eine Beratung im Rahmen der Videosprechstunde sinnvoll und ärztlich vertretbar ist, erhalten Sie eine Terminbestätigung sowie die Aufforderung zur Vorauszahlung. Nach Zahlungseingang wird der Termin verbindlich. Die endgültige Abrechnung erfolgt nach der Beratung gemäß GOÄ.
         </div>
       </div>
     </div>
@@ -559,18 +559,19 @@ select:focus{
       <div class="card">
         <h3>Datenschutz, Einwilligung und Fernbehandlung</h3>
         <div class="small">
-          Vor Absenden des Terminwunsches ist eine ausdrückliche Einwilligung in die Verarbeitung personenbezogener Daten, einschließlich Gesundheitsdaten, erforderlich. 
-          Zudem ist eine Einwilligung in die Durchführung der Beratung im Rahmen einer Videosprechstunde erforderlich. 
+          Vor Absenden des Terminwunsches ist eine ausdrückliche Einwilligung in die Verarbeitung personenbezogener Daten, einschließlich Gesundheitsdaten, erforderlich.
+          Zudem ist eine Einwilligung in die Durchführung der Beratung im Rahmen einer Videosprechstunde erforderlich.
           Die Online-Beratung ersetzt eine Untersuchung vor Ort nicht in jedem Fall.
         </div>
       </div>
 
       <div class="card">
-        <h3>Kosten &amp; Abrechnung</h3>
+        <h3>Kosten, Vorauszahlung &amp; Abrechnung</h3>
         <div class="small">
           Die Beratung erfolgt als privatärztliche Leistung nach GOÄ. Eine Abrechnung über die gesetzliche Krankenversicherung ist nicht möglich.
           Für eine Beratung ohne vorliegende Befunde können Sie mit Kosten um etwa 60 Euro rechnen, für eine Beratung mit Auswertung vorliegender Befunde mit Kosten um etwa 90 Euro.
-          Die konkrete Rechnung richtet sich nach Art und Umfang der ärztlichen Leistung. Eine schriftliche Zusammenfassung ist auf Wunsch möglich und wird gesondert berechnet.
+          Vor dem Termin wird eine entsprechende Vorauszahlung erhoben. Die endgültige Abrechnung erfolgt nach der Videosprechstunde gemäß GOÄ; bereits geleistete Zahlungen werden angerechnet.
+          Eine schriftliche Zusammenfassung ist auf Wunsch möglich und wird gesondert berechnet.
         </div>
       </div>
     </div>
@@ -593,6 +594,9 @@ select:focus{
           Nach Eingang Ihrer Anfrage und ggf. Ihrer Unterlagen wird geprüft, ob eine Beratung im Rahmen der Videosprechstunde sinnvoll und ärztlich vertretbar ist. Anschließend wird der Termin bestätigt.
         </p>
         <p class="small">
+          Vor dem Termin wird eine Vorauszahlung in Höhe des voraussichtlichen Rechnungsbetrags erhoben. Nach Zahlungseingang wird der Termin verbindlich. Die endgültige Abrechnung erfolgt nach der Beratung gemäß GOÄ; bereits geleistete Zahlungen werden angerechnet.
+        </p>
+        <p class="small">
           Hinweis: Bei akuten Beschwerden, plötzlicher Sehverschlechterung, starken Schmerzen, Verletzungen oder anderen dringenden Augenproblemen bitte direkt augenärztlich oder notfallmäßig vor Ort vorstellen.
         </p>
       </div>
@@ -602,15 +606,15 @@ select:focus{
           <label for="terminart">Terminart auswählen</label>
           <select id="terminart" name="terminart">
             <option>Bitte auswählen</option>
-            <option>Beratung ohne Vorbefunde – ca. 20 Minuten – ca. 60 €</option>
-            <option>Beratung mit Vorbefunden – ca. 30 Minuten – ca. 90 €</option>
+            <option>Beratung ohne Vorbefunde – ca. 20 Minuten – voraussichtliche Kosten ca. 60 €</option>
+            <option>Beratung mit Vorbefunden – ca. 30 Minuten – voraussichtliche Kosten ca. 90 €</option>
           </select>
         </div>
 
         <div>
           <label for="terminhinweis">Hinweis</label>
           <div id="terminhinweis" class="small" style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px;">
-            Die endgültige Terminbestätigung erfolgt nach Prüfung Ihrer Angaben und ggf. Ihrer vorliegenden Unterlagen.
+            Die endgültige Terminbestätigung erfolgt nach Prüfung Ihrer Angaben und ggf. Ihrer vorliegenden Unterlagen. Vor dem Termin wird eine Vorauszahlung erhoben. Der Termin wird nach Zahlungseingang verbindlich.
           </div>
         </div>
 
@@ -670,6 +674,13 @@ select:focus{
             <input type="checkbox" required>
             <span>
               Ich wurde darüber informiert, dass eine Online-Beratung bzw. Videosprechstunde eine körperliche Untersuchung vor Ort nicht in jedem Fall ersetzen kann. Mir ist bekannt, dass sich hieraus Einschränkungen bei Beurteilung, Diagnosestellung und Therapieempfehlung ergeben können und dass eine Untersuchung in einer Praxis oder Klinik erforderlich werden kann.
+            </span>
+          </label>
+
+          <label class="check">
+            <input type="checkbox" required>
+            <span>
+              Mir ist bekannt, dass vor dem Termin eine Vorauszahlung in Höhe des voraussichtlichen Rechnungsbetrags erhoben wird. Die endgültige Abrechnung erfolgt nach der Beratung gemäß GOÄ; bereits geleistete Zahlungen werden angerechnet. Der Termin wird nach Zahlungseingang verbindlich.
             </span>
           </label>
         </div>
