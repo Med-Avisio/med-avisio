@@ -345,6 +345,87 @@ select:focus{
   margin-top:3px;
   flex:0 0 18px;
 }
+
+.step-card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--shadow-soft);
+}
+
+.step-head{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:14px;
+}
+
+.step-badge{
+  width:32px;
+  height:32px;
+  border-radius:999px;
+  background:var(--brand);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:15px;
+  flex:0 0 32px;
+}
+
+.step-title{
+  margin:0;
+  font-size:20px;
+  letter-spacing:-0.01em;
+}
+
+.form-section{
+  display:grid;
+  gap:14px;
+}
+
+.form-divider{
+  height:1px;
+  background:var(--line);
+  margin:4px 0 2px;
+}
+
+.helper-box{
+  background:#f8fbfb;
+  border:1px solid #dceced;
+  border-radius:14px;
+  padding:12px 14px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+
+.dynamic-form{
+  display:grid;
+  gap:18px;
+  margin-top:16px;
+}
+
+.form-intro{
+  margin:0 0 10px;
+  color:var(--muted);
+  font-size:15px;
+}
+
+.upload-box{
+  background:#f8fbfb;
+  border:1px dashed #b7d6d8;
+  border-radius:14px;
+  padding:14px;
+}
+
+@media (max-width: 900px){
+  .step-head{
+    align-items:flex-start;
+  }
+}
     
     @media (max-width: 900px){
      .hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}
@@ -614,11 +695,12 @@ select:focus{
 
     <div class="grid-2">
 
+      <!-- TEXT LINKS -->
       <div>
         <h2>Termin zur Videosprechstunde anfragen</h2>
 
         <p class="muted">
-          Wählen Sie die passende Terminart, geben Sie Ihre Angaben ein und senden Sie Ihren Terminwunsch.
+          Wählen Sie zunächst die passende Terminart und geben Sie anschließend Ihre Angaben ein.
         </p>
 
         <p class="small">
@@ -630,85 +712,181 @@ select:focus{
         </p>
       </div>
 
-      <form class="form-box" id="terminForm">
+      <!-- FORMULAR RECHTS -->
+      <div class="form-box">
 
         <!-- STEP 1 -->
-        <div class="card">
-          <h3>1. Terminart</h3>
+        <div class="step-card">
+          <div class="step-head">
+            <div class="step-badge">1</div>
+            <h3 class="step-title">Terminart auswählen</h3>
+          </div>
 
-          <label for="terminart">Bitte auswählen</label>
-          <select id="terminart" name="terminart" required>
+          <p class="form-intro">
+            Wählen Sie zunächst, ob bereits Vorbefunde vorliegen.
+          </p>
+
+          <select id="terminart" name="terminart">
             <option value="">Bitte auswählen</option>
-            <option value="ohne">Beratung ohne Vorbefunde (ca. 20 Minuten)</option>
-            <option value="mit">Beratung mit Vorbefunden (ca. 30 Minuten)</option>
+            <option value="ohne">Beratung ohne Vorbefunde – ca. 20 Minuten</option>
+            <option value="mit">Beratung mit Vorbefunden – ca. 30 Minuten</option>
           </select>
 
-          <div id="terminInfo" class="small" style="margin-top:10px;"></div>
+          <div id="terminInfo" class="helper-box" style="display:none;"></div>
         </div>
 
-        <!-- STEP 2 -->
-        <div class="card">
-          <h3>2. Angaben zur Person</h3>
+        <!-- FORM OHNE BEFUNDE -->
+        <form id="form-ohne-befunde" class="dynamic-form" style="display:none;">
 
-          <input type="text" placeholder="Name" required>
-          <input type="email" placeholder="E-Mail" required>
-          <input type="text" placeholder="Telefon (optional)">
-        </div>
+          <div class="step-card">
+            <div class="step-head">
+              <div class="step-badge">2</div>
+              <h3 class="step-title">Ihre Angaben</h3>
+            </div>
 
-        <!-- STEP 3 -->
-        <div class="card">
-          <h3>3. Ihre Beschwerden</h3>
+            <div class="form-section">
+              <input type="text" placeholder="Name" required>
+              <input type="email" placeholder="E-Mail" required>
+              <input type="text" placeholder="Telefon (optional)">
+            </div>
 
-          <textarea rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
+            <div class="form-divider"></div>
 
-          <input type="text" placeholder="Seit wann bestehen die Beschwerden?">
-          <input type="text" placeholder="Ein Auge oder beide Augen?">
-          <input type="text" placeholder="Kontaktlinsen?">
-        </div>
+            <div class="form-section">
+              <label>Beschwerden</label>
+              <textarea rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
 
-        <!-- STEP 4 -->
-        <div class="card">
-          <h3>4. Vorbefunde (optional)</h3>
+              <label>Seit wann bestehen die Beschwerden?</label>
+              <input type="text" placeholder="z. B. seit 3 Monaten">
 
-          <input type="file" multiple>
+              <label>Ein Auge oder beide Augen?</label>
+              <input type="text" placeholder="z. B. beide Augen">
 
-          <div class="small">
-            Bitte laden Sie medizinische Unterlagen ausschließlich über diese Funktion hoch.
+              <label>Kontaktlinsen?</label>
+              <input type="text" placeholder="z. B. nein / weiche Kontaktlinsen">
+
+              <label>Bisherige Behandlung</label>
+              <textarea rows="4" placeholder="z. B. Augentropfen"></textarea>
+            </div>
           </div>
-        </div>
 
-        <!-- STEP 5 -->
-        <div class="card">
-          <h3>5. Einwilligungen</h3>
+          <div class="step-card">
+            <div class="step-head">
+              <div class="step-badge">3</div>
+              <h3 class="step-title">Einwilligungen</h3>
+            </div>
 
-          <label class="check">
-            <input type="checkbox" required>
-            <span>
-              Ich willige in die Verarbeitung meiner personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung ein.
-            </span>
-          </label>
+            <div class="consent-box">
+              <label class="check">
+                <input type="checkbox" required>
+                <span>
+                  Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
+                </span>
+              </label>
 
-          <label class="check">
-            <input type="checkbox" required>
-            <span>
-              Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung vor Ort erforderlich sein kann.
-            </span>
-          </label>
+              <label class="check">
+                <input type="checkbox" required>
+                <span>
+                  Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung vor Ort erforderlich sein kann.
+                </span>
+              </label>
 
-          <label class="check">
-            <input type="checkbox" required>
-            <span>
-              Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
-            </span>
-          </label>
-        </div>
+              <label class="check">
+                <input type="checkbox" required>
+                <span>
+                  Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
+                </span>
+              </label>
+            </div>
+          </div>
 
-        <!-- SUBMIT -->
-        <div class="button-row">
-          <button class="btn" type="submit">Termin anfragen</button>
-        </div>
+          <div class="button-row">
+            <button class="btn" type="submit">Termin ohne Vorbefunde anfragen</button>
+          </div>
 
-      </form>
+        </form>
+
+        <!-- FORM MIT BEFUNDE -->
+        <form id="form-mit-befunden" class="dynamic-form" style="display:none;">
+
+          <div class="step-card">
+            <div class="step-head">
+              <div class="step-badge">2</div>
+              <h3 class="step-title">Ihre Angaben & Unterlagen</h3>
+            </div>
+
+            <div class="form-section">
+              <input type="text" placeholder="Name" required>
+              <input type="email" placeholder="E-Mail" required>
+              <input type="text" placeholder="Telefon (optional)">
+            </div>
+
+            <div class="form-divider"></div>
+
+            <div class="form-section">
+              <label>Beschwerden</label>
+              <textarea rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
+
+              <div class="upload-box">
+                <label>Vorbefunde hochladen</label>
+                <input type="file" multiple>
+
+                <div class="small" style="margin-top:8px;">
+                  Bitte laden Sie vorhandene Arztbriefe oder Befunde hier hoch.
+                </div>
+              </div>
+
+              <label>Seit wann bestehen die Beschwerden?</label>
+              <input type="text" placeholder="z. B. seit 3 Monaten">
+
+              <label>Ein Auge oder beide Augen?</label>
+              <input type="text" placeholder="z. B. beide Augen">
+
+              <label>Kontaktlinsen?</label>
+              <input type="text" placeholder="z. B. nein / weiche Kontaktlinsen">
+
+              <label>Bisherige Behandlung</label>
+              <textarea rows="4" placeholder="z. B. Augentropfen"></textarea>
+            </div>
+          </div>
+
+          <div class="step-card">
+            <div class="step-head">
+              <div class="step-badge">3</div>
+              <h3 class="step-title">Einwilligungen</h3>
+            </div>
+
+            <div class="consent-box">
+              <label class="check">
+                <input type="checkbox" required>
+                <span>
+                  Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
+                </span>
+              </label>
+
+              <label class="check">
+                <input type="checkbox" required>
+                <span>
+                  Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung vor Ort erforderlich sein kann.
+                </span>
+              </label>
+
+              <label class="check">
+                <input type="checkbox" required>
+                <span>
+                  Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button class="btn" type="submit">Termin mit Vorbefunden anfragen</button>
+          </div>
+
+        </form>
+
+      </div>
 
     </div>
   </div>
@@ -720,5 +898,31 @@ select:focus{
   © 2026 med-avisio
 </div>
 
+<script>
+  const terminart = document.getElementById("terminart");
+  const terminInfo = document.getElementById("terminInfo");
+  const formOhne = document.getElementById("form-ohne-befunde");
+  const formMit = document.getElementById("form-mit-befunden");
+
+  terminart.addEventListener("change", function () {
+    terminInfo.style.display = "block";
+
+    if (this.value === "ohne") {
+      terminInfo.textContent = "Geeignet für eine erste ärztliche Einschätzung ohne vorliegende Befunde. Dauer ca. 20 Minuten.";
+      formOhne.style.display = "grid";
+      formMit.style.display = "none";
+    } else if (this.value === "mit") {
+      terminInfo.textContent = "Geeignet, wenn bereits Arztbriefe, Messwerte oder andere Unterlagen vorliegen. Dauer ca. 30 Minuten.";
+      formOhne.style.display = "none";
+      formMit.style.display = "grid";
+    } else {
+      terminInfo.style.display = "none";
+      terminInfo.textContent = "";
+      formOhne.style.display = "none";
+      formMit.style.display = "none";
+    }
+  });
+</script>
+  
 </body>
 </html>
