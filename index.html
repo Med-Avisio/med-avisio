@@ -611,115 +611,109 @@ select:focus{
 </section>
 <section id="kontakt" class="section-accent">
   <div class="container">
+
     <div class="grid-2">
+
       <div>
         <h2>Termin zur Videosprechstunde anfragen</h2>
+
         <p class="muted">
-          Wählen Sie die passende Terminart, geben Sie Ihre Kontaktdaten an und bestätigen Sie die erforderlichen Einwilligungen.
+          Wählen Sie die passende Terminart, geben Sie Ihre Angaben ein und senden Sie Ihren Terminwunsch.
         </p>
+
         <p class="small">
-          Nach Eingang Ihrer Anfrage und ggf. Ihrer Unterlagen wird geprüft, ob eine Beratung im Rahmen der Videosprechstunde sinnvoll und ärztlich vertretbar ist. Anschließend wird der Termin bestätigt.
+          Ihre Anfrage wird ärztlich geprüft. Sie erhalten anschließend eine Terminbestätigung sowie weitere Informationen zum Ablauf.
         </p>
+
         <p class="small">
-          Vor dem Termin wird eine Vorauszahlung in Höhe des voraussichtlichen Rechnungsbetrags erhoben. Nach Zahlungseingang wird der Termin verbindlich. Die endgültige Abrechnung erfolgt nach der Beratung gemäß GOÄ; bereits geleistete Zahlungen werden angerechnet.
-        </p>
-        <p class="small">
-          Hinweis: Bei akuten Beschwerden, plötzlicher Sehverschlechterung, starken Schmerzen, Verletzungen oder anderen dringenden Augenproblemen bitte direkt augenärztlich oder notfallmäßig vor Ort vorstellen.
+          Hinweis: Bei akuten Beschwerden, plötzlicher Sehverschlechterung oder Schmerzen bitte direkt augenärztlich vor Ort vorstellen.
         </p>
       </div>
 
-      <div class="form-box">
-        <div>
-          <label for="terminart">Terminart auswählen</label>
-          <select id="terminart" name="terminart">
-            <option>Bitte auswählen</option>
-            <option>Beratung ohne Vorbefunde – ca. 20 Minuten – voraussichtliche Kosten ca. 60 €</option>
-            <option>Beratung mit Vorbefunden – ca. 30 Minuten – voraussichtliche Kosten ca. 90 €</option>
+      <form class="form-box" id="terminForm">
+
+        <!-- STEP 1 -->
+        <div class="card">
+          <h3>1. Terminart</h3>
+
+          <label for="terminart">Bitte auswählen</label>
+          <select id="terminart" name="terminart" required>
+            <option value="">Bitte auswählen</option>
+            <option value="ohne">Beratung ohne Vorbefunde (ca. 20 Minuten)</option>
+            <option value="mit">Beratung mit Vorbefunden (ca. 30 Minuten)</option>
           </select>
+
+          <div id="terminInfo" class="small" style="margin-top:10px;"></div>
         </div>
 
-        <div>
-          <label for="terminhinweis">Hinweis</label>
-          <div id="terminhinweis" class="small" style="background:#fff; border:1px solid var(--line); border-radius:12px; padding:14px;">
-            Die endgültige Terminbestätigung erfolgt nach Prüfung Ihrer Angaben und ggf. Ihrer vorliegenden Unterlagen. Vor dem Termin wird eine Vorauszahlung erhoben. Der Termin wird nach Zahlungseingang verbindlich.
+        <!-- STEP 2 -->
+        <div class="card">
+          <h3>2. Angaben zur Person</h3>
+
+          <input type="text" placeholder="Name" required>
+          <input type="email" placeholder="E-Mail" required>
+          <input type="text" placeholder="Telefon (optional)">
+        </div>
+
+        <!-- STEP 3 -->
+        <div class="card">
+          <h3>3. Ihre Beschwerden</h3>
+
+          <textarea rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
+
+          <input type="text" placeholder="Seit wann bestehen die Beschwerden?">
+          <input type="text" placeholder="Ein Auge oder beide Augen?">
+          <input type="text" placeholder="Kontaktlinsen?">
+        </div>
+
+        <!-- STEP 4 -->
+        <div class="card">
+          <h3>4. Vorbefunde (optional)</h3>
+
+          <input type="file" multiple>
+
+          <div class="small">
+            Bitte laden Sie medizinische Unterlagen ausschließlich über diese Funktion hoch.
           </div>
         </div>
 
-        <input type="text" placeholder="Name">
-        <input type="email" placeholder="E-Mail">
-        <input type="text" placeholder="Telefon (optional)">
+        <!-- STEP 5 -->
+        <div class="card">
+          <h3>5. Einwilligungen</h3>
 
-        <div>
-          <label for="beschwerden">Kurze Schilderung Ihrer Beschwerden</label>
-          <textarea id="beschwerden" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
-        </div>
-
-        <div>
-          <label for="befunde">Vorbefunde hochladen (falls vorhanden)</label>
-          <input id="befunde" type="file" multiple>
-          <div class="small" style="margin-top:6px;">
-            Bitte laden Sie medizinische Unterlagen ausschließlich über die dafür vorgesehene Upload-Funktion hoch und nicht per unverschlüsselter E-Mail.
-          </div>
-        </div>
-
-        <div>
-          <label for="beginn">Seit wann bestehen die Beschwerden?</label>
-          <input id="beginn" type="text" placeholder="z. B. seit 3 Monaten">
-        </div>
-
-        <div>
-          <label for="augen">Ein Auge oder beide Augen?</label>
-          <input id="augen" type="text" placeholder="z. B. beide Augen">
-        </div>
-
-        <div>
-          <label for="kontaktlinsen">Tragen Sie Kontaktlinsen?</label>
-          <input id="kontaktlinsen" type="text" placeholder="z. B. nein / weiche Kontaktlinsen">
-        </div>
-
-        <div>
-          <label for="therapie">Bisherige Behandlungen / Augentropfen</label>
-          <textarea id="therapie" rows="4" placeholder="z. B. bisher verwendete Tropfen oder Maßnahmen"></textarea>
-        </div>
-
-        <div class="consent-box">
           <label class="check">
             <input type="checkbox" required>
             <span>
-              Ich willige ein, dass meine im Rahmen der Anfrage, Terminvereinbarung, Befundübermittlung und Videosprechstunde mitgeteilten personenbezogenen Daten, einschließlich meiner Gesundheitsdaten, zum Zweck der Anbahnung, Durchführung und Dokumentation der ärztlichen Beratung verarbeitet werden.
+              Ich willige in die Verarbeitung meiner personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung ein.
             </span>
           </label>
 
           <label class="check">
             <input type="checkbox" required>
             <span>
-              Ich wünsche die Durchführung der angefragten ärztlichen Beratung im Rahmen einer Videosprechstunde / Fernbehandlung. Mir ist bekannt, dass die ausschließliche Beratung oder Behandlung über Kommunikationsmedien nur erfolgt, wenn dies im konkreten Einzelfall ärztlich vertretbar ist.
+              Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung vor Ort erforderlich sein kann.
             </span>
           </label>
 
           <label class="check">
             <input type="checkbox" required>
             <span>
-              Ich wurde darüber informiert, dass eine Online-Beratung bzw. Videosprechstunde eine körperliche Untersuchung vor Ort nicht in jedem Fall ersetzen kann. Mir ist bekannt, dass sich hieraus Einschränkungen bei Beurteilung, Diagnosestellung und Therapieempfehlung ergeben können und dass eine Untersuchung in einer Praxis oder Klinik erforderlich werden kann.
-            </span>
-          </label>
-
-          <label class="check">
-            <input type="checkbox" required>
-            <span>
-              Mir ist bekannt, dass vor dem Termin eine Vorauszahlung in Höhe des voraussichtlichen Rechnungsbetrags erhoben wird. Die endgültige Abrechnung erfolgt nach der Beratung gemäß GOÄ; bereits geleistete Zahlungen werden angerechnet. Der Termin wird nach Zahlungseingang verbindlich.
+              Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
             </span>
           </label>
         </div>
 
+        <!-- SUBMIT -->
         <div class="button-row">
-          <button class="btn" type="button">Terminwunsch absenden</button>
+          <button class="btn" type="submit">Termin anfragen</button>
         </div>
-      </div>
+
+      </form>
+
     </div>
   </div>
 </section>
-
+  
 <div class="footer">
   <a href="impressum.html">Impressum</a> |
   <a href="datenschutz.html">Datenschutz</a> |
