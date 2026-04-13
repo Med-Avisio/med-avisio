@@ -692,10 +692,8 @@ select:focus{
 </section>
 <section id="kontakt" class="section-accent">
   <div class="container">
-
     <div class="grid-2">
 
-      <!-- TEXT LINKS -->
       <div>
         <h2>Termin zur Videosprechstunde anfragen</h2>
 
@@ -712,10 +710,9 @@ select:focus{
         </p>
       </div>
 
-      <!-- FORMULAR RECHTS -->
       <div class="form-box">
 
-        <!-- STEP 1 -->
+        <!-- Schritt 1 -->
         <div class="step-card">
           <div class="step-head">
             <div class="step-badge">1</div>
@@ -735,9 +732,8 @@ select:focus{
           <div id="terminInfo" class="helper-box" style="display:none;"></div>
         </div>
 
-        <!-- FORM OHNE BEFUNDE -->
-        <form id="form-ohne-befunde" class="dynamic-form" style="display:none;">
-
+        <!-- Formular ohne Vorbefunde -->
+        <div id="form-ohne-befunde" class="dynamic-form" style="display:none;">
           <div class="step-card">
             <div class="step-head">
               <div class="step-badge">2</div>
@@ -801,14 +797,12 @@ select:focus{
           </div>
 
           <div class="button-row">
-            <button class="btn" type="submit">Termin ohne Vorbefunde anfragen</button>
+            <button class="btn" type="button" id="btn-ohne">Termin ohne Vorbefunde anfragen</button>
           </div>
+        </div>
 
-        </form>
-
-        <!-- FORM MIT BEFUNDE -->
-        <form id="form-mit-befunden" class="dynamic-form" style="display:none;">
-
+        <!-- Formular mit Vorbefunden -->
+        <div id="form-mit-befunden" class="dynamic-form" style="display:none;">
           <div class="step-card">
             <div class="step-head">
               <div class="step-badge">2</div>
@@ -881,17 +875,79 @@ select:focus{
           </div>
 
           <div class="button-row">
-            <button class="btn" type="submit">Termin mit Vorbefunden anfragen</button>
+            <button class="btn" type="button" id="btn-mit">Termin mit Vorbefunden anfragen</button>
           </div>
-
-        </form>
+        </div>
 
       </div>
-
     </div>
   </div>
 </section>
-  
+
+<section id="termin-bestaetigung" class="section-white" style="display:none;">
+  <div class="container" style="max-width:800px;">
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">4</div>
+        <h2 class="step-title">Termin bestätigen</h2>
+      </div>
+
+      <p class="form-intro">
+        Bitte prüfen Sie die Angaben zu Ihrem Termin und zur Abrechnung sorgfältig.
+      </p>
+
+      <div class="helper-box" style="margin-bottom:16px;">
+        <strong>Termin:</strong> <span id="confirmTermin">Termin wird später über Arztkonsultation ausgewählt</span><br>
+        <strong>Leistung:</strong> <span id="confirmLeistung"></span><br>
+        <strong>Voraussichtliche Dauer:</strong> <span id="confirmDauer"></span>
+      </div>
+
+      <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
+        <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Honorarvereinbarung gemäß § 2 GOÄ</h3>
+
+        <div class="small" style="line-height:1.7;">
+          <strong>Leistung:</strong> <span id="confirmZiffer">GOÄ Nr. 3 – Eingehende Beratung</span><br>
+          <strong>Steigerungssatz:</strong> <span id="confirmFaktor"></span><br>
+          <strong>Vereinbartes Honorar:</strong> <span id="confirmBetrag"></span>
+        </div>
+
+        <p class="small" style="margin-top:14px;">
+          Es wird darauf hingewiesen, dass eine Erstattung durch private Krankenversicherungen
+          oder Beihilfestellen möglicherweise nicht in vollem Umfang gewährleistet ist.
+        </p>
+      </div>
+
+      <div class="consent-box" style="margin-top:16px;">
+        <label class="check">
+          <input type="checkbox" id="confirmAbdingung" required>
+          <span>
+            Ich habe die vorstehende Honorarvereinbarung zur Kenntnis genommen und bin mit der Durchführung
+            der ärztlichen Beratung zu den genannten Bedingungen einverstanden.
+          </span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="confirmPayment" required>
+          <span>
+            Ich bin damit einverstanden, dass nach der Beratung der Rechnungsbetrag über die von mir
+            hinterlegte Zahlungsmethode abgebucht wird.
+          </span>
+        </label>
+      </div>
+
+      <div class="button-row" style="margin-top:18px;">
+        <button class="btn" type="button" id="goToPaymentBtn">
+          Einverstanden und Zahlungsdaten hinterlegen
+        </button>
+      </div>
+
+      <p class="small" style="margin-top:12px;">
+        Erst nach Zustimmung und Hinterlegung der Zahlungsdaten kann der Termin verbindlich bestätigt werden.
+      </p>
+    </div>
+  </div>
+</section>
+
 <div class="footer">
   <a href="impressum.html">Impressum</a> |
   <a href="datenschutz.html">Datenschutz</a> |
@@ -903,6 +959,8 @@ select:focus{
   const terminInfo = document.getElementById("terminInfo");
   const formOhne = document.getElementById("form-ohne-befunde");
   const formMit = document.getElementById("form-mit-befunden");
+  const btnOhne = document.getElementById("btn-ohne");
+  const btnMit = document.getElementById("btn-mit");
 
   terminart.addEventListener("change", function () {
     terminInfo.style.display = "block";
@@ -912,7 +970,7 @@ select:focus{
       formOhne.style.display = "grid";
       formMit.style.display = "none";
     } else if (this.value === "mit") {
-      terminInfo.textContent = "Geeignet, wenn bereits Arztbriefe, Messwerte oder andere Unterlagen vorliegen. Dauer ca. 30 Minuten.";
+      terminInfo.textContent = "Geeignet, wenn bereits Arztbriefe oder Befunde vorliegen. Dauer ca. 30 Minuten.";
       formOhne.style.display = "none";
       formMit.style.display = "grid";
     } else {
@@ -922,7 +980,53 @@ select:focus{
       formMit.style.display = "none";
     }
   });
+
+  function showConfirmationFlow(data) {
+    document.getElementById("confirmTermin").textContent = data.termin;
+    document.getElementById("confirmLeistung").textContent = data.leistung;
+    document.getElementById("confirmDauer").textContent = data.dauer;
+    document.getElementById("confirmZiffer").textContent = data.ziffer;
+    document.getElementById("confirmFaktor").textContent = data.faktor;
+    document.getElementById("confirmBetrag").textContent = data.betrag;
+
+    document.getElementById("termin-bestaetigung").style.display = "block";
+    document.getElementById("termin-bestaetigung").scrollIntoView({ behavior: "smooth" });
+  }
+
+  btnOhne.addEventListener("click", function () {
+    showConfirmationFlow({
+      termin: "Termin wird später über Arztkonsultation ausgewählt",
+      leistung: "Beratung ohne Vorbefunde",
+      dauer: "ca. 20 Minuten",
+      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+      faktor: "4,2-fach",
+      betrag: "55,00 €"
+    });
+  });
+
+  btnMit.addEventListener("click", function () {
+    showConfirmationFlow({
+      termin: "Termin wird später über Arztkonsultation ausgewählt",
+      leistung: "Beratung mit Vorbefunden",
+      dauer: "ca. 30 Minuten",
+      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+      faktor: "4,6-fach",
+      betrag: "87,00 €"
+    });
+  });
+
+  document.getElementById("goToPaymentBtn").addEventListener("click", function () {
+    const abdingungOk = document.getElementById("confirmAbdingung").checked;
+    const paymentOk = document.getElementById("confirmPayment").checked;
+
+    if (!abdingungOk || !paymentOk) {
+      alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
+      return;
+    }
+
+    alert("Hier wird später Stripe geöffnet.");
+  });
 </script>
-  
+
 </body>
 </html>
