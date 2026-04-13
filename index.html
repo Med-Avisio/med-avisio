@@ -712,7 +712,6 @@ select:focus{
 
       <div class="form-box">
 
-        <!-- Schritt 1 -->
         <div class="step-card">
           <div class="step-head">
             <div class="step-badge">1</div>
@@ -732,7 +731,6 @@ select:focus{
           <div id="terminInfo" class="helper-box" style="display:none;"></div>
         </div>
 
-        <!-- Formular ohne Vorbefunde -->
         <div id="form-ohne-befunde" class="dynamic-form" style="display:none;">
           <div class="step-card">
             <div class="step-head">
@@ -741,28 +739,28 @@ select:focus{
             </div>
 
             <div class="form-section">
-              <input type="text" placeholder="Name" required>
-              <input type="email" placeholder="E-Mail" required>
-              <input type="text" placeholder="Telefon (optional)">
+              <input type="text" id="name-ohne" placeholder="Name" required>
+              <input type="email" id="email-ohne" placeholder="E-Mail" required>
+              <input type="text" id="telefon-ohne" placeholder="Telefon (optional)">
             </div>
 
             <div class="form-divider"></div>
 
             <div class="form-section">
-              <label>Beschwerden</label>
-              <textarea rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
+              <label for="beschwerden-ohne">Beschwerden</label>
+              <textarea id="beschwerden-ohne" rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
 
-              <label>Seit wann bestehen die Beschwerden?</label>
-              <input type="text" placeholder="z. B. seit 3 Monaten">
+              <label for="beginn-ohne">Seit wann bestehen die Beschwerden?</label>
+              <input type="text" id="beginn-ohne" placeholder="z. B. seit 3 Monaten">
 
-              <label>Ein Auge oder beide Augen?</label>
-              <input type="text" placeholder="z. B. beide Augen">
+              <label for="augen-ohne">Ein Auge oder beide Augen?</label>
+              <input type="text" id="augen-ohne" placeholder="z. B. beide Augen">
 
-              <label>Kontaktlinsen?</label>
-              <input type="text" placeholder="z. B. nein / weiche Kontaktlinsen">
+              <label for="kontaktlinsen-ohne">Kontaktlinsen?</label>
+              <input type="text" id="kontaktlinsen-ohne" placeholder="z. B. nein / weiche Kontaktlinsen">
 
-              <label>Bisherige Behandlung</label>
-              <textarea rows="4" placeholder="z. B. Augentropfen"></textarea>
+              <label for="behandlung-ohne">Bisherige Behandlung</label>
+              <textarea id="behandlung-ohne" rows="4" placeholder="z. B. Augentropfen"></textarea>
             </div>
           </div>
 
@@ -774,21 +772,21 @@ select:focus{
 
             <div class="consent-box">
               <label class="check">
-                <input type="checkbox" required>
+                <input type="checkbox" id="daten-ohne" required>
                 <span>
                   Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
                 </span>
               </label>
 
               <label class="check">
-                <input type="checkbox" required>
+                <input type="checkbox" id="video-ohne" required>
                 <span>
                   Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung vor Ort erforderlich sein kann.
                 </span>
               </label>
 
               <label class="check">
-                <input type="checkbox" required>
+                <input type="checkbox" id="zahlung-ohne" required>
                 <span>
                   Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
                 </span>
@@ -801,7 +799,6 @@ select:focus{
           </div>
         </div>
 
-        <!-- Formular mit Vorbefunden -->
         <div id="form-mit-befunden" class="dynamic-form" style="display:none;">
           <div class="step-card">
             <div class="step-head">
@@ -810,37 +807,37 @@ select:focus{
             </div>
 
             <div class="form-section">
-              <input type="text" placeholder="Name" required>
-              <input type="email" placeholder="E-Mail" required>
-              <input type="text" placeholder="Telefon (optional)">
+              <input type="text" id="name-mit" placeholder="Name" required>
+              <input type="email" id="email-mit" placeholder="E-Mail" required>
+              <input type="text" id="telefon-mit" placeholder="Telefon (optional)">
             </div>
 
             <div class="form-divider"></div>
 
             <div class="form-section">
-              <label>Beschwerden</label>
-              <textarea rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
+              <label for="beschwerden-mit">Beschwerden</label>
+              <textarea id="beschwerden-mit" rows="5" placeholder="Beschwerden kurz schildern" required></textarea>
 
               <div class="upload-box">
-                <label>Vorbefunde hochladen</label>
-                <input type="file" multiple>
+                <label for="befunde-mit">Vorbefunde hochladen</label>
+                <input type="file" id="befunde-mit" multiple>
 
                 <div class="small" style="margin-top:8px;">
                   Bitte laden Sie vorhandene Arztbriefe oder Befunde hier hoch.
                 </div>
               </div>
 
-              <label>Seit wann bestehen die Beschwerden?</label>
-              <input type="text" placeholder="z. B. seit 3 Monaten">
+              <label for="beginn-mit">Seit wann bestehen die Beschwerden?</label>
+              <input type="text" id="beginn-mit" placeholder="z. B. seit 3 Monaten">
 
-              <label>Ein Auge oder beide Augen?</label>
-              <input type="text" placeholder="z. B. beide Augen">
+              <label for="augen-mit">Ein Auge oder beide Augen?</label>
+              <input type="text" id="augen-mit" placeholder="z. B. beide Augen">
 
-              <label>Kontaktlinsen?</label>
-              <input type="text" placeholder="z. B. nein / weiche Kontaktlinsen">
+              <label for="kontaktlinsen-mit">Kontaktlinsen?</label>
+              <input type="text" id="kontaktlinsen-mit" placeholder="z. B. nein / weiche Kontaktlinsen">
 
-              <label>Bisherige Behandlung</label>
-              <textarea rows="4" placeholder="z. B. Augentropfen"></textarea>
+              <label for="behandlung-mit">Bisherige Behandlung</label>
+              <textarea id="behandlung-mit" rows="4" placeholder="z. B. Augentropfen"></textarea>
             </div>
           </div>
 
@@ -852,21 +849,21 @@ select:focus{
 
             <div class="consent-box">
               <label class="check">
-                <input type="checkbox" required>
+                <input type="checkbox" id="daten-mit" required>
                 <span>
                   Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
                 </span>
               </label>
 
               <label class="check">
-                <input type="checkbox" required>
+                <input type="checkbox" id="video-mit" required>
                 <span>
                   Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung vor Ort erforderlich sein kann.
                 </span>
               </label>
 
               <label class="check">
-                <input type="checkbox" required>
+                <input type="checkbox" id="zahlung-mit" required>
                 <span>
                   Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
                 </span>
@@ -912,8 +909,7 @@ select:focus{
         </div>
 
         <p class="small" style="margin-top:14px;">
-          Es wird darauf hingewiesen, dass eine Erstattung durch private Krankenversicherungen
-          oder Beihilfestellen möglicherweise nicht in vollem Umfang gewährleistet ist.
+          Es wird darauf hingewiesen, dass eine Erstattung durch private Krankenversicherungen oder Beihilfestellen möglicherweise nicht in vollem Umfang gewährleistet ist.
         </p>
       </div>
 
@@ -921,24 +917,20 @@ select:focus{
         <label class="check">
           <input type="checkbox" id="confirmAbdingung" required>
           <span>
-            Ich habe die vorstehende Honorarvereinbarung zur Kenntnis genommen und bin mit der Durchführung
-            der ärztlichen Beratung zu den genannten Bedingungen einverstanden.
+            Ich habe die vorstehende Honorarvereinbarung zur Kenntnis genommen und bin mit der Durchführung der ärztlichen Beratung zu den genannten Bedingungen einverstanden.
           </span>
         </label>
 
         <label class="check">
           <input type="checkbox" id="confirmPayment" required>
           <span>
-            Ich bin damit einverstanden, dass nach der Beratung der Rechnungsbetrag über die von mir
-            hinterlegte Zahlungsmethode abgebucht wird.
+            Ich bin damit einverstanden, dass nach der Beratung der Rechnungsbetrag über die von mir hinterlegte Zahlungsmethode abgebucht wird.
           </span>
         </label>
       </div>
 
       <div class="button-row" style="margin-top:18px;">
-        <button class="btn" type="button" id="goToPaymentBtn">
-          Einverstanden und Zahlungsdaten hinterlegen
-        </button>
+        <button class="btn" type="button" id="goToPaymentBtn">Einverstanden und Zahlungsdaten hinterlegen</button>
       </div>
 
       <p class="small" style="margin-top:12px;">
@@ -955,76 +947,126 @@ select:focus{
 </div>
 
 <script>
-  const terminart = document.getElementById("terminart");
-  const terminInfo = document.getElementById("terminInfo");
-  const formOhne = document.getElementById("form-ohne-befunde");
-  const formMit = document.getElementById("form-mit-befunden");
-  const btnOhne = document.getElementById("btn-ohne");
-  const btnMit = document.getElementById("btn-mit");
+  document.addEventListener("DOMContentLoaded", function () {
+    const terminart = document.getElementById("terminart");
+    const terminInfo = document.getElementById("terminInfo");
+    const formOhne = document.getElementById("form-ohne-befunde");
+    const formMit = document.getElementById("form-mit-befunden");
+    const btnOhne = document.getElementById("btn-ohne");
+    const btnMit = document.getElementById("btn-mit");
+    const bestaetigung = document.getElementById("termin-bestaetigung");
+    const goToPaymentBtn = document.getElementById("goToPaymentBtn");
 
-  terminart.addEventListener("change", function () {
-    terminInfo.style.display = "block";
+    function showConfirmationFlow(data) {
+      document.getElementById("confirmTermin").textContent = data.termin;
+      document.getElementById("confirmLeistung").textContent = data.leistung;
+      document.getElementById("confirmDauer").textContent = data.dauer;
+      document.getElementById("confirmZiffer").textContent = data.ziffer;
+      document.getElementById("confirmFaktor").textContent = data.faktor;
+      document.getElementById("confirmBetrag").textContent = data.betrag;
 
-    if (this.value === "ohne") {
-      terminInfo.textContent = "Geeignet für eine erste ärztliche Einschätzung ohne vorliegende Befunde. Dauer ca. 20 Minuten.";
-      formOhne.style.display = "grid";
-      formMit.style.display = "none";
-    } else if (this.value === "mit") {
-      terminInfo.textContent = "Geeignet, wenn bereits Arztbriefe oder Befunde vorliegen. Dauer ca. 30 Minuten.";
-      formOhne.style.display = "none";
-      formMit.style.display = "grid";
-    } else {
-      terminInfo.style.display = "none";
-      terminInfo.textContent = "";
-      formOhne.style.display = "none";
-      formMit.style.display = "none";
-    }
-  });
-
-  function showConfirmationFlow(data) {
-    document.getElementById("confirmTermin").textContent = data.termin;
-    document.getElementById("confirmLeistung").textContent = data.leistung;
-    document.getElementById("confirmDauer").textContent = data.dauer;
-    document.getElementById("confirmZiffer").textContent = data.ziffer;
-    document.getElementById("confirmFaktor").textContent = data.faktor;
-    document.getElementById("confirmBetrag").textContent = data.betrag;
-
-    document.getElementById("termin-bestaetigung").style.display = "block";
-    document.getElementById("termin-bestaetigung").scrollIntoView({ behavior: "smooth" });
-  }
-
-  btnOhne.addEventListener("click", function () {
-    showConfirmationFlow({
-      termin: "Termin wird später über Arztkonsultation ausgewählt",
-      leistung: "Beratung ohne Vorbefunde",
-      dauer: "ca. 20 Minuten",
-      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "4,2-fach",
-      betrag: "55,00 €"
-    });
-  });
-
-  btnMit.addEventListener("click", function () {
-    showConfirmationFlow({
-      termin: "Termin wird später über Arztkonsultation ausgewählt",
-      leistung: "Beratung mit Vorbefunden",
-      dauer: "ca. 30 Minuten",
-      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "4,6-fach",
-      betrag: "87,00 €"
-    });
-  });
-
-  document.getElementById("goToPaymentBtn").addEventListener("click", function () {
-    const abdingungOk = document.getElementById("confirmAbdingung").checked;
-    const paymentOk = document.getElementById("confirmPayment").checked;
-
-    if (!abdingungOk || !paymentOk) {
-      alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
-      return;
+      bestaetigung.style.display = "block";
+      bestaetigung.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    alert("Hier wird später Stripe geöffnet.");
+    if (terminart) {
+      terminart.addEventListener("change", function () {
+        if (this.value === "ohne") {
+          terminInfo.style.display = "block";
+          terminInfo.textContent = "Geeignet für eine erste ärztliche Einschätzung ohne vorliegende Befunde. Dauer ca. 20 Minuten.";
+          formOhne.style.display = "grid";
+          formMit.style.display = "none";
+        } else if (this.value === "mit") {
+          terminInfo.style.display = "block";
+          terminInfo.textContent = "Geeignet, wenn bereits Arztbriefe oder Befunde vorliegen. Dauer ca. 30 Minuten.";
+          formOhne.style.display = "none";
+          formMit.style.display = "grid";
+        } else {
+          terminInfo.style.display = "none";
+          terminInfo.textContent = "";
+          formOhne.style.display = "none";
+          formMit.style.display = "none";
+        }
+      });
+    }
+
+    if (btnOhne) {
+      btnOhne.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const name = document.getElementById("name-ohne").value.trim();
+        const email = document.getElementById("email-ohne").value.trim();
+        const beschwerden = document.getElementById("beschwerden-ohne").value.trim();
+        const daten = document.getElementById("daten-ohne").checked;
+        const video = document.getElementById("video-ohne").checked;
+        const zahlung = document.getElementById("zahlung-ohne").checked;
+
+        if (!name || !email || !beschwerden || !daten || !video || !zahlung) {
+          alert("Bitte füllen Sie die Pflichtfelder aus und bestätigen Sie die Einwilligungen.");
+          return false;
+        }
+
+        showConfirmationFlow({
+          termin: "Termin wird später über Arztkonsultation ausgewählt",
+          leistung: "Beratung ohne Vorbefunde",
+          dauer: "ca. 20 Minuten",
+          ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+          faktor: "4,2-fach",
+          betrag: "55,00 €"
+        });
+
+        return false;
+      });
+    }
+
+    if (btnMit) {
+      btnMit.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const name = document.getElementById("name-mit").value.trim();
+        const email = document.getElementById("email-mit").value.trim();
+        const beschwerden = document.getElementById("beschwerden-mit").value.trim();
+        const daten = document.getElementById("daten-mit").checked;
+        const video = document.getElementById("video-mit").checked;
+        const zahlung = document.getElementById("zahlung-mit").checked;
+
+        if (!name || !email || !beschwerden || !daten || !video || !zahlung) {
+          alert("Bitte füllen Sie die Pflichtfelder aus und bestätigen Sie die Einwilligungen.");
+          return false;
+        }
+
+        showConfirmationFlow({
+          termin: "Termin wird später über Arztkonsultation ausgewählt",
+          leistung: "Beratung mit Vorbefunden",
+          dauer: "ca. 30 Minuten",
+          ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+          faktor: "4,6-fach",
+          betrag: "87,00 €"
+        });
+
+        return false;
+      });
+    }
+
+    if (goToPaymentBtn) {
+      goToPaymentBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const abdingungOk = document.getElementById("confirmAbdingung").checked;
+        const paymentOk = document.getElementById("confirmPayment").checked;
+
+        if (!abdingungOk || !paymentOk) {
+          alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
+          return false;
+        }
+
+        alert("Hier wird später Stripe geöffnet.");
+        return false;
+      });
+    }
   });
 </script>
 
