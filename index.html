@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+<script src="https://js.stripe.com/v3/"></script>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,6 +9,14 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
+#payment-element {
+  margin-top: 10px;
+}
+
+#stripe-status {
+  color: var(--muted);
+}
+  
   <style>
     :root{
       --brand:#2FA4A9;
@@ -929,9 +938,28 @@ select:focus{
         </label>
       </div>
 
-      <div class="button-row" style="margin-top:18px;">
-        <button class="btn" type="button" id="goToPaymentBtn">Einverstanden und Zahlungsdaten hinterlegen</button>
-      </div>
+     <div id="stripe-area" style="display:none; margin-top:18px;">
+  <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
+    <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Zahlungsmethode hinterlegen</h3>
+
+    <p class="small" style="margin-bottom:12px;">
+      Die Angabe einer Zahlungsmethode dient ausschließlich der späteren Abrechnung.
+      Eine Abbuchung erfolgt erst nach der Videosprechstunde.
+    </p>
+
+    <div id="payment-element"></div>
+
+    <div class="button-row" style="margin-top:16px;">
+      <button class="btn" type="button" id="savePaymentMethodBtn">Zahlungsmethode speichern</button>
+    </div>
+
+    <p class="small" id="stripe-status" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+<div class="button-row" style="margin-top:18px;">
+  <button class="btn" type="button" id="goToPaymentBtn">Einverstanden und Zahlungsdaten hinterlegen</button>
+</div>
 
       <p class="small" style="margin-top:12px;">
         Erst nach Zustimmung und Hinterlegung der Zahlungsdaten kann der Termin verbindlich bestätigt werden.
@@ -956,6 +984,8 @@ select:focus{
     const btnMit = document.getElementById("btn-mit");
     const bestaetigung = document.getElementById("termin-bestaetigung");
     const goToPaymentBtn = document.getElementById("goToPaymentBtn");
+    const stripeArea = document.getElementById("stripe-area");
+    const stripeStatus = document.getElementById("stripe-status");
 
     function showConfirmationFlow(data) {
       document.getElementById("confirmTermin").textContent = data.termin;
@@ -966,6 +996,7 @@ select:focus{
       document.getElementById("confirmBetrag").textContent = data.betrag;
 
       bestaetigung.style.display = "block";
+      stripeArea.style.display = "none";
       bestaetigung.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -1051,7 +1082,7 @@ select:focus{
     }
 
     if (goToPaymentBtn) {
-      goToPaymentBtn.addEventListener("click", function (e) {
+      goToPaymentBtn.addEventListener("click", async function (e) {
         e.preventDefault();
         e.stopPropagation();
 
@@ -1063,7 +1094,11 @@ select:focus{
           return false;
         }
 
-        alert("Hier wird später Stripe geöffnet.");
+        stripeArea.style.display = "block";
+        stripeArea.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        // Stripe kommt im nächsten Schritt hier rein.
+        stripeStatus.textContent = "Stripe wird hier im nächsten Schritt angebunden.";
         return false;
       });
     }
