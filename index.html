@@ -892,6 +892,7 @@ select:focus{
 
 <section id="termin-bestaetigung" class="section-white" style="display:none;">
   <div class="container" style="max-width:800px;">
+
     <div class="step-card">
       <div class="step-head">
         <div class="step-badge">4</div>
@@ -902,71 +903,110 @@ select:focus{
         Bitte prüfen Sie die Angaben zu Ihrem Termin und zur Abrechnung sorgfältig.
       </p>
 
+      <!-- BASISDATEN -->
       <div class="helper-box" style="margin-bottom:16px;">
         <strong>Termin:</strong> <span id="confirmTermin">Termin wird später über Arztkonsultation ausgewählt</span><br>
         <strong>Leistung:</strong> <span id="confirmLeistung"></span><br>
-        <strong>Voraussichtliche Dauer:</strong> <span id="confirmDauer"></span>
+        <strong>Dauer:</strong> <span id="confirmDauer"></span>
       </div>
 
+      <!-- ANZEIGE -->
       <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
-        <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Honorarvereinbarung gemäß § 2 GOÄ</h3>
+        <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Abrechnung (Übersicht)</h3>
 
         <div class="small" style="line-height:1.7;">
           <strong>Leistung:</strong> <span id="confirmZiffer">GOÄ Nr. 3 – Eingehende Beratung</span><br>
           <strong>Steigerungssatz:</strong> <span id="confirmFaktor"></span><br>
-          <strong>Vereinbartes Honorar:</strong> <span id="confirmBetrag"></span>
+          <strong>Betrag:</strong> <span id="confirmBetrag"></span>
+        </div>
+      </div>
+
+      <!-- AB D I N G U N G -->
+      <div class="step-card" style="margin-top:16px; border:1px solid #cfd9de;">
+        <div class="step-head">
+          <div class="step-badge">5</div>
+          <h3 class="step-title">Abweichende Honorarvereinbarung</h3>
         </div>
 
-        <p class="small" style="margin-top:14px;">
-          Es wird darauf hingewiesen, dass eine Erstattung durch private Krankenversicherungen oder Beihilfestellen möglicherweise nicht in vollem Umfang gewährleistet ist.
-        </p>
+        <div class="small" style="line-height:1.7;">
+          <p style="margin-top:0;">
+            Die folgende Honorarvereinbarung wird vor Durchführung der ärztlichen Beratung getroffen.
+          </p>
+
+          <p>
+            <strong>GOÄ-Leistung:</strong> <span id="confirmZifferBox">GOÄ Nr. 3 – Eingehende Beratung</span><br>
+            <strong>Steigerungssatz:</strong> <span id="confirmFaktorBox"></span><br>
+            <strong>Vereinbartes Honorar:</strong> <span id="confirmBetragBox"></span>
+          </p>
+
+          <p>
+            Es wird darauf hingewiesen, dass eine Erstattung durch private Krankenversicherungen
+            oder Beihilfestellen möglicherweise nicht in vollem Umfang gewährleistet ist.
+          </p>
+        </div>
+
+        <div class="consent-box" style="margin-top:10px;">
+          <label class="check">
+            <input type="checkbox" id="confirmAbdingung" required>
+            <span>
+              Ich bestätige ausdrücklich, dass ich die vorstehende Honorarvereinbarung gemäß § 2 GOÄ
+              vor Durchführung der Beratung zur Kenntnis genommen habe und ihr zustimme.
+            </span>
+          </label>
+        </div>
       </div>
 
-      <div class="consent-box" style="margin-top:16px;">
-       <label class="check">
-  <input type="checkbox" id="confirmAbdingung" required>
-  <span>
-    Ich bestätige ausdrücklich, dass ich die vorstehende Honorarvereinbarung gemäß § 2 GOÄ 
-    (GOÄ Nr. 3, Steigerungssatz und Betrag wie angegeben) vor Durchführung der Beratung zur Kenntnis genommen habe 
-    und dieser zustimme. Mir ist bekannt, dass eine Erstattung durch private Krankenversicherungen 
-    möglicherweise nicht vollständig erfolgt.
-  </span>
-</label>
+      <!-- ZAHLUNG -->
+      <div class="step-card" style="margin-top:16px;">
+        <div class="step-head">
+          <div class="step-badge">6</div>
+          <h3 class="step-title">Zahlungsfreigabe</h3>
+        </div>
 
-        <label class="check">
-          <input type="checkbox" id="confirmPayment" required>
-          <span>
-            Ich bin damit einverstanden, dass nach der Beratung der genannte Rechnungsbetrag über die von mir hinterlegte Zahlungsmethode abgebucht wird.
-          </span>
-        </label>
+        <div class="consent-box">
+          <label class="check">
+            <input type="checkbox" id="confirmPayment" required>
+            <span>
+              Ich bin damit einverstanden, dass nach der Beratung der Rechnungsbetrag
+              über die von mir hinterlegte Zahlungsmethode abgebucht wird.
+            </span>
+          </label>
+        </div>
       </div>
 
-     <div id="stripe-area" style="display:none; margin-top:18px;">
-  <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
-    <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Zahlungsmethode hinterlegen</h3>
+      <!-- STRIPE -->
+      <div id="stripe-area" style="display:none; margin-top:18px;">
+        <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
+          <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Zahlungsmethode hinterlegen</h3>
 
-    <p class="small" style="margin-bottom:12px;">
-      Die Angabe einer Zahlungsmethode dient ausschließlich der späteren Abrechnung.
-      Eine Abbuchung erfolgt erst nach der Videosprechstunde.
-    </p>
+          <p class="small" style="margin-bottom:12px;">
+            Die Angabe einer Zahlungsmethode dient ausschließlich der späteren Abrechnung.
+            Eine Abbuchung erfolgt erst nach der Videosprechstunde.
+          </p>
 
-    <div id="payment-element"></div>
+          <div id="payment-element"></div>
 
-    <div class="button-row" style="margin-top:16px;">
-      <button class="btn" type="button" id="savePaymentMethodBtn">Zahlungsmethode speichern</button>
-    </div>
+          <div class="button-row" style="margin-top:16px;">
+            <button class="btn" type="button" id="savePaymentMethodBtn">
+              Zahlungsmethode speichern
+            </button>
+          </div>
 
-    <p class="small" id="stripe-status" style="margin-top:10px;"></p>
-  </div>
-</div>
+          <p class="small" id="stripe-status" style="margin-top:10px;"></p>
+        </div>
+      </div>
 
-<div class="button-row" style="margin-top:18px;">
-  <button class="btn" type="button" id="goToPaymentBtn">Einverstanden und Zahlungsdaten hinterlegen</button>
-</div>
+      <!-- BUTTON -->
+      <div class="button-row" style="margin-top:18px;">
+        <button class="btn" type="button" id="goToPaymentBtn">
+          Einverstanden und Zahlungsdaten hinterlegen
+        </button>
+      </div>
 
       <p class="small" style="margin-top:12px;">
         Erst nach Zustimmung und Hinterlegung der Zahlungsdaten kann der Termin verbindlich bestätigt werden.
       </p>
+
     </div>
   </div>
 </section>
@@ -990,7 +1030,21 @@ select:focus{
     const stripeArea = document.getElementById("stripe-area");
     const stripeStatus = document.getElementById("stripe-status");
 
-    function showConfirmationFlow(data) {
+   function showConfirmationFlow(data) {
+  document.getElementById("confirmTermin").textContent = data.termin;
+  document.getElementById("confirmLeistung").textContent = data.leistung;
+  document.getElementById("confirmDauer").textContent = data.dauer;
+  document.getElementById("confirmZiffer").textContent = data.ziffer;
+  document.getElementById("confirmFaktor").textContent = data.faktor;
+  document.getElementById("confirmBetrag").textContent = data.betrag;
+
+  document.getElementById("confirmZifferBox").textContent = data.ziffer;
+  document.getElementById("confirmFaktorBox").textContent = data.faktor;
+  document.getElementById("confirmBetragBox").textContent = data.betrag;
+
+  bestaetigung.style.display = "block";
+  bestaetigung.scrollIntoView({ behavior: "smooth", block: "start" });
+}
       document.getElementById("confirmTermin").textContent = data.termin;
       document.getElementById("confirmLeistung").textContent = data.leistung;
       document.getElementById("confirmDauer").textContent = data.dauer;
