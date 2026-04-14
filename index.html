@@ -1030,21 +1030,7 @@ select:focus{
     const stripeArea = document.getElementById("stripe-area");
     const stripeStatus = document.getElementById("stripe-status");
 
-   function showConfirmationFlow(data) {
-  document.getElementById("confirmTermin").textContent = data.termin;
-  document.getElementById("confirmLeistung").textContent = data.leistung;
-  document.getElementById("confirmDauer").textContent = data.dauer;
-  document.getElementById("confirmZiffer").textContent = data.ziffer;
-  document.getElementById("confirmFaktor").textContent = data.faktor;
-  document.getElementById("confirmBetrag").textContent = data.betrag;
-
-  document.getElementById("confirmZifferBox").textContent = data.ziffer;
-  document.getElementById("confirmFaktorBox").textContent = data.faktor;
-  document.getElementById("confirmBetragBox").textContent = data.betrag;
-
-  bestaetigung.style.display = "block";
-  bestaetigung.scrollIntoView({ behavior: "smooth", block: "start" });
-}
+    function showConfirmationFlow(data) {
       document.getElementById("confirmTermin").textContent = data.termin;
       document.getElementById("confirmLeistung").textContent = data.leistung;
       document.getElementById("confirmDauer").textContent = data.dauer;
@@ -1052,8 +1038,14 @@ select:focus{
       document.getElementById("confirmFaktor").textContent = data.faktor;
       document.getElementById("confirmBetrag").textContent = data.betrag;
 
+      document.getElementById("confirmZifferBox").textContent = data.ziffer;
+      document.getElementById("confirmFaktorBox").textContent = data.faktor;
+      document.getElementById("confirmBetragBox").textContent = data.betrag;
+
       bestaetigung.style.display = "block";
-      stripeArea.style.display = "none";
+      if (stripeArea) {
+        stripeArea.style.display = "none";
+      }
       bestaetigung.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -1081,7 +1073,6 @@ select:focus{
     if (btnOhne) {
       btnOhne.addEventListener("click", function (e) {
         e.preventDefault();
-        e.stopPropagation();
 
         const name = document.getElementById("name-ohne").value.trim();
         const email = document.getElementById("email-ohne").value.trim();
@@ -1092,7 +1083,7 @@ select:focus{
 
         if (!name || !email || !beschwerden || !daten || !video || !zahlung) {
           alert("Bitte füllen Sie die Pflichtfelder aus und bestätigen Sie die Einwilligungen.");
-          return false;
+          return;
         }
 
         showConfirmationFlow({
@@ -1103,15 +1094,12 @@ select:focus{
           faktor: "6,3-fach",
           betrag: "55,00 €"
         });
-
-        return false;
       });
     }
 
     if (btnMit) {
       btnMit.addEventListener("click", function (e) {
         e.preventDefault();
-        e.stopPropagation();
 
         const name = document.getElementById("name-mit").value.trim();
         const email = document.getElementById("email-mit").value.trim();
@@ -1122,7 +1110,7 @@ select:focus{
 
         if (!name || !email || !beschwerden || !daten || !video || !zahlung) {
           alert("Bitte füllen Sie die Pflichtfelder aus und bestätigen Sie die Einwilligungen.");
-          return false;
+          return;
         }
 
         showConfirmationFlow({
@@ -1130,33 +1118,32 @@ select:focus{
           leistung: "Beratung mit Vorbefunden",
           dauer: "ca. 30 Minuten",
           ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-          faktor: "9,6-fach",
-          betrag: "83,00 €"
+          faktor: "10,0-fach",
+          betrag: "87,00 €"
         });
-
-        return false;
       });
     }
 
     if (goToPaymentBtn) {
-      goToPaymentBtn.addEventListener("click", async function (e) {
+      goToPaymentBtn.addEventListener("click", function (e) {
         e.preventDefault();
-        e.stopPropagation();
 
         const abdingungOk = document.getElementById("confirmAbdingung").checked;
         const paymentOk = document.getElementById("confirmPayment").checked;
 
         if (!abdingungOk || !paymentOk) {
           alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
-          return false;
+          return;
         }
 
-        stripeArea.style.display = "block";
-        stripeArea.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (stripeArea) {
+          stripeArea.style.display = "block";
+          stripeArea.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
 
-        // Stripe kommt im nächsten Schritt hier rein.
-        stripeStatus.textContent = "Stripe wird hier im nächsten Schritt angebunden.";
-        return false;
+        if (stripeStatus) {
+          stripeStatus.textContent = "Stripe wird hier im nächsten Schritt angebunden.";
+        }
       });
     }
   });
