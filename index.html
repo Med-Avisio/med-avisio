@@ -982,9 +982,9 @@ select:focus{
           <div id="payment-element"></div>
 
           <div class="button-row" style="margin-top:16px;">
-            <button class="btn" type="button" onclick="savePaymentMethodPlaceholder()">
-              Zahlungsmethode speichern
-            </button>
+           <button class="btn" type="button" onclick="startCheckout()">
+           Zahlungsmethode speichern
+           </button>
           </div>
 
           <p class="small" id="stripe-status" style="margin-top:10px;"></p>
@@ -992,9 +992,9 @@ select:focus{
       </div>
 
       <div class="button-row" style="margin-top:18px;">
-        <button class="btn" type="button" onclick="goToPaymentStep()">
-          Einverstanden und Zahlungsdaten hinterlegen
-        </button>
+       <button type="button" onclick="goToPaymentStep()">
+       Einverstanden und Zahlungsdaten hinterlegen
+       </button>
       </div>
 
       <p class="small" style="margin-top:12px;">
@@ -1130,12 +1130,8 @@ async function startCheckout() {
   }
 }
 
-function savePaymentMethodPlaceholder() {
-  document.getElementById("stripe-status").textContent = "Stripe ...";
-}
 </script>
 
-<button onclick="startCheckout()">Jetzt Termin buchen (60€)</button>
   
 </body>
 </html>
