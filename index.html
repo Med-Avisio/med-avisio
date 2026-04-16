@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
-<script src="https://js.stripe.com/v3/"></script>
 <head>
+  <script src="https://js.stripe.com/v3/"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>med-avisio – Online-Sprechstunde für trockene Augen</title>
@@ -1112,9 +1112,12 @@ select:focus{
     document.getElementById("stripe-status").textContent = "Stripe wird hier im nächsten Schritt angebunden.";
   }
 
-  function savePaymentMethodPlaceholder() {
-    document.getElementById("stripe-status").textContent = "Stripe wird hier im nächsten Schritt live eingebunden.";
-  }
+  <script>
+const stripe = Stripe("pk_test_51TMaH8RYlvbbyVgPhxNDbgGmB8zjzgj7gq99fpeBVj6jX8RIVaenJSnDW6WYkho6vCcdHbuJxXjTAzaxMxoimiIv00CTxV09");
+
+function savePaymentMethodPlaceholder() {
+  document.getElementById("stripe-status").textContent = "Stripe ...";
+}
 </script>
 
 </body>
