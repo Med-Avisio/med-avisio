@@ -1115,10 +1115,28 @@ select:focus{
   <script>
 const stripe = Stripe("pk_test_51TMaH8RYlvbbyVgPhxNDbgGmB8zjzgj7gq99fpeBVj6jX8RIVaenJSnDW6WYkho6vCcdHbuJxXjTAzaxMxoimiIv00CTxV09");
 
+async function startCheckout() {
+  const response = await fetch('/api/create-checkout-session', {
+    method: 'POST',
+  });
+
+  const session = await response.json();
+
+  const result = await stripe.redirectToCheckout({
+    sessionId: session.id,
+  });
+
+  if (result.error) {
+    alert(result.error.message);
+  }
+}
+
 function savePaymentMethodPlaceholder() {
   document.getElementById("stripe-status").textContent = "Stripe ...";
 }
 </script>
 
+<button onclick="startCheckout()">Jetzt Termin buchen (60€)</button>
+  
 </body>
 </html>
