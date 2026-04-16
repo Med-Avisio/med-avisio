@@ -19,8 +19,8 @@ export default async function handler(req, res) {
           quantity: 1,
         },
       ],
-      success_url: 'https://DEINE-DOMAIN.vercel.app/success',
-      cancel_url: 'https://DEINE-DOMAIN.vercel.app/cancel',
+      success_url: 'https://med-avisio.vercel.app/success',
+      cancel_url: 'https://med-avisio.vercel.app/cancel',
     });
 
     res.status(200).json({ id: session.id });
