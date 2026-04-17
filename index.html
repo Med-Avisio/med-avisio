@@ -969,23 +969,32 @@ select:focus{
         </div>
       </div>
 
-      <div id="stripe-area" style="display:none; margin-top:18px;">
-        <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
-          <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Zahlungsmethode hinterlegen</h3>
+    <div id="stripe-area" style="display:none; margin-top:18px;">
+  <div class="step-card" style="box-shadow:none; padding:16px; border-radius:14px;">
+    <h3 class="step-title" style="font-size:18px; margin-bottom:10px;">Zahlungsmethode hinterlegen</h3>
 
-          <p class="small" style="margin-bottom:12px;">
-            Die Angabe einer Zahlungsmethode dient ausschließlich der späteren Abrechnung.
-            Eine Abbuchung erfolgt erst nach der Videosprechstunde.
-          </p>
+    <p class="small" style="margin-bottom:12px;">
+      Die Angabe einer Zahlungsmethode dient ausschließlich der späteren Abrechnung.
+      Eine Abbuchung erfolgt erst nach der Videosprechstunde.
+    </p>
 
-          <div id="payment-element"></div>
+    <div id="payment-element"></div>
 
-          <div class="button-row" style="margin-top:16px;">
-           <button class="btn" type="button" onclick="startCheckout()">
-           Zahlungsmethode speichern
-           </button>
-          </div>
+    <div class="button-row" style="margin-top:16px;">
+      <button class="btn" type="button" onclick="startCheckout()">
+        Zahlungsmethode speichern
+      </button>
+    </div>
 
+    <p class="small" id="stripe-status" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+<div class="button-row" style="margin-top:18px;">
+  <button type="button" onclick="goToPaymentStep()">
+    Einverstanden und Zahlungsdaten hinterlegen
+  </button>
+</div>
           <p class="small" id="stripe-status" style="margin-top:10px;"></p>
         </div>
       </div>
@@ -1097,20 +1106,19 @@ select:focus{
     });
   }
 
-  function goToPaymentStep() {
-    const abdingungOk = document.getElementById("confirmAbdingung").checked;
-    const paymentOk = document.getElementById("confirmPayment").checked;
+ async function confirmAndStartCheckout() {
+  const abdingungOk = document.getElementById("confirmAbdingung").checked;
+  const paymentOk = document.getElementById("confirmPayment").checked;
 
-    if (!abdingungOk || !paymentOk) {
-      alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
-      return;
-    }
-
-    document.getElementById("stripe-area").style.display = "block";
-    document.getElementById("stripe-area").scrollIntoView({ behavior: "smooth", block: "start" });
-    document.getElementById("stripe-status").textContent = "Stripe wird hier im nächsten Schritt angebunden.";
+  if (!abdingungOk || !paymentOk) {
+    alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
+    return;
   }
 
+  document.getElementById("stripe-status").textContent = "Weiterleitung zu Stripe...";
+
+  await startCheckout();
+}
 const stripe = Stripe("pk_test_51TMaH8RYlvbbyVgPhxNDbgGmB8zjzgj7gq99fpeBVj6jX8RIVaenJSnDW6WYkho6vCcdHbuJxXjTAzaxMxoimiIv00CTxV09");
 
 async function startCheckout() {
