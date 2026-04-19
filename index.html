@@ -1079,23 +1079,22 @@ select:focus{
     }
   }
 
- function showConfirmationFlow(data) {
-  document.getElementById("confirmTermin").textContent = data.termin;
-  document.getElementById("confirmLeistung").textContent = data.leistung;
-  document.getElementById("confirmDauer").textContent = data.dauer;
-  document.getElementById("confirmZiffer").textContent = data.ziffer;
-  document.getElementById("confirmFaktor").textContent = data.faktor;
-  document.getElementById("confirmBetrag").textContent = data.betrag;
+  function showConfirmationFlow(data) {
+    document.getElementById("confirmTermin").textContent = data.termin;
+    document.getElementById("confirmLeistung").textContent = data.leistung;
+    document.getElementById("confirmDauer").textContent = data.dauer;
+    document.getElementById("confirmZiffer").textContent = data.ziffer;
+    document.getElementById("confirmFaktor").textContent = data.faktor;
+    document.getElementById("confirmBetrag").textContent = data.betrag;
 
-  document.getElementById("confirmZifferBox").textContent = data.ziffer;
-  document.getElementById("confirmFaktorBox").textContent = data.faktor;
-  document.getElementById("confirmBetragBox").textContent = data.betrag;
+    document.getElementById("confirmZifferBox").textContent = data.ziffer;
+    document.getElementById("confirmFaktorBox").textContent = data.faktor;
+    document.getElementById("confirmBetragBox").textContent = data.betrag;
 
-  document.getElementById("termin-bestaetigung").classList.add("show");
-}
+    document.getElementById("termin-bestaetigung").classList.add("show");
+  }
 
   function submitOhne() {
-    
     const name = document.getElementById("name-ohne").value.trim();
     const email = document.getElementById("email-ohne").value.trim();
     const beschwerden = document.getElementById("beschwerden-ohne").value.trim();
@@ -1141,65 +1140,93 @@ select:focus{
     });
   }
 
-async function confirmAndStartCheckout() {
-  const abdingungOk = document.getElementById("confirmAbdingung").checked;
-  const paymentOk = document.getElementById("confirmPayment").checked;
+  async function confirmAndStartCheckout() {
+    const abdingungOk = document.getElementById("confirmAbdingung").checked;
+    const paymentOk = document.getElementById("confirmPayment").checked;
 
-  if (!abdingungOk || !paymentOk) {
-    alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
-    return;
-  }
-
-  document.getElementById("stripe-status").textContent = "Weiterleitung zu Stripe...";
-
-  await startCheckout();
-}
-
-async function startCheckout() {
-  try {
-    const response = await fetch('/api/create-checkout-session', {
-      method: 'POST',
-    });
-
-    const text = await response.text();
-
-    if (!response.ok) {
-      alert("Serverfehler bei Stripe: " + text);
+    if (!abdingungOk || !paymentOk) {
+      alert("Bitte bestätigen Sie zunächst die Honorarvereinbarung und die Zahlungsfreigabe.");
       return;
     }
 
-    let session;
+    document.getElementById("stripe-status").textContent = "Weiterleitung zu Stripe...";
+
+    await startCheckout();
+  }
+
+  async function startCheckout() {
     try {
-      session = JSON.parse(text);
-    } catch (e) {
-      alert("Ungültige Serverantwort: " + text);
-      return;
-    }
+      const terminart = document.getElementById("terminart").value;
 
-    if (!session.id) {
-      alert("Keine session.id erhalten: " + text);
-      return;
-    }
+      let name = "";
+      let email = "";
 
-    const result = await stripe.redirectToCheckout({
-      sessionId: session.id,
-    });
+      if (terminart === "ohne") {
+        name = document.getElementById("name-ohne").value.trim();
+        email = document.getElementById("email-ohne").value.trim();
+      } else if (terminart === "mit") {
+        name = document.getElementById("name-mit").value.trim();
+        email = document.getElementById("email-mit").value.trim();
+      }
 
-    if (result.error) {
-      alert(result.error.message);
+      if (!name || !email) {
+        alert("Name und E-Mail fehlen.");
+        return;
+      }
+
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert("Serverfehler bei Stripe: " + (data.error || "Unbekannter Fehler"));
+        return;
+      }
+
+      if (!data.url) {
+        alert("Keine Stripe-URL erhalten.");
+        return;
+      }
+
+      window.location.href = data.url;
+    } catch (err) {
+      alert("Fehler beim Start von Stripe: " + err.message);
     }
-  } catch (err) {
-    alert("Fehler beim Start von Stripe: " + err.message);
   }
-}
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const setup = params.get("setup");
+
+    if (setup === "success") {
+      const stripeStatus = document.getElementById("stripe-status");
+      if (stripeStatus) {
+        stripeStatus.textContent = "Zahlungsdaten erfolgreich hinterlegt.";
+      }
+    }
+
+    if (setup === "cancel") {
+      const stripeStatus = document.getElementById("stripe-status");
+      if (stripeStatus) {
+        stripeStatus.textContent = "Der Vorgang wurde abgebrochen.";
+      }
+    }
+  });
+
   document.addEventListener("click", function (event) {
-  const overlay = document.getElementById("termin-bestaetigung");
-  if (!overlay) return;
+    const overlay = document.getElementById("termin-bestaetigung");
+    if (!overlay) return;
 
-  if (event.target === overlay) {
-    overlay.classList.remove("show");
-  }
-});
+    if (event.target === overlay) {
+      overlay.classList.remove("show");
+    }
+  });
 </script>
 
   
