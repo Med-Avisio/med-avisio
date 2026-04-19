@@ -754,6 +754,10 @@ select:focus{
       <div>
         <h2>Termin zur Videosprechstunde anfragen</h2>
 
+<div id="payment-success-box" style="display:none; margin:16px 0; padding:14px 16px; border-radius:12px; background:#eaf7ee; border:1px solid #b7dfc2; color:#14532d;">
+  Ihre Zahlungsdaten wurden erfolgreich hinterlegt.
+</div>
+        
         <p class="muted">
           Wählen Sie zunächst die passende Terminart und geben Sie anschließend Ihre Angaben ein.
         </p>
@@ -1054,7 +1058,6 @@ select:focus{
 </div>
 
 <script>
-  
   function toggleTerminart(value) {
     const terminInfo = document.getElementById("terminInfo");
     const formOhne = document.getElementById("form-ohne-befunde");
@@ -1093,10 +1096,10 @@ select:focus{
     document.getElementById("termin-bestaetigung").classList.add("show");
   }
 
-function closeConfirmationFlow() {
-  document.getElementById("termin-bestaetigung").classList.remove("show");
-}
-  
+  function closeConfirmationFlow() {
+    document.getElementById("termin-bestaetigung").classList.remove("show");
+  }
+
   function submitOhne() {
     const name = document.getElementById("name-ohne").value.trim();
     const email = document.getElementById("email-ohne").value.trim();
@@ -1177,12 +1180,12 @@ function closeConfirmationFlow() {
         return;
       }
 
-      const response = await fetch('/api/create-checkout-session', {
-        method: 'POST',
+      const response = await fetch("/api/create-checkout-session", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
-        body: JSON.stringify({ name, email }),
+        body: JSON.stringify({ name, email })
       });
 
       const data = await response.json();
@@ -1203,38 +1206,39 @@ function closeConfirmationFlow() {
     }
   }
 
- <h2>Termin zur Videosprechstunde anfragen("DOMContentLoaded", function () {
-  const params = new URLSearchParams(window.location.search);
-  const setup = params.get("setup");
+  document.addEventListener("DOMContentLoaded", function () {
+    const params = new URLSearchParams(window.location.search);
+    const setup = params.get("setup");
+    const successBox = document.getElementById("payment-success-box");
 
-  if (setup === "success") {
-    const overlay = document.getElementById("termin-bestaetigung");
-    const stripeStatus = document.getElementById("stripe-status");
+    if (setup === "success" && successBox) {
+      successBox.style.display = "block";
+      successBox.style.background = "#eaf7ee";
+      successBox.style.border = "1px solid #b7dfc2";
+      successBox.style.color = "#14532d";
+      successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
 
-    if (overlay) {
-      overlay.classList.add("show");
+      const kontaktSection = document.getElementById("kontakt");
+      if (kontaktSection) {
+        kontaktSection.scrollIntoView({ behavior: "smooth" });
+      }
     }
 
-    if (stripeStatus) {
-      stripeStatus.textContent = "Zahlungsdaten erfolgreich hinterlegt.";
+    if (setup === "cancel" && successBox) {
+      successBox.style.display = "block";
+      successBox.style.background = "#fff4e5";
+      successBox.style.border = "1px solid #f0c36d";
+      successBox.style.color = "#7a4b00";
+      successBox.textContent = "Die Hinterlegung der Zahlungsdaten wurde abgebrochen.";
+
+      const kontaktSection = document.getElementById("kontakt");
+      if (kontaktSection) {
+        kontaktSection.scrollIntoView({ behavior: "smooth" });
+      }
     }
-  }
+  });
 
-  if (setup === "cancel") {
-    const overlay = document.getElementById("termin-bestaetigung");
-    const stripeStatus = document.getElementById("stripe-status");
-
-    if (overlay) {
-      overlay.classList.add("show");
-    }
-
-    if (stripeStatus) {
-      stripeStatus.textContent = "Der Vorgang wurde abgebrochen.";
-    }
-  }
-});
-
-  <h2>termin zur videosprechstunde anfragen("click", function (event) {
+  document.addEventListener("click", function (event) {
     const overlay = document.getElementById("termin-bestaetigung");
     if (!overlay) return;
 
@@ -1243,7 +1247,6 @@ function closeConfirmationFlow() {
     }
   });
 </script>
-
   
 </body>
 </html>
