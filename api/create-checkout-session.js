@@ -8,14 +8,35 @@ export default async function handler(req, res) {
   }
 
   try {
+    const { email, name } = req.body || {};
+
+    if (!email) {
+      return res.status(400).json({ error: 'E-Mail fehlt' });
+    }
+
+    // 1) Customer anlegen
+    const customer = await stripe.customers.create({
+      email,
+      name,
+      metadata: {
+        source: 'med-avisio-setup',
+      },
+    });
+
+    // 2) Setup-Checkout-Session anlegen
     const session = await stripe.checkout.sessions.create({
       mode: 'setup',
+      customer: customer.id,
       payment_method_types: ['card'],
-      success_url: 'https://med-avisio.vercel.app/?setup=success',
+      success_url: 'https://med-avisio.vercel.app/?setup=success&session_id={CHECKOUT_SESSION_ID}',
       cancel_url: 'https://med-avisio.vercel.app/?setup=cancel',
     });
 
-    return res.status(200).json({ id: session.id });
+    return res.status(200).json({
+      sessionId: session.id,
+      url: session.url,
+      customerId: customer.id,
+    });
   } catch (err) {
     return res.status(500).json({
       error: err.message || 'Fehler beim Erstellen der Stripe-Session',
