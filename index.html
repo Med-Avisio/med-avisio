@@ -1203,26 +1203,38 @@ function closeConfirmationFlow() {
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const setup = params.get("setup");
+ <h2>Termin zur Videosprechstunde anfragen("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const setup = params.get("setup");
 
-    if (setup === "success") {
-      const stripeStatus = document.getElementById("stripe-status");
-      if (stripeStatus) {
-        stripeStatus.textContent = "Zahlungsdaten erfolgreich hinterlegt.";
-      }
+  if (setup === "success") {
+    const overlay = document.getElementById("termin-bestaetigung");
+    const stripeStatus = document.getElementById("stripe-status");
+
+    if (overlay) {
+      overlay.classList.add("show");
     }
 
-    if (setup === "cancel") {
-      const stripeStatus = document.getElementById("stripe-status");
-      if (stripeStatus) {
-        stripeStatus.textContent = "Der Vorgang wurde abgebrochen.";
-      }
+    if (stripeStatus) {
+      stripeStatus.textContent = "Zahlungsdaten erfolgreich hinterlegt.";
     }
-  });
+  }
 
-  document.addEventListener("click", function (event) {
+  if (setup === "cancel") {
+    const overlay = document.getElementById("termin-bestaetigung");
+    const stripeStatus = document.getElementById("stripe-status");
+
+    if (overlay) {
+      overlay.classList.add("show");
+    }
+
+    if (stripeStatus) {
+      stripeStatus.textContent = "Der Vorgang wurde abgebrochen.";
+    }
+  }
+});
+
+  <h2>termin zur videosprechstunde anfragen("click", function (event) {
     const overlay = document.getElementById("termin-bestaetigung");
     if (!overlay) return;
 
