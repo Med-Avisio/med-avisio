@@ -3,28 +3,22 @@ import Stripe from 'stripe';
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export default async function handler(req, res) {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   try {
     const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
       mode: 'setup',
-      line_items: [
-        {
-          price_data: {
-            currency: 'eur',
-            product_data: {
-              name: 'Online-Sprechstunde trockene Augen',
-            },
-            unit_amount: 6000, // 60€ in Cent
-          },
-          quantity: 1,
-        },
-      ],
-      success_url: 'https://med-avisio.vercel.app/success',
-      cancel_url: 'https://med-avisio.vercel.app/cancel',
+      payment_method_types: ['card'],
+      success_url: 'https://med-avisio.vercel.app/?setup=success',
+      cancel_url: 'https://med-avisio.vercel.app/?setup=cancel',
     });
 
-    res.status(200).json({ id: session.id });
+    return res.status(200).json({ id: session.id });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({
+      error: err.message || 'Fehler beim Erstellen der Stripe-Session',
+    });
   }
 }
