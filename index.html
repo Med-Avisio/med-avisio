@@ -1054,8 +1054,7 @@ select:focus{
 </div>
 
 <script>
-  const stripe = Stripe("pk_test_51TMaH8RYlvbbyVgPhxNDbgGmB8zjzgj7gq99fpeBVj6jX8RIVaenJSnDW6WYkho6vCcdHbuJxXjTAzaxMxoimiIv00CTxV098Q");
-
+  
   function toggleTerminart(value) {
     const terminInfo = document.getElementById("terminInfo");
     const formOhne = document.getElementById("form-ohne-befunde");
@@ -1094,6 +1093,10 @@ select:focus{
     document.getElementById("termin-bestaetigung").classList.add("show");
   }
 
+function closeConfirmationFlow() {
+  document.getElementById("termin-bestaetigung").classList.remove("show");
+}
+  
   function submitOhne() {
     const name = document.getElementById("name-ohne").value.trim();
     const email = document.getElementById("email-ohne").value.trim();
