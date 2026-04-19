@@ -1081,22 +1081,20 @@ select:focus{
     }
   }
 
-  function showConfirmationFlow(data) {
-    document.getElementById("confirmTermin").textContent = data.termin;
-    document.getElementById("confirmLeistung").textContent = data.leistung;
-    document.getElementById("confirmDauer").textContent = data.dauer;
-    document.getElementById("confirmZiffer").textContent = data.ziffer;
-    document.getElementById("confirmFaktor").textContent = data.faktor;
-    document.getElementById("confirmBetrag").textContent = data.betrag;
+ function showConfirmationFlow(data) {
+  document.getElementById("confirmTermin").textContent = data.termin;
+  document.getElementById("confirmLeistung").textContent = data.leistung;
+  document.getElementById("confirmDauer").textContent = data.dauer;
+  document.getElementById("confirmZiffer").textContent = data.ziffer;
+  document.getElementById("confirmFaktor").textContent = data.faktor;
+  document.getElementById("confirmBetrag").textContent = data.betrag;
 
-    document.getElementById("confirmZifferBox").textContent = data.ziffer;
-    document.getElementById("confirmFaktorBox").textContent = data.faktor;
-    document.getElementById("confirmBetragBox").textContent = data.betrag;
+  document.getElementById("confirmZifferBox").textContent = data.ziffer;
+  document.getElementById("confirmFaktorBox").textContent = data.faktor;
+  document.getElementById("confirmBetragBox").textContent = data.betrag;
 
-    document.getElementById("termin-bestaetigung").style.display = "block";
-    document.getElementById("stripe-area").style.display = "none";
-    document.getElementById("termin-bestaetigung").scrollIntoView({ behavior: "smooth", block: "start" });
-  }
+  document.getElementById("termin-bestaetigung").classList.add("show");
+}
 
   function submitOhne() {
     
