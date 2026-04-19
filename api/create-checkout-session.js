@@ -14,21 +14,20 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'E-Mail fehlt' });
     }
 
-    // 1) Customer anlegen
     const customer = await stripe.customers.create({
       email,
-      name,
+      name: name || '',
       metadata: {
-        source: 'med-avisio-setup',
+        source: 'med-avisio',
       },
     });
 
-    // 2) Setup-Checkout-Session anlegen
     const session = await stripe.checkout.sessions.create({
       mode: 'setup',
       customer: customer.id,
       payment_method_types: ['card'],
-      success_url: 'https://med-avisio.vercel.app/?setup=success&session_id={CHECKOUT_SESSION_ID}',
+      success_url:
+        'https://med-avisio.vercel.app/?setup=success&session_id={CHECKOUT_SESSION_ID}',
       cancel_url: 'https://med-avisio.vercel.app/?setup=cancel',
     });
 
