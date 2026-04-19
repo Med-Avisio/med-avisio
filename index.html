@@ -1196,6 +1196,14 @@ async function startCheckout() {
     alert("Fehler beim Start von Stripe: " + err.message);
   }
 }
+  document.addEventListener("click", function (event) {
+  const overlay = document.getElementById("termin-bestaetigung");
+  if (!overlay) return;
+
+  if (event.target === overlay) {
+    overlay.classList.remove("show");
+  }
+});
 </script>
 
   
