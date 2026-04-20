@@ -1257,6 +1257,33 @@ function submitMit() {
   const saved = localStorage.getItem("selectedTermin");
   return saved ? saved : "Noch kein Termin ausgewählt";
 }
+
+function setTerminAndContinue(terminText, terminart) {
+  localStorage.setItem("selectedTermin", terminText);
+
+  if (terminart === "mit") {
+    showConfirmationFlow({
+      termin: terminText,
+      leistung: "Beratung mit Vorbefunden",
+      dauer: "ca. 30 Minuten",
+      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+      faktor: "10,0-fach",
+      betrag: "87,00 €"
+    });
+  }
+
+  if (terminart === "ohne") {
+    showConfirmationFlow({
+      termin: terminText,
+      leistung: "Beratung ohne Vorbefunde",
+      dauer: "ca. 20 Minuten",
+      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+      faktor: "6,3-fach",
+      betrag: "55,00 €"
+    });
+  }
+}
+  
 </script>
   
 </body>
