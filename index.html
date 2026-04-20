@@ -1115,7 +1115,7 @@ select:focus{
     }
 
     showConfirmationFlow({
-      termin: "Termin wird später über Arztkonsultation ausgewählt",
+      termin: getSelectedTermin(),
       leistung: "Beratung ohne Vorbefunde",
       dauer: "ca. 20 Minuten",
       ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
@@ -1138,7 +1138,7 @@ select:focus{
     }
 
     showConfirmationFlow({
-      termin: "Termin wird später über Arztkonsultation ausgewählt",
+      termin: getSelectedTermin(),
       leistung: "Beratung mit Vorbefunden",
       dauer: "ca. 30 Minuten",
       ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
@@ -1247,6 +1247,11 @@ select:focus{
       overlay.classList.remove("show");
     }
   });
+  
+  function getSelectedTermin() {
+  const saved = localStorage.getItem("selectedTermin");
+  return saved ? saved : "Noch kein Termin ausgewählt";
+}
 </script>
   
 </body>
