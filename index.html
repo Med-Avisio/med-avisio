@@ -1135,28 +1135,22 @@ select:focus{
     });
   }
 
-  function submitMit() {
-    const name = document.getElementById("name-mit").value.trim();
-    const email = document.getElementById("email-mit").value.trim();
-    const beschwerden = document.getElementById("beschwerden-mit").value.trim();
-    const daten = document.getElementById("daten-mit").checked;
-    const video = document.getElementById("video-mit").checked;
-    const zahlung = document.getElementById("zahlung-mit").checked;
+function submitMit() {
+  const name = document.getElementById("name-mit").value.trim();
+  const email = document.getElementById("email-mit").value.trim();
+  const beschwerden = document.getElementById("beschwerden-mit").value.trim();
+  const daten = document.getElementById("daten-mit").checked;
+  const video = document.getElementById("video-mit").checked;
+  const zahlung = document.getElementById("zahlung-mit").checked;
 
-    if (!name || !email || !beschwerden || !daten || !video || !zahlung) {
-      alert("Bitte füllen Sie die Pflichtfelder aus und bestätigen Sie die Einwilligungen.");
-      return;
-    }
-
-    showConfirmationFlow({
-      termin: getSelectedTermin(),
-      leistung: "Beratung mit Vorbefunden",
-      dauer: "ca. 30 Minuten",
-      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "10,0-fach",
-      betrag: "87,00 €"
-    });
+  if (!name || !email || !beschwerden || !daten || !video || !zahlung) {
+    alert("Bitte füllen Sie die Pflichtfelder aus und bestätigen Sie die Einwilligungen.");
+    return;
   }
+
+  document.getElementById("arztkonsultation-termin").style.display = "block";
+  document.getElementById("arztkonsultation-termin").scrollIntoView({ behavior: "smooth", block: "start" });
+}
 
   async function confirmAndStartCheckout() {
     const abdingungOk = document.getElementById("confirmAbdingung").checked;
