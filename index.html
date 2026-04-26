@@ -435,9 +435,87 @@ select:focus{
     align-items:flex-start;
   }
 }
+
+.ablauf-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+}
+
+.ablauf-card{
+  position:relative;
+  background:#fff;
+  border:1px solid #dceced;
+  border-radius:18px;
+  padding:22px 20px 20px;
+  box-shadow:var(--shadow-soft);
+  overflow:hidden;
+}
+
+.ablauf-card::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  height:5px;
+  background:var(--brand);
+}
+
+.ablauf-number{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  background:rgba(47,164,169,.12);
+  color:var(--brand-dark);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+.ablauf-card h3{
+  margin:0 0 8px;
+  font-size:19px;
+}
+
+.ablauf-extra{
+  margin-top:34px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+}
+
+.ablauf-note{
+  background:linear-gradient(to bottom,#ffffff,#f1f7f7);
+  border:1px solid #cfe7e8;
+  border-radius:18px;
+  padding:20px;
+  box-shadow:var(--shadow-soft);
+}
+
+.ablauf-note h3{
+  margin:0 0 8px;
+  font-size:20px;
+  color:var(--brand-dark);
+}
+
+.ablauf-final-note{
+  margin-top:24px;
+  max-width:860px;
+  border-left:4px solid var(--brand);
+  padding:14px 16px;
+  background:#fff;
+  border-radius:0 14px 14px 0;
+}
     
     @media (max-width: 900px){
-     .hero-grid,.grid-2,.grid-3{grid-template-columns:1fr}
+     .hero-grid,.grid-2,.grid-3,
+     .ablauf-grid,
+     .ablauf-extra{
+    grid-template-columns:1fr;
+}
 
      .split{
        flex-direction:column;
@@ -671,51 +749,57 @@ select:focus{
   <div class="container">
     <h2>Ablauf</h2>
 
-    <div class="grid-3">
+    <p class="intro">
+      Die Online-Sprechstunde folgt einem klaren Ablauf: erst Anfrage und Einordnung, dann Terminbestätigung, Beratung, Abrechnung und Zahlung.
+    </p>
 
-      <div class="card">
-        <h3>1. Terminart auswählen</h3>
+    <div class="ablauf-grid">
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">1</div>
+        <h3>Terminart auswählen</h3>
         <div class="small">
           Sie wählen, ob bereits Vorbefunde vorliegen oder ob eine erste ärztliche Einschätzung ohne Unterlagen erfolgen soll.
         </div>
       </div>
 
-      <div class="card">
-        <h3>2. Termin anfragen & Zahlungsdaten hinterlegen</h3>
+      <div class="ablauf-card">
+        <div class="ablauf-number">2</div>
+        <h3>Termin anfragen & Zahlungsdaten hinterlegen</h3>
         <div class="small">
           Sie geben Ihre Anfrage und Ihre Kontaktdaten ein und hinterlegen eine Zahlungsmethode.
           Es erfolgt zunächst keine Abbuchung.
         </div>
       </div>
 
-      <div class="card">
-        <h3>3. Ärztliche Prüfung & Terminbestätigung</h3>
+      <div class="ablauf-card">
+        <div class="ablauf-number">3</div>
+        <h3>Ärztliche Prüfung & Terminbestätigung</h3>
         <div class="small">
           Ihre Angaben werden ärztlich geprüft. Anschließend wird der Termin bestätigt, sofern eine Beratung im Rahmen der Videosprechstunde sinnvoll ist.
         </div>
       </div>
 
-    </div>
-
-    <div class="grid-3" style="margin-top:22px;">
-
-      <div class="card">
-        <h3>4. Videosprechstunde</h3>
+      <div class="ablauf-card">
+        <div class="ablauf-number">4</div>
+        <h3>Videosprechstunde</h3>
         <div class="small">
           Persönliches Gespräch mit Einordnung Ihrer Beschwerden und individuellen Empfehlungen für das weitere Vorgehen.
         </div>
       </div>
 
-      <div class="card">
-        <h3>5. Abrechnung</h3>
+      <div class="ablauf-card">
+        <div class="ablauf-number">5</div>
+        <h3>Abrechnung</h3>
         <div class="small">
           Die Abrechnung erfolgt nach der Beratung gemäß Gebührenordnung für Ärzte (GOÄ).
           Der Rechnungsbetrag richtet sich nach Art und Umfang der ärztlichen Leistung.
         </div>
       </div>
 
-      <div class="card">
-        <h3>6. Zahlung</h3>
+      <div class="ablauf-card">
+        <div class="ablauf-number">6</div>
+        <h3>Zahlung</h3>
         <div class="small">
           Der Rechnungsbetrag wird im Anschluss über die hinterlegte Zahlungsmethode abgebucht.
         </div>
@@ -723,9 +807,9 @@ select:focus{
 
     </div>
 
-    <div class="grid-2" style="margin-top:28px;">
+    <div class="ablauf-extra">
 
-      <div class="card">
+      <div class="ablauf-note">
         <h3>Hinweis zu Kosten</h3>
         <div class="small">
           Für eine Beratung ohne vorliegende Befunde können Sie in der Regel mit Kosten im Bereich von etwa 50–60 € rechnen,
@@ -733,7 +817,7 @@ select:focus{
         </div>
       </div>
 
-      <div class="card">
+      <div class="ablauf-note">
         <h3>Datenschutz & Fernbehandlung</h3>
         <div class="small">
           Vor Absenden der Anfrage ist eine Einwilligung in die Verarbeitung personenbezogener Daten sowie in die Durchführung der Beratung im Rahmen einer Videosprechstunde erforderlich.
@@ -742,12 +826,14 @@ select:focus{
 
     </div>
 
-    <p class="small" style="margin-top:24px; max-width:800px;">
+    <p class="small ablauf-final-note">
       Die Online-Sprechstunde dient der ärztlichen Beratung und Einordnung von Beschwerden und ersetzt keine vollständige augenärztliche Untersuchung vor Ort. Je nach Fragestellung kann eine persönliche Vorstellung bei einer Augenärztin oder einem Augenarzt erforderlich sein.
     </p>
 
   </div>
 </section>
+
+
 <section id="kontakt" class="section-accent">
   <div class="container">
     <div class="grid-2">
