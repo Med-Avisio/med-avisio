@@ -1534,6 +1534,10 @@ function submitMit() {
     return;
   }
 
+  const link = "https://cal.eu/med-avisio/videosprechstunde-mit-befunden";
+
+  document.getElementById("termin-link").href = link;
+  document.getElementById("termin-widget").style.display = "block";
   document.getElementById("arztkonsultation-termin").style.display = "block";
   document.getElementById("arztkonsultation-termin").scrollIntoView({ behavior: "smooth", block: "start" });
 }
