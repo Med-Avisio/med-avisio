@@ -1605,6 +1605,30 @@ function submitMit() {
     successBox.style.border = "1px solid #b7dfc2";
     successBox.style.color = "#14532d";
     successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
+const pendingBookingMail = localStorage.getItem("pendingBookingMail");
+
+if (pendingBookingMail) {
+  try {
+    const bookingData = JSON.parse(pendingBookingMail);
+
+    const mailResponse = await fetch("/api/send-booking-mails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bookingData)
+    });
+
+    if (mailResponse.ok) {
+      localStorage.removeItem("pendingBookingMail");
+      successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Eine Terminbestätigung wurde per E-Mail versendet.";
+    } else {
+      successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+    }
+  } catch (err) {
+    successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+  }
+}
 
     const kontaktSection = document.getElementById("kontakt");
     if (kontaktSection) {
@@ -1724,18 +1748,39 @@ async function reserveSlot(slotId, slot) {
     return;
   }
 
-await fetch("/api/notify", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    name,
-    email,
-    termin: new Date(slot.start_time).toLocaleString("de-DE")
-  })
-});
-  
+  const appointmentDate = new Date(slot.start_time).toLocaleDateString("de-DE", {
+    weekday: "long",
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric"
+  });
+
+  const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
+    hour: "2-digit",
+    minute: "2-digit"
+  });
+
+  localStorage.setItem("pendingBookingMail", JSON.stringify({
+    patientName: name,
+    patientEmail: email,
+    appointmentDate,
+    appointmentTime,
+    appointmentType: terminart === "mit"
+      ? "Online-Sprechstunde mit Vorbefunden"
+      : "Online-Sprechstunde ohne Vorbefunde",
+    phone: ""
+  }));
+
+  showConfirmationFlow({
+    termin: new Date(slot.start_time).toLocaleString("de-DE"),
+    leistung: terminart === "mit" ? "Beratung mit Vorbefunden" : "Beratung ohne Vorbefunde",
+    dauer: terminart === "mit" ? "ca. 30 Minuten" : "ca. 20 Minuten",
+    ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+    faktor: terminart === "mit" ? "10,0-fach" : "6,3-fach",
+    betrag: terminart === "mit" ? "87,00 €" : "55,00 €"
+  });
+}
+
   showConfirmationFlow({
     termin: new Date(slot.start_time).toLocaleString("de-DE"),
     leistung: terminart === "mit" ? "Beratung mit Vorbefunden" : "Beratung ohne Vorbefunde",
