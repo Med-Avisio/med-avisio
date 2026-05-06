@@ -3,6 +3,7 @@
 <head>
   <script defer src="/_vercel/insights/script.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>med-avisio – Online-Sprechstunde für trockene Augen</title>
@@ -1454,6 +1455,11 @@ select:focus{
 </div>
 
 <script>
+  const SUPABASE_URL = "https://rmgealcqfhilgqkiicdd.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_OBhA4htBe01qZew4vuaJLA_TCIIT8RK";
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   function toggleTerminart(value) {
     const terminInfo = document.getElementById("terminInfo");
     const formOhne = document.getElementById("form-ohne-befunde");
