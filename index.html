@@ -1140,203 +1140,159 @@ select:focus{
   Ihre Zahlungsdaten wurden erfolgreich hinterlegt.
 </div>
         
-        <p class="muted">
-          Wählen Sie zunächst die passende Terminart und geben Sie anschließend Ihre Angaben ein.
-        </p>
+<p class="muted">
+  Wählen Sie zunächst die passende Terminart und geben Sie anschließend Ihre Angaben ein.
+</p>
 
-        <p class="small">
-          Ihre Anfrage wird ärztlich geprüft. Sie erhalten anschließend eine Terminbestätigung sowie weitere Informationen zum Ablauf.
-        </p>
+<p class="small">
+  Ihre Anfrage wird ärztlich geprüft. Sie erhalten anschließend eine Terminbestätigung sowie weitere Informationen zum Ablauf.
+</p>
 
-        <p class="small">
-          Hinweis: Bei akuten Beschwerden, plötzlicher Sehverschlechterung oder Schmerzen bitte direkt augenärztlich vor Ort vorstellen.
-        </p>
+<p class="small">
+  Hinweis: Bei akuten Beschwerden, plötzlicher Sehverschlechterung oder Schmerzen bitte direkt augenärztlich vor Ort vorstellen.
+</p>
+</div>
+
+<div class="form-box">
+
+  <div class="step-card">
+    <div class="step-head">
+      <div class="step-badge">1</div>
+      <h3 class="step-title">Terminart auswählen</h3>
+    </div>
+
+    <p class="form-intro">
+      Wählen Sie zunächst, ob bereits Vorbefunde vorliegen.
+    </p>
+
+    <select id="terminart" name="terminart" onchange="toggleTerminart(this.value)">
+      <option value="">Bitte auswählen</option>
+      <option value="ohne">Beratung ohne Vorbefunde – ca. 20 Minuten</option>
+      <option value="mit">Beratung mit Vorbefunden – ca. 30 Minuten</option>
+    </select>
+
+    <div id="terminInfo" class="helper-box" style="display:none;"></div>
+  </div>
+
+  <!-- OHNE BEFUNDE -->
+  <div id="form-ohne-befunde" class="dynamic-form" style="display:none;">
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">2</div>
+        <h3 class="step-title">Ihre Angaben</h3>
       </div>
 
-      <div class="form-box">
+      <div class="form-section">
+        <input type="text" id="name-ohne" placeholder="Name">
+        <input type="email" id="email-ohne" placeholder="E-Mail">
+        <input type="text" id="telefon-ohne" placeholder="Telefon (optional)">
+      </div>
 
-        <div class="step-card">
-          <div class="step-head">
-            <div class="step-badge">1</div>
-            <h3 class="step-title">Terminart auswählen</h3>
-          </div>
+      <div class="form-divider"></div>
 
-          <p class="form-intro">
-            Wählen Sie zunächst, ob bereits Vorbefunde vorliegen.
-          </p>
-
-          <select id="terminart" name="terminart" onchange="toggleTerminart(this.value)">
-            <option value="">Bitte auswählen</option>
-            <option value="ohne">Beratung ohne Vorbefunde – ca. 20 Minuten</option>
-            <option value="mit">Beratung mit Vorbefunden – ca. 30 Minuten</option>
-          </select>
-
-          <div id="terminInfo" class="helper-box" style="display:none;"></div>
-        </div>
-
-        <div id="form-ohne-befunde" class="dynamic-form" style="display:none;">
-          <div class="step-card">
-            <div class="step-head">
-              <div class="step-badge">2</div>
-              <h3 class="step-title">Ihre Angaben</h3>
-            </div>
-
-            <div class="form-section">
-              <input type="text" id="name-ohne" placeholder="Name">
-              <input type="email" id="email-ohne" placeholder="E-Mail">
-              <input type="text" id="telefon-ohne" placeholder="Telefon (optional)">
-            </div>
-
-            <div class="form-divider"></div>
-
-            <div class="form-section">
-              <label for="beschwerden-ohne">Beschwerden</label>
-              <textarea id="beschwerden-ohne" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
-
-              <label for="beginn-ohne">Seit wann bestehen die Beschwerden?</label>
-              <input type="text" id="beginn-ohne" placeholder="z. B. seit 3 Monaten">
-
-              <label for="augen-ohne">Ein Auge oder beide Augen?</label>
-              <input type="text" id="augen-ohne" placeholder="z. B. beide Augen">
-
-              <label for="kontaktlinsen-ohne">Kontaktlinsen?</label>
-              <input type="text" id="kontaktlinsen-ohne" placeholder="z. B. nein / weiche Kontaktlinsen">
-
-              <label for="behandlung-ohne">Bisherige Behandlung</label>
-              <textarea id="behandlung-ohne" rows="4" placeholder="z. B. Augentropfen"></textarea>
-            </div>
-          </div>
-
-          <div class="step-card">
-            <div class="step-head">
-              <div class="step-badge">3</div>
-              <h3 class="step-title">Einwilligungen</h3>
-            </div>
-
-            <div class="consent-box">
-              <label class="check">
-                <input type="checkbox" id="daten-ohne">
-                <span>
-                  Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
-                </span>
-              </label>
-
-              <label class="check">
-                <input type="checkbox" id="video-ohne">
-                <span>
-                  Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung bei einem Augenarzt erforderlich sein kann.
-                </span>
-              </label>
-
-              <label class="check">
-                <input type="checkbox" id="zahlung-ohne">
-                <span>
-                  Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <div class="button-row">
-            <button class="btn" type="button" onclick="submitOhne()">Termin ohne Vorbefunde anfragen</button>
-          </div>
-        </div>
-
-        <div id="form-mit-befunden" class="dynamic-form" style="display:none;">
-          <div class="step-card">
-            <div class="step-head">
-              <div class="step-badge">2</div>
-              <h3 class="step-title">Ihre Angaben & Unterlagen</h3>
-            </div>
-
-            <div class="form-section">
-              <input type="text" id="name-mit" placeholder="Name">
-              <input type="email" id="email-mit" placeholder="E-Mail">
-              <input type="text" id="telefon-mit" placeholder="Telefon (optional)">
-            </div>
-
-            <div class="form-divider"></div>
-
-            <div class="form-section">
-              <label for="beschwerden-mit">Beschwerden</label>
-              <textarea id="beschwerden-mit" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
-
-              <div class="upload-box">
-                <label for="befunde-mit">Vorbefunde hochladen</label>
-                <input type="file" id="befunde-mit" multiple>
-
-                <div class="small" style="margin-top:8px;">
-                  Bitte laden Sie vorhandene Arztbriefe oder Befunde hier hoch.
-                </div>
-              </div>
-
-              <label for="beginn-mit">Seit wann bestehen die Beschwerden?</label>
-              <input type="text" id="beginn-mit" placeholder="z. B. seit 3 Monaten">
-
-              <label for="augen-mit">Ein Auge oder beide Augen?</label>
-              <input type="text" id="augen-mit" placeholder="z. B. beide Augen">
-
-              <label for="kontaktlinsen-mit">Kontaktlinsen?</label>
-              <input type="text" id="kontaktlinsen-mit" placeholder="z. B. nein / weiche Kontaktlinsen">
-
-              <label for="behandlung-mit">Bisherige Behandlung</label>
-              <textarea id="behandlung-mit" rows="4" placeholder="z. B. Augentropfen"></textarea>
-            </div>
-          </div>
-
-          <div class="step-card">
-            <div class="step-head">
-              <div class="step-badge">3</div>
-              <h3 class="step-title">Einwilligungen</h3>
-            </div>
-
-            <div class="consent-box">
-              <label class="check">
-                <input type="checkbox" id="daten-mit">
-                <span>
-                  Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
-                </span>
-              </label>
-
-              <label class="check">
-                <input type="checkbox" id="video-mit">
-                <span>
-                  Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung bei einem Augenarzt erforderlich sein kann.
-                </span>
-              </label>
-
-              <label class="check">
-                <input type="checkbox" id="zahlung-mit">
-                <span>
-                  Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
-                </span>
-              </label>
-            </div>
-          </div>
-
-          <div class="button-row">
-            <button class="btn" type="button" onclick="submitMit()">Termin mit Vorbefunden anfragen</button>
-          </div>
-         </div>
-          <div id="arztkonsultation-termin" style="display:none; margin-top:16px;">
-            <div class="helper-box">
-              Bitte wählen Sie nun einen Termin für die Videosprechstunde.
-            </div>
-
-           <div id="termin-widget" style="margin-top:10px; display:none;">
-            <a class="btn" id="termin-link" href="#" target="_blank">
-             Termin auswählen
-            </a>
-
-          <div class="small" style="margin-top:10px;">
-            Nach Auswahl des Termins kehren Sie bitte zu dieser Seite zurück, um die Buchung abzuschließen.
-          </div>
-         </div> 
-        </div>
-
+      <div class="form-section">
+        <label>Beschwerden</label>
+        <textarea id="beschwerden-ohne" rows="5"></textarea>
       </div>
     </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">3</div>
+        <h3 class="step-title">Einwilligungen</h3>
+      </div>
+
+      <div class="consent-box">
+        <label class="check">
+          <input type="checkbox" id="daten-ohne">
+          <span>Einwilligung Datenverarbeitung</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="video-ohne">
+          <span>Videosprechstunde gewünscht</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="zahlung-ohne">
+          <span>Abrechnung gemäß GOÄ</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn" type="button" onclick="submitOhne()">Termin auswählen</button>
+    </div>
   </div>
+
+  <!-- MIT BEFUNDE -->
+  <div id="form-mit-befunden" class="dynamic-form" style="display:none;">
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">2</div>
+        <h3 class="step-title">Ihre Angaben</h3>
+      </div>
+
+      <div class="form-section">
+        <input type="text" id="name-mit" placeholder="Name">
+        <input type="email" id="email-mit" placeholder="E-Mail">
+        <input type="text" id="telefon-mit" placeholder="Telefon (optional)">
+      </div>
+
+      <div class="form-divider"></div>
+
+      <div class="form-section">
+        <label>Beschwerden</label>
+        <textarea id="beschwerden-mit" rows="5"></textarea>
+      </div>
+    </div>
+
+    <div class="step-card">
+      <div class="step-head">
+        <div class="step-badge">3</div>
+        <h3 class="step-title">Einwilligungen</h3>
+      </div>
+
+      <div class="consent-box">
+        <label class="check">
+          <input type="checkbox" id="daten-mit">
+          <span>Einwilligung Datenverarbeitung</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="video-mit">
+          <span>Videosprechstunde gewünscht</span>
+        </label>
+
+        <label class="check">
+          <input type="checkbox" id="zahlung-mit">
+          <span>Abrechnung gemäß GOÄ</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="button-row">
+      <button class="btn" type="button" onclick="submitMit()">Termin auswählen</button>
+    </div>
+  </div>
+
+  <!-- SLOT AUSWAHL -->
+  <div id="slots-container" class="step-card" style="margin-top:16px; display:none;">
+    <div class="step-head">
+      <div class="step-badge">4</div>
+      <h3 class="step-title">Termin auswählen</h3>
+    </div>
+
+    <p class="form-intro">
+      Bitte wählen Sie einen freien Termin aus.
+    </p>
+
+    <div id="slots-list" class="stack"></div>
+  </div>
+
+</div>
+</div>
+</div>
 </section>
 
 <div id="termin-bestaetigung" class="confirm-overlay">
