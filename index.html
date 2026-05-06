@@ -1605,7 +1605,34 @@ document.addEventListener("DOMContentLoaded", async function () {
     successBox.style.border = "1px solid #b7dfc2";
     successBox.style.color = "#14532d";
     successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
+const pendingBookingMail = localStorage.getItem("pendingBookingMail");
 
+if (pendingBookingMail) {
+  try {
+    const bookingData = JSON.parse(pendingBookingMail);
+
+    fetch("/api/send-booking-mails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(bookingData)
+    })
+      .then(function (mailResponse) {
+        if (mailResponse.ok) {
+          localStorage.removeItem("pendingBookingMail");
+          successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Eine Terminbestätigung wurde per E-Mail versendet.";
+        } else {
+          successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+        }
+      })
+      .catch(function () {
+        successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+      });
+  } catch (err) {
+    successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+  }
+}
 
     const kontaktSection = document.getElementById("kontakt");
     if (kontaktSection) {
