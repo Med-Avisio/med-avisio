@@ -1511,14 +1511,12 @@ select:focus{
       return;
     }
 
-    showConfirmationFlow({
-      termin: getSelectedTermin(),
-      leistung: "Beratung ohne Vorbefunde",
-      dauer: "ca. 20 Minuten",
-      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "6,3-fach",
-      betrag: "55,00 €"
-    });
+   const link = "https://www.cal.eu/med-avisio/videosprechstunde-ohne-befunde";
+
+document.getElementById("termin-link").href = link;
+document.getElementById("termin-widget").style.display = "block";
+document.getElementById("arztkonsultation-termin").style.display = "block";
+document.getElementById("arztkonsultation-termin").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
 function submitMit() {
