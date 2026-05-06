@@ -1512,7 +1512,8 @@ function submitOhne() {
   const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-ohne-befunde";
 const link = baseLink + "?lang=de&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
 
-window.open(link, "_blank");
+localStorage.setItem("calBookingStarted", "ohne");
+window.location.href = link;
 }
 
 function submitMit() {
@@ -1531,7 +1532,8 @@ function submitMit() {
 const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-mit-befunden";
 const link = baseLink + "?lang=de&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
 
-window.open(link, "_blank");
+localStorage.setItem("calBookingStarted", "mit");
+window.location.href = link;
 }
 
   async function confirmAndStartCheckout() {
@@ -1594,38 +1596,65 @@ window.open(link, "_blank");
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const params = new URLSearchParams(window.location.search);
-    const setup = params.get("setup");
-    const successBox = document.getElementById("payment-success-box");
+ document.addEventListener("DOMContentLoaded", function () {
+  const params = new URLSearchParams(window.location.search);
+  const setup = params.get("setup");
+  const successBox = document.getElementById("payment-success-box");
 
-    if (setup === "success" && successBox) {
-      successBox.style.display = "block";
-      successBox.style.background = "#eaf7ee";
-      successBox.style.border = "1px solid #b7dfc2";
-      successBox.style.color = "#14532d";
-      successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
+  if (setup === "success" && successBox) {
+    successBox.style.display = "block";
+    successBox.style.background = "#eaf7ee";
+    successBox.style.border = "1px solid #b7dfc2";
+    successBox.style.color = "#14532d";
+    successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
 
-      const kontaktSection = document.getElementById("kontakt");
-      if (kontaktSection) {
-        kontaktSection.scrollIntoView({ behavior: "smooth" });
-      }
+    const kontaktSection = document.getElementById("kontakt");
+    if (kontaktSection) {
+      kontaktSection.scrollIntoView({ behavior: "smooth" });
     }
+  }
 
-    if (setup === "cancel" && successBox) {
-      successBox.style.display = "block";
-      successBox.style.background = "#fff4e5";
-      successBox.style.border = "1px solid #f0c36d";
-      successBox.style.color = "#7a4b00";
-      successBox.textContent = "Die Hinterlegung der Zahlungsdaten wurde abgebrochen.";
+  if (setup === "cancel" && successBox) {
+    successBox.style.display = "block";
+    successBox.style.background = "#fff4e5";
+    successBox.style.border = "1px solid #f0c36d";
+    successBox.style.color = "#7a4b00";
+    successBox.textContent = "Die Hinterlegung der Zahlungsdaten wurde abgebrochen.";
 
-      const kontaktSection = document.getElementById("kontakt");
-      if (kontaktSection) {
-        kontaktSection.scrollIntoView({ behavior: "smooth" });
-      }
+    const kontaktSection = document.getElementById("kontakt");
+    if (kontaktSection) {
+      kontaktSection.scrollIntoView({ behavior: "smooth" });
     }
-  });
+  }
 
+  const calReturn = localStorage.getItem("calBookingStarted");
+
+  if (calReturn === "mit") {
+    showConfirmationFlow({
+      termin: "Termin wurde über Cal.com ausgewählt",
+      leistung: "Beratung mit Vorbefunden",
+      dauer: "ca. 30 Minuten",
+      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+      faktor: "10,0-fach",
+      betrag: "87,00 €"
+    });
+
+    localStorage.removeItem("calBookingStarted");
+  }
+
+  if (calReturn === "ohne") {
+    showConfirmationFlow({
+      termin: "Termin wurde über Cal.com ausgewählt",
+      leistung: "Beratung ohne Vorbefunde",
+      dauer: "ca. 20 Minuten",
+      ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+      faktor: "6,3-fach",
+      betrag: "55,00 €"
+    });
+
+    localStorage.removeItem("calBookingStarted");
+  }
+});
   document.addEventListener("click", function (event) {
     const overlay = document.getElementById("termin-bestaetigung");
     if (!overlay) return;
