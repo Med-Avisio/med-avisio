@@ -1513,7 +1513,7 @@ function submitOhne() {
 const link = baseLink + "?lang=de&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
 
 localStorage.setItem("calBookingStarted", "ohne");
-window.location.href = link;
+window.open(link, "_blank");
 }
 
 function submitMit() {
@@ -1533,7 +1533,7 @@ const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-mit-befunden";
 const link = baseLink + "?lang=de&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
 
 localStorage.setItem("calBookingStarted", "mit");
-window.location.href = link;
+window.open(link, "_blank");
 }
 
   async function confirmAndStartCheckout() {
