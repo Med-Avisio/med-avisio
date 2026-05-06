@@ -1594,7 +1594,7 @@ function submitMit() {
     }
   }
 
- document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const params = new URLSearchParams(window.location.search);
   const setup = params.get("setup");
   const successBox = document.getElementById("payment-success-box");
