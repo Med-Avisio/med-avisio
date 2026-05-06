@@ -1191,8 +1191,20 @@ select:focus{
       <div class="form-divider"></div>
 
       <div class="form-section">
-        <label>Beschwerden</label>
-        <textarea id="beschwerden-ohne" rows="5"></textarea>
+        <label for="beschwerden-ohne">Beschwerden</label>
+        <textarea id="beschwerden-ohne" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
+
+        <label for="beginn-ohne">Seit wann bestehen die Beschwerden?</label>
+        <input type="text" id="beginn-ohne" placeholder="z. B. seit 3 Monaten">
+
+        <label for="augen-ohne">Ein Auge oder beide Augen?</label>
+        <input type="text" id="augen-ohne" placeholder="z. B. beide Augen">
+
+        <label for="kontaktlinsen-ohne">Kontaktlinsen?</label>
+        <input type="text" id="kontaktlinsen-ohne" placeholder="z. B. nein / weiche Kontaktlinsen">
+
+        <label for="behandlung-ohne">Bisherige Behandlung</label>
+        <textarea id="behandlung-ohne" rows="4" placeholder="z. B. Augentropfen"></textarea>
       </div>
     </div>
 
@@ -1205,32 +1217,38 @@ select:focus{
       <div class="consent-box">
         <label class="check">
           <input type="checkbox" id="daten-ohne">
-          <span>Einwilligung Datenverarbeitung</span>
+          <span>
+            Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
+          </span>
         </label>
 
         <label class="check">
           <input type="checkbox" id="video-ohne">
-          <span>Videosprechstunde gewünscht</span>
+          <span>
+            Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung bei einem Augenarzt erforderlich sein kann.
+          </span>
         </label>
 
         <label class="check">
           <input type="checkbox" id="zahlung-ohne">
-          <span>Abrechnung gemäß GOÄ</span>
+          <span>
+            Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
+          </span>
         </label>
       </div>
     </div>
 
     <div class="button-row">
-      <button class="btn" type="button" onclick="submitOhne()">Termin auswählen</button>
+      <button class="btn" type="button" onclick="submitOhne()">Termin ohne Vorbefunde anfragen</button>
     </div>
   </div>
 
-  <!-- MIT BEFUNDE -->
+  <!-- MIT BEFUNDEN -->
   <div id="form-mit-befunden" class="dynamic-form" style="display:none;">
     <div class="step-card">
       <div class="step-head">
         <div class="step-badge">2</div>
-        <h3 class="step-title">Ihre Angaben</h3>
+        <h3 class="step-title">Ihre Angaben & Unterlagen</h3>
       </div>
 
       <div class="form-section">
@@ -1242,8 +1260,29 @@ select:focus{
       <div class="form-divider"></div>
 
       <div class="form-section">
-        <label>Beschwerden</label>
-        <textarea id="beschwerden-mit" rows="5"></textarea>
+        <label for="beschwerden-mit">Beschwerden</label>
+        <textarea id="beschwerden-mit" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
+
+        <div class="upload-box">
+          <label>Vorbefunde hochladen</label>
+          <div id="upload-placeholder">
+            <div class="small">
+              Der Upload erfolgt später über eine sichere Verbindung. Bitte senden Sie keine Befunde per E-Mail.
+            </div>
+          </div>
+        </div>
+
+        <label for="beginn-mit">Seit wann bestehen die Beschwerden?</label>
+        <input type="text" id="beginn-mit" placeholder="z. B. seit 3 Monaten">
+
+        <label for="augen-mit">Ein Auge oder beide Augen?</label>
+        <input type="text" id="augen-mit" placeholder="z. B. beide Augen">
+
+        <label for="kontaktlinsen-mit">Kontaktlinsen?</label>
+        <input type="text" id="kontaktlinsen-mit" placeholder="z. B. nein / weiche Kontaktlinsen">
+
+        <label for="behandlung-mit">Bisherige Behandlung</label>
+        <textarea id="behandlung-mit" rows="4" placeholder="z. B. Augentropfen"></textarea>
       </div>
     </div>
 
@@ -1256,27 +1295,33 @@ select:focus{
       <div class="consent-box">
         <label class="check">
           <input type="checkbox" id="daten-mit">
-          <span>Einwilligung Datenverarbeitung</span>
+          <span>
+            Ich willige ein, dass meine personenbezogenen Daten, einschließlich Gesundheitsdaten, zum Zweck der ärztlichen Beratung verarbeitet werden.
+          </span>
         </label>
 
         <label class="check">
           <input type="checkbox" id="video-mit">
-          <span>Videosprechstunde gewünscht</span>
+          <span>
+            Ich wünsche die Durchführung der Beratung im Rahmen einer Videosprechstunde. Mir ist bekannt, dass eine Untersuchung bei einem Augenarzt erforderlich sein kann.
+          </span>
         </label>
 
         <label class="check">
           <input type="checkbox" id="zahlung-mit">
-          <span>Abrechnung gemäß GOÄ</span>
+          <span>
+            Ich bin damit einverstanden, dass die Abrechnung nach der Beratung gemäß GOÄ erfolgt und der Rechnungsbetrag über die angegebene Zahlungsmethode abgebucht wird.
+          </span>
         </label>
       </div>
     </div>
 
     <div class="button-row">
-      <button class="btn" type="button" onclick="submitMit()">Termin auswählen</button>
+      <button class="btn" type="button" onclick="submitMit()">Termin mit Vorbefunden anfragen</button>
     </div>
   </div>
 
-  <!-- SLOT AUSWAHL -->
+  <!-- SLOT AUSWAHL FÜR BEIDE TERMINARTEN -->
   <div id="slots-container" class="step-card" style="margin-top:16px; display:none;">
     <div class="step-head">
       <div class="step-badge">4</div>
@@ -1284,7 +1329,7 @@ select:focus{
     </div>
 
     <p class="form-intro">
-      Bitte wählen Sie einen freien Termin aus.
+      Bitte wählen Sie einen freien Termin aus. Der gewählte Termin wird anschließend reserviert.
     </p>
 
     <div id="slots-list" class="stack"></div>
@@ -1294,7 +1339,6 @@ select:focus{
 </div>
 </div>
 </section>
-
 <div id="termin-bestaetigung" class="confirm-overlay">
   <div class="container" style="max-width:800px;">
 
@@ -1471,11 +1515,7 @@ function submitOhne() {
     return;
   }
 
-  const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-ohne-befunde";
-const link = baseLink + "?lang=de&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
-
-localStorage.setItem("calBookingStarted", "ohne");
-window.open(link, "_blank");
+  loadSlots("ohne");
 }
 
 function submitMit() {
@@ -1491,11 +1531,7 @@ function submitMit() {
     return;
   }
 
-const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-mit-befunden";
-const link = baseLink + "?lang=de&name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
-
-localStorage.setItem("calBookingStarted", "mit");
-window.open(link, "_blank");
+  loadSlots("mit");
 }
 
   async function confirmAndStartCheckout() {
@@ -1617,6 +1653,87 @@ window.open(link, "_blank");
     localStorage.removeItem("calBookingStarted");
   }
 });
+
+  async function loadSlots(typ) {
+  const { data, error } = await supabaseClient
+    .from("appointment_slots")
+    .select("*")
+    .eq("status", "free")
+    .eq("appointment_type", typ)
+    .order("start_time", { ascending: true });
+
+  if (error) {
+    alert("Fehler beim Laden der Termine.");
+    return;
+  }
+
+  const container = document.getElementById("slots-list");
+  container.innerHTML = "";
+
+  if (!data || data.length === 0) {
+    container.innerHTML = '<div class="helper-box">Aktuell sind keine freien Termine verfügbar.</div>';
+  }
+
+  data.forEach(slot => {
+    const btn = document.createElement("button");
+    btn.className = "btn";
+    btn.type = "button";
+    btn.style.marginTop = "10px";
+
+    const date = new Date(slot.start_time);
+    btn.textContent = date.toLocaleString("de-DE", {
+      weekday: "long",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    btn.onclick = () => reserveSlot(slot.id, slot);
+    container.appendChild(btn);
+  });
+
+  document.getElementById("slots-container").style.display = "block";
+  document.getElementById("slots-container").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+async function reserveSlot(slotId, slot) {
+  const terminart = document.getElementById("terminart").value;
+
+  let name = "";
+  let email = "";
+
+  if (terminart === "mit") {
+    name = document.getElementById("name-mit").value.trim();
+    email = document.getElementById("email-mit").value.trim();
+  } else {
+    name = document.getElementById("name-ohne").value.trim();
+    email = document.getElementById("email-ohne").value.trim();
+  }
+
+  const { data, error } = await supabaseClient.rpc("reserve_appointment_slot", {
+    slot_id: slotId,
+    p_name: name,
+    p_email: email
+  });
+
+  if (error || !data || data.length === 0) {
+    alert("Dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen Termin.");
+    loadSlots(terminart);
+    return;
+  }
+
+  showConfirmationFlow({
+    termin: new Date(slot.start_time).toLocaleString("de-DE"),
+    leistung: terminart === "mit" ? "Beratung mit Vorbefunden" : "Beratung ohne Vorbefunde",
+    dauer: terminart === "mit" ? "ca. 30 Minuten" : "ca. 20 Minuten",
+    ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
+    faktor: terminart === "mit" ? "10,0-fach" : "6,3-fach",
+    betrag: terminart === "mit" ? "87,00 €" : "55,00 €"
+  });
+}
+  
   document.addEventListener("click", function (event) {
     const overlay = document.getElementById("termin-bestaetigung");
     if (!overlay) return;
