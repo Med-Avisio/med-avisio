@@ -1509,9 +1509,10 @@ function submitOhne() {
     return;
   }
 
-  const link = "https://www.cal.eu/med-avisio/videosprechstunde-ohne-befunde";
+  const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-ohne-befunde";
+const link = baseLink + "?name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
 
-  window.open(link, "_blank");
+window.open(link, "_blank");
 }
 
 function submitMit() {
@@ -1527,7 +1528,8 @@ function submitMit() {
     return;
   }
 
-const link = "https://www.cal.eu/med-avisio/videosprechstunde-mit-befunden";
+const baseLink = "https://www.cal.eu/med-avisio/videosprechstunde-mit-befunden";
+const link = baseLink + "?name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
 
 window.open(link, "_blank");
 }
