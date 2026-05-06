@@ -1724,6 +1724,18 @@ async function reserveSlot(slotId, slot) {
     return;
   }
 
+await fetch("/api/notify", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    name,
+    email,
+    termin: new Date(slot.start_time).toLocaleString("de-DE")
+  })
+});
+  
   showConfirmationFlow({
     termin: new Date(slot.start_time).toLocaleString("de-DE"),
     leistung: terminart === "mit" ? "Beratung mit Vorbefunden" : "Beratung ohne Vorbefunde",
