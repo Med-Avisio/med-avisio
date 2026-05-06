@@ -1757,16 +1757,6 @@ async function reserveSlot(slotId, slot) {
     betrag: terminart === "mit" ? "87,00 €" : "55,00 €"
   });
 }
-
-  showConfirmationFlow({
-    termin: new Date(slot.start_time).toLocaleString("de-DE"),
-    leistung: terminart === "mit" ? "Beratung mit Vorbefunden" : "Beratung ohne Vorbefunde",
-    dauer: terminart === "mit" ? "ca. 30 Minuten" : "ca. 20 Minuten",
-    ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-    faktor: terminart === "mit" ? "10,0-fach" : "6,3-fach",
-    betrag: terminart === "mit" ? "87,00 €" : "55,00 €"
-  });
-}
   
   document.addEventListener("click", function (event) {
     const overlay = document.getElementById("termin-bestaetigung");
