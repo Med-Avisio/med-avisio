@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>med-avisio Admin</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f8f9fb;
+      color: #1f2937;
+    }
+
+    h1 {
+      color: #2FA4A9;
+    }
+
+    .box {
+      background: white;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input,
+    select,
+    button {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+
+    button {
+      margin-top: 20px;
+      background: #2FA4A9;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #278b8f;
+    }
+
+    .slot {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border-left: 5px solid #2FA4A9;
+    }
+
+    .reserved {
+      border-left-color: #d97706;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+      margin-top: 10px;
+    }
+
+    .delete-btn:hover {
+      background: #b91c1c;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>med-avisio Admin</h1>
+
+  <div class="box">
+
+    <label>Passwort</label>
+    <input type="password" id="adminPassword">
+
+    <button onclick="login()">Admin öffnen</button>
+
+  </div>
+
+  <div id="adminContent" style="display:none;">
+
+    <div class="box">
+
+      <h2>Neuen Termin freigeben</h2>
+
+      <label>Datum</label>
+      <input type="date" id="date">
+
+      <label>Uhrzeit</label>
+      <input type="time" id="time">
+
+      <label>Terminart</label>
+      <select id="appointmentType">
+        <option value="ohne">Ohne Vorbefunde</option>
+        <option value="mit">Mit Vorbefunden</option>
+      </select>
+
+      <button onclick="createSlot()">Termin freigeben</button>
+
+    </div>
+
+    <div class="box">
+
+      <h2>Vorhandene Termine</h2>
+
+      <div id="slotsList"></div>
+
+    </div>
+
+  </div>
+
+<script>
+
+const SUPABASE_URL = "https://rmgealcqfhilgqkiicdd.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_OBhA4htBe01qZew4vuaJLA_TCIIT8RK";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY
+);
+
+function login() {
+
+  const password = document.getElementById("adminPassword").value;
+
+  if (password !== "medavisio2026") {
+    alert("Falsches Passwort");
+    return;
+  }
+
+  document.getElementById("adminContent").style.display = "block";
+
+  loadSlots();
+}
+
+async function createSlot() {
+
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const appointmentType = document.getElementById("appointmentType").value;
+
+  if (!date || !time) {
+    alert("Bitte Datum und Uhrzeit eingeben.");
+    return;
+  }
+
+  const startTime = `${date}T${time}:00`;
+
+  const duration = appointmentType === "mit" ? 30 : 20;
+
+  const { error } = await supabaseClient
+    .from("appointment_slots")
+    .insert([
+      {
+        start_time: startTime,
+        duration_minutes: duration,
+        appointment_type: appointmentType,
+        status: "free"
+      }
+    ]);
+
+  if (error) {
+    alert("Fehler beim Speichern.");
+    console.error(error);
+    return;
+  }
+
+  alert("Termin freigegeben.");
+
+  loadSlots();
+}
+
+async function loadSlots() {
+
+  const { data, error } = await supabaseClient
+    .from("appointment_slots")
+    .select("*")
+    .order("start_time", { ascending: true });
+
+  if (error) {
+    console.error(error);
+    return;
+  }
+
+  const container = document.getElementById("slotsList");
+
+  container.innerHTML = "";
+
+  data.forEach(slot => {
+
+    const div = document.createElement("div");
+
+    div.className = slot.status === "reserved"
+      ? "slot reserved"
+      : "slot";
+
+    const date = new Date(slot.start_time);
+
+    div.innerHTML = `
+      <strong>
+        ${date.toLocaleString("de-DE")}
+      </strong>
+      <br><br>
+
+      Status: ${slot.status}
+      <br>
+
+      Terminart: ${slot.appointment_type}
+      <br>
+
+      Dauer: ${slot.duration_minutes} Minuten
+      <br><br>
+
+      <button class="delete-btn" onclick="deleteSlot('${slot.id}')">
+        Termin löschen
+      </button>
+    `;
+
+    container.appendChild(div);
+
+  });
+
+}
+
+async function deleteSlot(id) {
+
+  const confirmDelete = confirm("Termin wirklich löschen?");
+
+  if (!confirmDelete) return;
+
+  const { error } = await supabaseClient
+    .from("appointment_slots")
+    .delete()
+    .eq("id", id);
+
+  if (error) {
+    alert("Fehler beim Löschen.");
+    console.error(error);
+    return;
+  }
+
+  loadSlots();
+}
+
+</script>
+
+</body>
+</html>
