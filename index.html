@@ -1630,8 +1630,6 @@ document.addEventListener("DOMContentLoaded", async function () {
     successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
 const pendingBookingMail = localStorage.getItem("pendingBookingMail");
 
-console.log("pendingBookingMail aus localStorage:", pendingBookingMail);
-
 if (!pendingBookingMail) {
   successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Es wurden aber keine Buchungsdaten für die E-Mail gefunden.";
   return;
@@ -1804,8 +1802,6 @@ async function reserveSlot(slotId, slot) {
       : "Online-Sprechstunde ohne Vorbefunde",
     phone: ""
   }));
-
-  console.log("pendingBookingMail wurde gespeichert:", localStorage.getItem("pendingBookingMail"));
 
   showConfirmationFlow({
     termin: new Date(slot.start_time).toLocaleString("de-DE"),
