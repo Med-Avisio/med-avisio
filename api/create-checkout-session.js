@@ -27,8 +27,8 @@ export default async function handler(req, res) {
       customer: customer.id,
       payment_method_types: ['card'],
       success_url:
-        'https://med-avisio.vercel.app/?setup=success&session_id={CHECKOUT_SESSION_ID}',
-      cancel_url: 'https://med-avisio.vercel.app/?setup=cancel',
+        "https://www.med-avisio.com/?setup=success&session_id={CHECKOUT_SESSION_ID}",
+      cancel_url: "https://www.med-avisio.com/?setup=cancel",
     });
 
     return res.status(200).json({
