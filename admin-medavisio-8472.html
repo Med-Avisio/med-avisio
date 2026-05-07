@@ -168,6 +168,21 @@ async function createSlot() {
 
   const duration = appointmentType === "mit" ? 30 : 20;
 
+  const { data: existingSlots } = await supabaseClient
+  .from("appointment_slots")
+  .select("id")
+  .eq("start_time", startTime);
+
+const { data: existingSlots } = await supabaseClient
+  .from("appointment_slots")
+  .select("id")
+  .eq("start_time", startTime);
+
+if (existingSlots && existingSlots.length > 0) {
+  alert("Für diese Uhrzeit existiert bereits ein Termin.");
+  return;
+}
+
   const { error } = await supabaseClient
     .from("appointment_slots")
     .insert([
