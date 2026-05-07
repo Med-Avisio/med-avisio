@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">  
 <head>
+  <meta name="robots" content="noindex, nofollow">
   <script defer src="/_vercel/insights/script.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -12,6 +13,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   
   <style>
+
+.aufbau-hinweis {
+  background: #fff4e5;
+  border-bottom: 1px solid #f0c36d;
+  color: #5f3b00;
+  padding: 12px 18px;
+  text-align: center;
+  font-size: 15px;
+  line-height: 1.5;
+  z-index: 9999;
+  position: relative;
+}
+
+.aufbau-hinweis strong {
+  font-weight: 700;
+}
+
     #payment-element {
      margin-top: 10px;
     }
@@ -677,6 +695,11 @@ select:focus{
   
 </head>
 <body>
+
+<div class="aufbau-hinweis">
+  <strong>Hinweis:</strong> med-avisio befindet sich derzeit noch im technischen und organisatorischen Aufbau. 
+  Aktuell findet noch keine reguläre Patientenversorgung statt.
+</div>
 
 <section class="hero">
   <div class="container">
