@@ -441,22 +441,17 @@ async function deleteSlot(id) {
 
   const { data, error } = await supabaseClient
     .from("appointment_slots")
-    .delete()
+    .update({ status: "cancelled" })
     .eq("id", id)
     .select();
 
   if (error) {
-    console.error("Löschfehler:", error);
-    alert("Termin konnte nicht gelöscht werden: " + error.message);
+    console.error("Fehler:", error);
+    alert("Termin konnte nicht entfernt werden: " + error.message);
     return;
   }
 
-  if (!data || data.length === 0) {
-    alert("Termin wurde nicht gelöscht. Wahrscheinlich blockiert Supabase die Löschung durch RLS/Policies.");
-    return;
-  }
-
-  alert("Termin gelöscht.");
+  alert("Termin aus dem Kalender entfernt.");
   await loadSlots();
 }
 
