@@ -252,8 +252,11 @@ function getMonday(date) {
   return d;
 }
 
-function formatDateForInput(date) {
-  return date.toISOString().split("T")[0];
+ffunction formatDateForInput(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
 function formatTimeForInput(hour, minute) {
@@ -401,18 +404,17 @@ for (let hour = startHour; hour <= endHour; hour++) {
             `;
           }
 
-          cell.onclick = function () {
-            const shouldDelete = confirm(
-              "Diesen Termin löschen?\n\n" +
-              timeText + " Uhr, " +
-              dateText + "\nStatus: " +
-              matchingSlot.status
-            );
+          cell.onclick = async function () {
+  const shouldDelete = confirm(
+    "Diesen Termin löschen?\n\n" +
+    dateText + " um " + timeText + " Uhr\n" +
+    "Status: " + matchingSlot.status
+  );
 
-            if (shouldDelete) {
-              deleteSlot(matchingSlot.id);
-            }
-          };
+  if (shouldDelete) {
+    await deleteSlot(matchingSlot.id);
+  }
+};
 
         } else {
           cell.innerHTML = "";
@@ -437,8 +439,6 @@ function createCell(content, className) {
 
 async function deleteSlot(id) {
 
-  console.log("Lösche Termin:", id);
-
   const { data, error } = await supabaseClient
     .from("appointment_slots")
     .delete()
@@ -446,15 +446,18 @@ async function deleteSlot(id) {
     .select();
 
   if (error) {
-    console.error(error);
-    alert("Fehler beim Löschen: " + error.message);
+    console.error("Löschfehler:", error);
+    alert("Termin konnte nicht gelöscht werden: " + error.message);
     return;
   }
 
-  console.log("Gelöscht:", data);
+  if (!data || data.length === 0) {
+    alert("Termin wurde nicht gelöscht. Wahrscheinlich blockiert Supabase die Löschung durch RLS/Policies.");
+    return;
+  }
 
+  alert("Termin gelöscht.");
   await loadSlots();
-
 }
 
 </script>
