@@ -376,13 +376,14 @@ for (let hour = startHour; hour <= endHour; hour++) {
         const dateText = formatDateForInput(day);
 
         const matchingSlot = slots.find(slot => {
-          const slotDate = new Date(slot.start_time);
-          return (
-            formatDateForInput(slotDate) === dateText &&
-            slotDate.getHours() === hour &&
-            slotDate.getMinutes() === minute
-          );
-        });
+  const slotDate = new Date(slot.start_time);
+
+  return (
+    formatDateForInput(slotDate) === dateText &&
+    slotDate.getHours() === hour &&
+    slotDate.getMinutes() === minute
+  );
+});
 
         const cell = document.createElement("div");
         cell.className = "calendar-cell calendar-slot";
@@ -423,7 +424,7 @@ for (let hour = startHour; hour <= endHour; hour++) {
             document.getElementById("time").value = timeText;
           };
         }
-
+h
         calendar.appendChild(cell);
       }
     }
