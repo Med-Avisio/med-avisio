@@ -61,6 +61,86 @@
       background: #278b8f;
     }
 
+.admin-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.week-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.week-controls button {
+  margin-top: 0;
+  padding: 9px;
+  font-size: 13px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: 70px repeat(5, 1fr);
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.calendar-cell {
+  border-right: 1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 8px;
+  min-height: 36px;
+  background: #ffffff;
+}
+
+.calendar-head {
+  background: #f3f4f6;
+  font-weight: bold;
+  text-align: center;
+}
+
+.time-cell {
+  background: #f9fafb;
+  font-weight: bold;
+  color: #4b5563;
+}
+
+.calendar-slot {
+  cursor: pointer;
+}
+
+.calendar-slot:hover {
+  background: #e6f6f7;
+}
+
+.calendar-free {
+  background: #2FA4A9;
+  color: white;
+  font-weight: bold;
+}
+
+.calendar-reserved {
+  background: #dc2626;
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 900px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .calendar-grid {
+    font-size: 12px;
+    grid-template-columns: 55px repeat(5, 1fr);
+  }
+}
+
     .slot {
   background: white;
   padding: 10px 12px;
@@ -99,25 +179,39 @@
 
   <div id="adminContent" style="display:none;">
 
-    <div class="box">
+    <div class="admin-grid">
 
-      <h2>Neuen Termin freigeben</h2>
+  <div class="box">
+    <h2>Wochenkalender</h2>
 
-      <label>Datum</label>
-      <input type="date" id="date">
-
-      <label>Uhrzeit</label>
-      <input type="time" id="time">
-
-      <label>Terminart</label>
-      <select id="appointmentType">
-        <option value="ohne">Ohne Vorbefunde</option>
-        <option value="mit">Mit Vorbefunden</option>
-      </select>
-
-      <button onclick="createSlot()">Termin freigeben</button>
-
+    <div class="week-controls">
+      <button type="button" onclick="changeWeek(-1)">← Vorwoche</button>
+      <button type="button" onclick="goToCurrentWeek()">Diese Woche</button>
+      <button type="button" onclick="changeWeek(1)">Nächste Woche →</button>
     </div>
+
+    <div id="calendarGrid" class="calendar-grid"></div>
+  </div>
+
+  <div class="box">
+    <h2>Termin freigeben</h2>
+
+    <label>Datum</label>
+    <input type="date" id="date">
+
+    <label>Uhrzeit</label>
+    <input type="time" id="time">
+
+    <label>Terminart</label>
+    <select id="appointmentType">
+      <option value="ohne">Ohne Vorbefunde</option>
+      <option value="mit">Mit Vorbefunden</option>
+    </select>
+
+    <button onclick="createSlot()">Termin freigeben</button>
+  </div>
+
+</div>
 
     <div class="box">
 
