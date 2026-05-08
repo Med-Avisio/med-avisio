@@ -438,7 +438,7 @@ function createCell(content, className) {
   return cell;
 }
 
-async function deleteSlot(id) {
+ async function deleteSlot(id) {
 
   const { data, error } = await supabaseClient
     .from("appointment_slots")
@@ -447,12 +447,17 @@ async function deleteSlot(id) {
     .select();
 
   if (error) {
-    console.error("Fehler:", error);
+    console.error("Fehler beim Entfernen:", error);
     alert("Termin konnte nicht entfernt werden: " + error.message);
     return;
   }
 
-  alert("Termin aus dem Kalender entfernt.");
+  if (!data || data.length === 0) {
+    alert("Termin konnte nicht entfernt werden. Vermutlich fehlt eine UPDATE-Policy in Supabase.");
+    return;
+  }
+
+  alert("Termin entfernt.");
   await loadSlots();
 }
 
