@@ -11,7 +11,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 700px;
+      max-width: 1200px;
       margin: 40px auto;
       padding: 20px;
       background: #f8f9fb;
@@ -213,14 +213,6 @@
 
 </div>
 
-    <div class="box">
-
-      <h2>Vorhandene Termine</h2>
-
-      <div id="slotsList"></div>
-
-    </div>
-
   </div>
 
 <script>
@@ -233,8 +225,9 @@ const supabaseClient = supabase.createClient(
   SUPABASE_ANON_KEY
 );
 
-function login() {
+let currentWeekStart = getMonday(new Date());
 
+function login() {
   const password = document.getElementById("adminPassword").value;
 
   if (password !== "medavisio2026") {
@@ -243,12 +236,37 @@ function login() {
   }
 
   document.getElementById("adminContent").style.display = "block";
+  loadSlots();
+}
 
+function getMonday(date) {
+  const d = new Date(date);
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  d.setDate(diff);
+  d.setHours(0, 0, 0, 0);
+  return d;
+}
+
+function formatDateForInput(date) {
+  return date.toISOString().split("T")[0];
+}
+
+function formatTimeForInput(hour, minute) {
+  return String(hour).padStart(2, "0") + ":" + String(minute).padStart(2, "0");
+}
+
+function changeWeek(direction) {
+  currentWeekStart.setDate(currentWeekStart.getDate() + direction * 7);
+  loadSlots();
+}
+
+function goToCurrentWeek() {
+  currentWeekStart = getMonday(new Date());
   loadSlots();
 }
 
 async function createSlot() {
-
   const date = document.getElementById("date").value;
   const time = document.getElementById("time").value;
   const appointmentType = document.getElementById("appointmentType").value;
@@ -259,18 +277,17 @@ async function createSlot() {
   }
 
   const startTime = `${date}T${time}:00`;
+  const duration = 30;
 
-  const duration = appointmentType === "mit" ? 30 : 20;
+  const { data: existingSlots } = await supabaseClient
+    .from("appointment_slots")
+    .select("id")
+    .eq("start_time", startTime);
 
-const { data: existingSlots } = await supabaseClient
-  .from("appointment_slots")
-  .select("id")
-  .eq("start_time", startTime);
-
-if (existingSlots && existingSlots.length > 0) {
-  alert("Für diese Uhrzeit existiert bereits ein Termin.");
-  return;
-}
+  if (existingSlots && existingSlots.length > 0) {
+    alert("Für diese Uhrzeit existiert bereits ein Termin.");
+    return;
+  }
 
   const { error } = await supabaseClient
     .from("appointment_slots")
@@ -289,60 +306,132 @@ if (existingSlots && existingSlots.length > 0) {
     return;
   }
 
-  alert("Termin freigegeben.");
-
   loadSlots();
 }
 
 async function loadSlots() {
+  const weekEnd = new Date(currentWeekStart);
+  weekEnd.setDate(weekEnd.getDate() + 5);
+  weekEnd.setHours(23, 59, 59, 999);
 
   const { data, error } = await supabaseClient
     .from("appointment_slots")
     .select("*")
+    .gte("start_time", currentWeekStart.toISOString())
+    .lte("start_time", weekEnd.toISOString())
     .order("start_time", { ascending: true });
 
   if (error) {
     console.error(error);
+    alert("Fehler beim Laden der Termine.");
     return;
   }
 
-  const container = document.getElementById("slotsList");
+  renderCalendar(data || []);
+}
 
-  container.innerHTML = "";
+function renderCalendar(slots) {
+  const calendar = document.getElementById("calendarGrid");
+  calendar.innerHTML = "";
 
-  data.forEach(slot => {
+  const weekdays = ["Mo", "Di", "Mi", "Do", "Fr"];
 
-    const div = document.createElement("div");
+  calendar.appendChild(createCell("", "calendar-head"));
 
-    div.className = slot.status === "reserved"
-      ? "slot reserved"
-      : "slot";
+  for (let i = 0; i < 5; i++) {
+    const day = new Date(currentWeekStart);
+    day.setDate(currentWeekStart.getDate() + i);
 
-    const date = new Date(slot.start_time);
+    calendar.appendChild(
+      createCell(
+        `${weekdays[i]}<br>${day.toLocaleDateString("de-DE", {
+          day: "2-digit",
+          month: "2-digit"
+        })}`,
+        "calendar-head"
+      )
+    );
+  }
 
-    div.innerHTML = `
-  <strong>${date.toLocaleString("de-DE")}</strong>
-  · ${slot.appointment_type}
-  · ${slot.duration_minutes} Min
-  · ${slot.status}
+  const startHour = 8;
+const endHour = 21;
 
-  <button class="delete-btn" onclick="deleteSlot('${slot.id}')">
-    Löschen
-  </button>
-`;
+for (let hour = startHour; hour <= endHour; hour++) {
+  for (let minute of [0, 30]) {
+      const timeText = formatTimeForInput(hour, minute);
 
-    container.appendChild(div);
+      calendar.appendChild(createCell(timeText, "time-cell"));
 
-  });
+      for (let dayIndex = 0; dayIndex < 5; dayIndex++) {
+        const day = new Date(currentWeekStart);
+        day.setDate(currentWeekStart.getDate() + dayIndex);
 
+        const dateText = formatDateForInput(day);
+
+        const matchingSlot = slots.find(slot => {
+          const slotDate = new Date(slot.start_time);
+          return (
+            formatDateForInput(slotDate) === dateText &&
+            slotDate.getHours() === hour &&
+            slotDate.getMinutes() === minute
+          );
+        });
+
+        const cell = document.createElement("div");
+        cell.className = "calendar-cell calendar-slot";
+
+        if (matchingSlot) {
+          if (matchingSlot.status === "reserved") {
+            cell.classList.add("calendar-reserved");
+            cell.innerHTML = `
+              reserviert<br>
+              ${matchingSlot.appointment_type}<br>
+              ${matchingSlot.duration_minutes} Min
+            `;
+          } else {
+            cell.classList.add("calendar-free");
+            cell.innerHTML = `
+              frei<br>
+              ${matchingSlot.appointment_type}<br>
+              ${matchingSlot.duration_minutes} Min
+            `;
+          }
+
+          cell.onclick = function () {
+            const shouldDelete = confirm(
+              "Diesen Termin löschen?\n\n" +
+              timeText + " Uhr, " +
+              dateText + "\nStatus: " +
+              matchingSlot.status
+            );
+
+            if (shouldDelete) {
+              deleteSlot(matchingSlot.id);
+            }
+          };
+
+        } else {
+          cell.innerHTML = "";
+          cell.onclick = function () {
+            document.getElementById("date").value = dateText;
+            document.getElementById("time").value = timeText;
+          };
+        }
+
+        calendar.appendChild(cell);
+      }
+    }
+  }
+}
+
+function createCell(content, className) {
+  const cell = document.createElement("div");
+  cell.className = "calendar-cell " + className;
+  cell.innerHTML = content;
+  return cell;
 }
 
 async function deleteSlot(id) {
-
-  const confirmDelete = confirm("Termin wirklich löschen?");
-
-  if (!confirmDelete) return;
-
   const { error } = await supabaseClient
     .from("appointment_slots")
     .delete()
