@@ -436,18 +436,25 @@ function createCell(content, className) {
 }
 
 async function deleteSlot(id) {
-  const { error } = await supabaseClient
+
+  console.log("Lösche Termin:", id);
+
+  const { data, error } = await supabaseClient
     .from("appointment_slots")
     .delete()
-    .eq("id", id);
+    .eq("id", id)
+    .select();
 
   if (error) {
-    alert("Fehler beim Löschen.");
     console.error(error);
+    alert("Fehler beim Löschen: " + error.message);
     return;
   }
 
-  loadSlots();
+  console.log("Gelöscht:", data);
+
+  await loadSlots();
+
 }
 
 </script>
