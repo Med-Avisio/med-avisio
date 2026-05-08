@@ -361,10 +361,10 @@ function renderCalendar(slots) {
   }
 
   const startHour = 8;
-const endHour = 21;
+  const endHour = 21;
 
-for (let hour = startHour; hour <= endHour; hour++) {
-  for (let minute of [0, 30]) {
+  for (let hour = startHour; hour <= endHour; hour++) {
+    for (let minute of [0, 30]) {
       const timeText = formatTimeForInput(hour, minute);
 
       calendar.appendChild(createCell(timeText, "time-cell"));
@@ -376,14 +376,14 @@ for (let hour = startHour; hour <= endHour; hour++) {
         const dateText = formatDateForInput(day);
 
         const matchingSlot = slots.find(slot => {
-  const slotDate = new Date(slot.start_time);
+          const slotDate = new Date(slot.start_time);
 
-  return (
-    formatDateForInput(slotDate) === dateText &&
-    slotDate.getHours() === hour &&
-    slotDate.getMinutes() === minute
-  );
-});
+          return (
+            formatDateForInput(slotDate) === dateText &&
+            slotDate.getHours() === hour &&
+            slotDate.getMinutes() === minute
+          );
+        });
 
         const cell = document.createElement("div");
         cell.className = "calendar-cell calendar-slot";
@@ -406,16 +406,16 @@ for (let hour = startHour; hour <= endHour; hour++) {
           }
 
           cell.onclick = async function () {
-  const shouldDelete = confirm(
-    "Diesen Termin löschen?\n\n" +
-    dateText + " um " + timeText + " Uhr\n" +
-    "Status: " + matchingSlot.status
-  );
+            const shouldRemove = confirm(
+              "Diesen Termin entfernen?\n\n" +
+              dateText + " um " + timeText + " Uhr\n" +
+              "Status: " + matchingSlot.status
+            );
 
-  if (shouldDelete) {
-    await deleteSlot(matchingSlot.id);
-  }
-};
+            if (shouldRemove) {
+              await deleteSlot(matchingSlot.id);
+            }
+          };
 
         } else {
           cell.innerHTML = "";
@@ -424,7 +424,7 @@ for (let hour = startHour; hour <= endHour; hour++) {
             document.getElementById("time").value = timeText;
           };
         }
-h
+
         calendar.appendChild(cell);
       }
     }
