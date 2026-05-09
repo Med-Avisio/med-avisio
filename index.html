@@ -1774,11 +1774,19 @@ async function reserveSlot(slotId, slot) {
     p_email: email
   });
 
-  if (error || !data || data.length === 0) {
-    alert("Dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen Termin.");
-    loadSlots(terminart);
-    return;
-  }
+  if (error) {
+  console.error("RPC-Fehler:", error);
+  alert("Fehler beim Reservieren: " + error.message);
+  loadSlots(terminart);
+  return;
+}
+
+if (!data || data.length === 0) {
+  alert("Termin wurde nicht reserviert. Der RPC hat 0 Zeilen geändert. Status oder ID passt nicht.");
+  console.log("Slot beim Klick:", slot);
+  loadSlots(terminart);
+  return;
+}
 
   const appointmentDate = new Date(slot.start_time).toLocaleDateString("de-DE", {
     weekday: "long",
