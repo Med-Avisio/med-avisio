@@ -48,7 +48,7 @@ export default async function handler(req, res) {
   html: `
     <p>Guten Tag ${safePatientName},</p>
 
-    <p>vielen Dank. Ihre Terminreservierung bei med-avisio ist eingegangen.</p>
+    <p>vielen Dank. Ihre Terminreservierung bei med-avisio ist eingegangen. Die Zugangsdaten erhalten Sie terminnah in einer gesonderten Mail</p>
 
     <p>
       <strong>Termin:</strong> ${safeAppointmentDate} um ${safeAppointmentTime}<br>
