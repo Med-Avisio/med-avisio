@@ -803,6 +803,40 @@ select:focus{
   margin-top: 0 !important;
 }
 
+.booking-month-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.booking-month-nav {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #1f2937;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.booking-month-nav:hover {
+  background: #f3f4f6;
+}
+
+.booking-month-nav:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.booking-day.past-day {
+  opacity: 0.25;
+  cursor: not-allowed;
+}
+
 @media (max-width: 800px) {
   .booking-calendar-layout {
     grid-template-columns: 1fr;
@@ -1560,7 +1594,11 @@ select:focus{
 
   <div class="booking-calendar-layout">
     <div class="booking-week-calendar">
-      <div id="booking-week-title" class="booking-week-title"></div>
+      <div class="booking-month-head">
+  <button type="button" id="booking-prev-month" class="booking-month-nav">‹</button>
+  <div id="booking-week-title" class="booking-week-title"></div>
+  <button type="button" id="booking-next-month" class="booking-month-nav">›</button>
+</div>
       <div id="booking-calendar-days" class="booking-calendar-days"></div>
     </div>
 
@@ -1979,97 +2017,113 @@ data.forEach(slot => {
   slotsByDate[dateKey].push(slot);
 });
 
-const firstDate = new Date(data[0].start_time);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
 
-const monthStart = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1);
-const monthEnd = new Date(firstDate.getFullYear(), firstDate.getMonth() + 1, 0);
+let currentMonthDate = new Date(data[0].start_time);
+currentMonthDate.setDate(1);
 
-const calendarStart = new Date(monthStart);
-const startDay = calendarStart.getDay();
-const diffToMonday = startDay === 0 ? -6 : 1 - startDay;
-calendarStart.setDate(calendarStart.getDate() + diffToMonday);
-
-const calendarDays = [];
-
-for (let i = 0; i < 42; i++) {
-  const d = new Date(calendarStart);
-  d.setDate(calendarStart.getDate() + i);
-  calendarDays.push(d);
-}
-
-weekTitle.textContent = firstDate.toLocaleDateString("de-DE", {
-  month: "long",
-  year: "numeric"
-});
-
-function renderTimes(dateKey) {
+function buildCalendar(monthDate) {
+  calendarContainer.innerHTML = "";
   timeContainer.innerHTML = "";
 
-  const slots = slotsByDate[dateKey] || [];
+  const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
 
-  if (slots.length === 0) {
-    timeContainer.innerHTML = '<div class="helper-box">Für diesen Tag sind keine freien Uhrzeiten verfügbar.</div>';
-    return;
+  const calendarStart = new Date(monthStart);
+  const startDay = calendarStart.getDay();
+  const diffToMonday = startDay === 0 ? -6 : 1 - startDay;
+  calendarStart.setDate(calendarStart.getDate() + diffToMonday);
+
+  const calendarDays = [];
+
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(calendarStart);
+    d.setDate(calendarStart.getDate() + i);
+    calendarDays.push(d);
   }
 
-  slots.forEach(slot => {
-    const btn = document.createElement("button");
-    btn.className = "btn booking-time-btn";
-    btn.type = "button";
-
-    const date = new Date(slot.start_time);
-    btn.textContent = date.toLocaleTimeString("de-DE", {
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-    btn.onclick = () => reserveSlot(slot.id, slot);
-    timeContainer.appendChild(btn);
+  weekTitle.textContent = monthDate.toLocaleDateString("de-DE", {
+    month: "long",
+    year: "numeric"
   });
-}
 
-let firstAvailableDateKey = null;
+  let firstAvailableDateKey = null;
+  let firstAvailableDayBtn = null;
 
-calendarDays.forEach((date, index) => {
-  const dateKey = date.toISOString().split("T")[0];
-  const hasSlots = !!slotsByDate[dateKey];
+  calendarDays.forEach(date => {
+    const dateKey = date.toISOString().split("T")[0];
+    const hasSlots = !!slotsByDate[dateKey];
 
-  const dayBtn = document.createElement("button");
-  dayBtn.type = "button";
-  dayBtn.className = "booking-day";
+    const cleanDate = new Date(date);
+    cleanDate.setHours(0, 0, 0, 0);
 
-  if (date.getMonth() !== firstDate.getMonth()) {
-  dayBtn.classList.add("other-month");
-}
+    const isPast = cleanDate < today;
+    const isOtherMonth = date.getMonth() !== monthDate.getMonth();
 
-  if (hasSlots) {
-    dayBtn.classList.add("has-slots");
+    const dayBtn = document.createElement("button");
+    dayBtn.type = "button";
+    dayBtn.className = "booking-day";
 
-    if (!firstAvailableDateKey) {
-      firstAvailableDateKey = dateKey;
-      dayBtn.classList.add("selected");
+    if (isOtherMonth) {
+      dayBtn.classList.add("other-month");
     }
+
+    if (isPast) {
+      dayBtn.classList.add("past-day");
+      dayBtn.disabled = true;
+    }
+
+    if (hasSlots && !isPast) {
+      dayBtn.classList.add("has-slots");
+
+      if (!firstAvailableDateKey && !isOtherMonth) {
+        firstAvailableDateKey = dateKey;
+        firstAvailableDayBtn = dayBtn;
+      }
+    } else {
+      dayBtn.disabled = true;
+    }
+
+    dayBtn.innerHTML = `
+      <strong>${date.toLocaleDateString("de-DE", { day: "2-digit" })}</strong>
+    `;
+
+    dayBtn.onclick = () => {
+      document.querySelectorAll(".booking-day").forEach(btn => btn.classList.remove("selected"));
+      dayBtn.classList.add("selected");
+      renderTimes(dateKey);
+    };
+
+    calendarContainer.appendChild(dayBtn);
+  });
+
+  if (firstAvailableDateKey && firstAvailableDayBtn) {
+    firstAvailableDayBtn.classList.add("selected");
+    renderTimes(firstAvailableDateKey);
   } else {
-    dayBtn.disabled = true;
+    timeContainer.innerHTML = '<div class="helper-box">In diesem Monat sind keine freien Uhrzeiten verfügbar.</div>';
   }
 
-  dayBtn.innerHTML = `
-    <span>${date.toLocaleDateString("de-DE", { weekday: "short" })}</span>
-    <strong>${date.toLocaleDateString("de-DE", { day: "2-digit" })}</strong>
-  `;
+  const prevMonthButton = document.getElementById("booking-prev-month");
+  const nextMonthButton = document.getElementById("booking-next-month");
 
-  dayBtn.onclick = () => {
-    document.querySelectorAll(".booking-day").forEach(btn => btn.classList.remove("selected"));
-    dayBtn.classList.add("selected");
-    renderTimes(dateKey);
+  const currentMonthStart = new Date(today.getFullYear(), today.getMonth(), 1);
+  const shownMonthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
+
+  prevMonthButton.disabled = shownMonthStart <= currentMonthStart;
+
+  prevMonthButton.onclick = () => {
+    currentMonthDate.setMonth(currentMonthDate.getMonth() - 1);
+    buildCalendar(currentMonthDate);
   };
 
-  calendarContainer.appendChild(dayBtn);
-});
-
-if (firstAvailableDateKey) {
-  renderTimes(firstAvailableDateKey);
+  nextMonthButton.onclick = () => {
+    currentMonthDate.setMonth(currentMonthDate.getMonth() + 1);
+    buildCalendar(currentMonthDate);
+  };
 }
+
+buildCalendar(currentMonthDate);
 
 document.getElementById("slots-container").style.display = "block";
 document.getElementById("slots-container").scrollIntoView({ behavior: "smooth", block: "start" });
