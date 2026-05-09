@@ -443,13 +443,11 @@ function createCell(content, className) {
   return cell;
 }
 
- async function deleteSlot(id) {
+async function deleteSlot(id) {
 
-  const { data, error } = await supabaseClient
-    .from("appointment_slots")
-    .update({ status: "cancelled" })
-    .eq("id", id)
-    .select();
+  const { data, error } = await supabaseClient.rpc("cancel_appointment_slot", {
+    slot_id: id
+  });
 
   if (error) {
     console.error("Fehler beim Entfernen:", error);
@@ -458,7 +456,7 @@ function createCell(content, className) {
   }
 
   if (!data || data.length === 0) {
-    alert("Termin konnte nicht entfernt werden. Vermutlich fehlt eine UPDATE-Policy in Supabase.");
+    alert("Termin konnte nicht entfernt werden.");
     return;
   }
 
