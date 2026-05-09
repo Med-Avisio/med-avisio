@@ -718,6 +718,101 @@ select:focus{
   opacity: 0.92;
 }
 
+.booking-calendar-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+  margin-top: 18px;
+}
+
+.booking-week-calendar,
+.booking-time-column {
+  background: #f8fbfc;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  padding: 16px;
+}
+
+.booking-week-title,
+.booking-time-title {
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.booking-calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+}
+
+.booking-day {
+  border: 1px solid #e5e7eb;
+  background: #f3f4f6;
+  color: #9ca3af;
+  border-radius: 12px;
+  padding: 10px 4px;
+  min-height: 58px;
+  cursor: default;
+}
+
+.booking-day span {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.booking-day strong {
+  font-size: 18px;
+}
+
+.booking-day.has-slots {
+  background: #2FA4A9;
+  color: white;
+  border-color: #2FA4A9;
+  cursor: pointer;
+}
+
+.booking-day.has-slots:hover,
+.booking-day.selected {
+  background: #23868a;
+  border-color: #23868a;
+}
+
+.booking-time-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.booking-time-btn {
+  width: auto;
+  min-width: 92px;
+  padding: 9px 12px;
+  font-size: 14px;
+  margin-top: 0 !important;
+}
+
+@media (max-width: 800px) {
+  .booking-calendar-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-calendar-days {
+    grid-template-columns: repeat(7, minmax(36px, 1fr));
+  }
+
+  .booking-day {
+    min-height: 52px;
+    padding: 8px 2px;
+  }
+
+  .booking-day strong {
+    font-size: 16px;
+  }
+}
+
 </style>
   <script type="application/ld+json">
 {
@@ -1416,19 +1511,29 @@ select:focus{
     </div>
   </div>
 
-  <!-- SLOT AUSWAHL FÜR BEIDE TERMINARTEN -->
-  <div id="slots-container" class="step-card" style="margin-top:16px; display:none;">
-    <div class="step-head">
-      <div class="step-badge">4</div>
-      <h3 class="step-title">Termin auswählen</h3>
+<!-- SLOT AUSWAHL FÜR BEIDE TERMINARTEN -->
+<div id="slots-container" class="step-card" style="margin-top:16px; display:none;">
+  <div class="step-head">
+    <div class="step-badge">4</div>
+    <h3 class="step-title">Termin auswählen</h3>
+  </div>
+
+  <p class="form-intro">
+    Bitte wählen Sie zuerst einen Tag aus. Anschließend erscheinen rechts die verfügbaren Uhrzeiten.
+  </p>
+
+  <div class="booking-calendar-layout">
+    <div class="booking-week-calendar">
+      <div id="booking-week-title" class="booking-week-title"></div>
+      <div id="booking-calendar-days" class="booking-calendar-days"></div>
     </div>
 
-    <p class="form-intro">
-      Bitte wählen Sie einen freien Termin aus. Der gewählte Termin wird anschließend reserviert.
-    </p>
-
-    <div id="slots-list" class="stack"></div>
+    <div class="booking-time-column">
+      <div class="booking-time-title">Verfügbare Uhrzeiten</div>
+      <div id="slots-list" class="booking-time-list"></div>
+    </div>
   </div>
+</div>
 
 </div>
 </div>
@@ -1809,35 +1914,123 @@ if (setup === "success") {
     return;
   }
 
-  const container = document.getElementById("slots-list");
-  container.innerHTML = "";
+  const calendarContainer = document.getElementById("booking-calendar-days");
+const timeContainer = document.getElementById("slots-list");
+const weekTitle = document.getElementById("booking-week-title");
 
-  if (!data || data.length === 0) {
-    container.innerHTML = '<div class="helper-box">Aktuell sind keine freien Termine verfügbar.</div>';
+calendarContainer.innerHTML = "";
+timeContainer.innerHTML = "";
+
+if (!data || data.length === 0) {
+  weekTitle.textContent = "";
+  calendarContainer.innerHTML = '<div class="helper-box">Aktuell sind keine freien Termine verfügbar.</div>';
+  timeContainer.innerHTML = "";
+  document.getElementById("slots-container").style.display = "block";
+  document.getElementById("slots-container").scrollIntoView({ behavior: "smooth", block: "start" });
+  return;
+}
+
+const slotsByDate = {};
+
+data.forEach(slot => {
+  const date = new Date(slot.start_time);
+  const dateKey = date.toISOString().split("T")[0];
+
+  if (!slotsByDate[dateKey]) {
+    slotsByDate[dateKey] = [];
   }
 
-  data.forEach(slot => {
+  slotsByDate[dateKey].push(slot);
+});
+
+const firstDate = new Date(data[0].start_time);
+const monday = new Date(firstDate);
+const day = monday.getDay();
+const diffToMonday = day === 0 ? -6 : 1 - day;
+monday.setDate(monday.getDate() + diffToMonday);
+
+const weekDays = [];
+
+for (let i = 0; i < 7; i++) {
+  const d = new Date(monday);
+  d.setDate(monday.getDate() + i);
+  weekDays.push(d);
+}
+
+const weekEnd = new Date(weekDays[6]);
+
+weekTitle.textContent =
+  weekDays[0].toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" }) +
+  " – " +
+  weekEnd.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+
+function renderTimes(dateKey) {
+  timeContainer.innerHTML = "";
+
+  const slots = slotsByDate[dateKey] || [];
+
+  if (slots.length === 0) {
+    timeContainer.innerHTML = '<div class="helper-box">Für diesen Tag sind keine freien Uhrzeiten verfügbar.</div>';
+    return;
+  }
+
+  slots.forEach(slot => {
     const btn = document.createElement("button");
-    btn.className = "btn";
+    btn.className = "btn booking-time-btn";
     btn.type = "button";
-    btn.style.marginTop = "10px";
 
     const date = new Date(slot.start_time);
-    btn.textContent = date.toLocaleString("de-DE", {
-      weekday: "long",
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
+    btn.textContent = date.toLocaleTimeString("de-DE", {
       hour: "2-digit",
       minute: "2-digit"
     });
 
     btn.onclick = () => reserveSlot(slot.id, slot);
-    container.appendChild(btn);
+    timeContainer.appendChild(btn);
   });
+}
 
-  document.getElementById("slots-container").style.display = "block";
-  document.getElementById("slots-container").scrollIntoView({ behavior: "smooth", block: "start" });
+let firstAvailableDateKey = null;
+
+weekDays.forEach((date, index) => {
+  const dateKey = date.toISOString().split("T")[0];
+  const hasSlots = !!slotsByDate[dateKey];
+
+  const dayBtn = document.createElement("button");
+  dayBtn.type = "button";
+  dayBtn.className = "booking-day";
+
+  if (hasSlots) {
+    dayBtn.classList.add("has-slots");
+
+    if (!firstAvailableDateKey) {
+      firstAvailableDateKey = dateKey;
+      dayBtn.classList.add("selected");
+    }
+  } else {
+    dayBtn.disabled = true;
+  }
+
+  dayBtn.innerHTML = `
+    <span>${date.toLocaleDateString("de-DE", { weekday: "short" })}</span>
+    <strong>${date.toLocaleDateString("de-DE", { day: "2-digit" })}</strong>
+  `;
+
+  dayBtn.onclick = () => {
+    document.querySelectorAll(".booking-day").forEach(btn => btn.classList.remove("selected"));
+    dayBtn.classList.add("selected");
+    renderTimes(dateKey);
+  };
+
+  calendarContainer.appendChild(dayBtn);
+});
+
+if (firstAvailableDateKey) {
+  renderTimes(firstAvailableDateKey);
+}
+
+document.getElementById("slots-container").style.display = "block";
+document.getElementById("slots-container").scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 async function reserveSlot(slotId, slot) {
