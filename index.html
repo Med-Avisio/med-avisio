@@ -2017,6 +2017,35 @@ data.forEach(slot => {
   slotsByDate[dateKey].push(slot);
 });
 
+function renderTimes(dateKey) {
+  timeContainer.innerHTML = "";
+
+  const slots = slotsByDate[dateKey] || [];
+
+  if (slots.length === 0) {
+    timeContainer.innerHTML =
+      '<div class="helper-box">Für diesen Tag sind keine freien Uhrzeiten verfügbar.</div>';
+    return;
+  }
+
+  slots.forEach(slot => {
+    const btn = document.createElement("button");
+    btn.className = "btn booking-time-btn";
+    btn.type = "button";
+
+    const date = new Date(slot.start_time);
+
+    btn.textContent = date.toLocaleTimeString("de-DE", {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    btn.onclick = () => reserveSlot(slot.id, slot);
+
+    timeContainer.appendChild(btn);
+  });
+}
+
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
