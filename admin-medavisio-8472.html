@@ -259,6 +259,14 @@ function formatDateForInput(date) {
   return `${year}-${month}-${day}`;
 }
 
+function getSlotDate(slot) {
+  return slot.start_time.slice(0, 10);
+}
+
+function getSlotTime(slot) {
+  return slot.start_time.slice(11, 16);
+}
+
 function formatTimeForInput(hour, minute) {
   return String(hour).padStart(2, "0") + ":" + String(minute).padStart(2, "0");
 }
@@ -324,8 +332,8 @@ async function loadSlots() {
   const { data, error } = await supabaseClient
     .from("appointment_slots")
     .select("*")
-    .gte("start_time", currentWeekStart.toISOString())
-    .lte("start_time", weekEnd.toISOString())
+    .gte("start_time", formatDateForInput(currentWeekStart) + "T00:00:00")
+    .lte("start_time", formatDateForInput(weekEnd) + "T23:59:59")
     .order("start_time", { ascending: true });
 
   if (error) {
@@ -376,14 +384,11 @@ function renderCalendar(slots) {
         const dateText = formatDateForInput(day);
 
         const matchingSlot = slots.find(slot => {
-          const slotDate = new Date(slot.start_time);
-
-          return (
-            formatDateForInput(slotDate) === dateText &&
-            slotDate.getHours() === hour &&
-            slotDate.getMinutes() === minute
-          );
-        });
+  return (
+    getSlotDate(slot) === dateText &&
+    getSlotTime(slot) === timeText
+  );
+});
 
         const cell = document.createElement("div");
         cell.className = "calendar-cell calendar-slot";
