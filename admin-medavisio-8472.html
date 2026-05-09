@@ -404,21 +404,21 @@ function renderCalendar(slots) {
         cell.className = "calendar-cell calendar-slot";
 
         if (matchingSlot) {
-          if (matchingSlot.status === "reserved") {
-            cell.classList.add("calendar-reserved");
-            cell.innerHTML = `
-              reserviert<br>
-              ${matchingSlot.appointment_type}<br>
-              ${matchingSlot.duration_minutes} Min
-            `;
-          } else {
-            cell.classList.add("calendar-free");
-            cell.innerHTML = `
-              frei<br>
-              ${matchingSlot.appointment_type}<br>
-              ${matchingSlot.duration_minutes} Min
-            `;
-          }
+  if (matchingSlot.status === "reserved") {
+    cell.classList.add("calendar-reserved");
+    cell.innerHTML = `
+      reserviert<br>
+      ${matchingSlot.appointment_type}<br>
+      ${matchingSlot.duration_minutes} Min
+    `;
+  } else if (matchingSlot.status === "free") {
+    cell.classList.add("calendar-free");
+    cell.innerHTML = `
+      frei<br>
+      ${matchingSlot.appointment_type}<br>
+      ${matchingSlot.duration_minutes} Min
+    `;
+  }
 
           cell.onclick = async function () {
             const shouldRemove = confirm(
