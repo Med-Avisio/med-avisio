@@ -1767,7 +1767,7 @@ if (setup === "success") {
     successBox.style.color = "#7a4b00";
     successBox.textContent = "Die Hinterlegung der Zahlungsdaten wurde abgebrochen.";
   }
-  
+
   const calReturn = localStorage.getItem("calBookingStarted");
 
   if (calReturn === "mit") {
@@ -1942,6 +1942,23 @@ function setTerminAndContinue(terminText, terminart) {
   }
 }
   
+function hideBookingSuccessModal() {
+  const modal = document.getElementById("bookingSuccessModal");
+
+  if (modal) {
+    modal.style.display = "none";
+  }
+}
+
+document.addEventListener("click", function (event) {
+  if (
+    event.target.id === "closeBookingSuccessModal" ||
+    event.target.id === "closeBookingSuccessModalButton"
+  ) {
+    hideBookingSuccessModal();
+  }
+});
+
 </script>
   
 </body>
