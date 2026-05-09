@@ -334,7 +334,7 @@ async function createSlot() {
   loadSlots();
 }
 
-async function loadSlots() {
+asasync function loadSlots() {
   const weekEnd = new Date(currentWeekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
   weekEnd.setHours(23, 59, 59, 999);
@@ -344,6 +344,7 @@ async function loadSlots() {
     .select("*")
     .gte("start_time", formatDateForInput(currentWeekStart) + "T00:00:00")
     .lte("start_time", formatDateForInput(weekEnd) + "T23:59:59")
+    .in("status", ["free", "reserved"])
     .order("start_time", { ascending: true });
 
   if (error) {
