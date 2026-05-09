@@ -240,7 +240,7 @@ function login() {
   }
 
   document.getElementById("adminContent").style.display = "block";
-  loadSlots();
+  cleanupOldSlots();
 }
 
 function getMonday(date) {
@@ -279,6 +279,16 @@ function changeWeek(direction) {
 function goToCurrentWeek() {
   currentWeekStart = getMonday(new Date());
   loadSlots();
+}
+
+async function cleanupOldSlots() {
+  const { error } = await supabaseClient.rpc("cleanup_old_free_slots");
+
+  if (error) {
+    console.error("Alte Termine konnten nicht bereinigt werden:", error);
+  }
+
+  await loadSlots();
 }
 
 async function createSlot() {
