@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     const safeAppointmentType = escapeHtml(appointmentType || 'Online-Sprechstunde');
     const safePhone = escapeHtml(phone || '-');
 
-    const fromAddress = 'med-avisio Test <onboarding@resend.dev>';
+    const fromAddress = 'med-avisio <kontakt@med-avisio.com>';
 
     const patientMail = await resend.emails.send({
   from: fromAddress,
