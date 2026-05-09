@@ -334,7 +334,7 @@ async function createSlot() {
   loadSlots();
 }
 
-asasync function loadSlots() {
+async function loadSlots() {
   const weekEnd = new Date(currentWeekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
   weekEnd.setHours(23, 59, 59, 999);
