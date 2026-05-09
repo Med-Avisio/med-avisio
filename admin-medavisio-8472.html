@@ -337,19 +337,18 @@ async function createSlot() {
 async function loadSlots() {
   const weekEnd = new Date(currentWeekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
-  weekEnd.setHours(23, 59, 59, 999);
 
-  const { data, error } = await supabaseClient
-    .from("appointment_slots")
-    .select("*")
-    .gte("start_time", formatDateForInput(currentWeekStart) + "T00:00:00")
-    .lte("start_time", formatDateForInput(weekEnd) + "T23:59:59")
-    .in("status", ["free", "reserved"])
-    .order("start_time", { ascending: true });
+  const startText = formatDateForInput(currentWeekStart) + "T00:00:00";
+  const endText = formatDateForInput(weekEnd) + "T23:59:59";
+
+  const { data, error } = await supabaseClient.rpc("get_admin_calendar_slots", {
+    p_start: startText,
+    p_end: endText
+  });
 
   if (error) {
     console.error(error);
-    alert("Fehler beim Laden der Termine.");
+    alert("Fehler beim Laden der Termine: " + error.message);
     return;
   }
 
