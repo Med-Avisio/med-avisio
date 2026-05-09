@@ -13,23 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   
   <style>
-
-.aufbau-hinweis {
-  background: #fff4e5;
-  border-bottom: 1px solid #f0c36d;
-  color: #5f3b00;
-  padding: 12px 18px;
-  text-align: center;
-  font-size: 15px;
-  line-height: 1.5;
-  z-index: 9999;
-  position: relative;
-}
-
-.aufbau-hinweis strong {
-  font-weight: 700;
-}
-
+    
     #payment-element {
      margin-top: 10px;
     }
@@ -673,7 +657,67 @@ select:focus{
 .confirm-close:hover{
   background:#ddebed;
 }
-    
+  
+  .modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  z-index: 9999;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 90px 20px 20px;
+}
+
+.modal-box {
+  width: 100%;
+  max-width: 520px;
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+  position: relative;
+  border: 1px solid #d7eef0;
+}
+
+.modal-box h2 {
+  margin: 0 0 14px;
+  color: #003049;
+  font-size: 1.45rem;
+}
+
+.modal-box p {
+  margin: 0 0 22px;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.modal-button {
+  background: #2FA4A9;
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 22px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modal-button:hover {
+  opacity: 0.92;
+}
+
 </style>
   <script type="application/ld+json">
 {
@@ -695,6 +739,34 @@ select:focus{
   
 </head>
 <body>
+
+ <div id="bookingSuccessModal" class="modal-overlay" style="display:none;">
+  <div class="modal-box">
+
+    <button
+      type="button"
+      class="modal-close"
+      id="closeBookingSuccessModal"
+    >
+      ×
+    </button>
+
+    <h2>Zahlungsdaten erfolgreich hinterlegt</h2>
+
+    <p id="bookingSuccessText">
+      Ihre Zahlungsdaten wurden erfolgreich hinterlegt.
+    </p>
+
+    <button
+      type="button"
+      class="modal-button"
+      id="closeBookingSuccessModalButton"
+    >
+      Schließen
+    </button>
+
+  </div>
+</div> 
 
 <div class="aufbau-hinweis">
   <strong>Hinweis:</strong> med-avisio befindet sich derzeit noch im technischen und organisatorischen Aufbau. 
@@ -1622,20 +1694,33 @@ document.addEventListener("DOMContentLoaded", async function () {
   const setup = params.get("setup");
   const successBox = document.getElementById("payment-success-box");
 
-  if (setup === "success" && successBox) {
-    successBox.style.display = "block";
-    successBox.style.background = "#eaf7ee";
-    successBox.style.border = "1px solid #b7dfc2";
-    successBox.style.color = "#14532d";
-    successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
-const pendingBookingMail = localStorage.getItem("pendingBookingMail");
+if (setup === "success") {
+  window.scrollTo({ top: 0, behavior: "smooth" });
 
-if (!pendingBookingMail) {
-  successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Es wurden aber keine Buchungsdaten für die E-Mail gefunden.";
-  return;
-}
+  if (successBox) {
+    successBox.style.display = "none";
+  }
 
-if (pendingBookingMail) {
+  if (bookingSuccessModal) {
+    bookingSuccessModal.style.display = "flex";
+  }
+
+  if (bookingSuccessText) {
+    bookingSuccessText.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt.";
+  }
+
+  const pendingBookingMail = localStorage.getItem("pendingBookingMail");
+
+  console.log("pendingBookingMail aus localStorage:", pendingBookingMail);
+
+  if (!pendingBookingMail) {
+    if (bookingSuccessText) {
+      bookingSuccessText.textContent =
+        "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Es wurden aber keine Buchungsdaten für die E-Mail gefunden.";
+    }
+    return;
+  }
+
   try {
     const bookingData = JSON.parse(pendingBookingMail);
 
@@ -1649,24 +1734,31 @@ if (pendingBookingMail) {
       .then(function (mailResponse) {
         if (mailResponse.ok) {
           localStorage.removeItem("pendingBookingMail");
-          successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Eine Terminbestätigung wurde per E-Mail versendet.";
+
+          if (bookingSuccessText) {
+            bookingSuccessText.textContent =
+              "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Eine Terminbestätigung wurde per E-Mail versendet.";
+          }
         } else {
-          successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+          if (bookingSuccessText) {
+            bookingSuccessText.textContent =
+              "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+          }
         }
       })
       .catch(function () {
-        successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+        if (bookingSuccessText) {
+          bookingSuccessText.textContent =
+            "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+        }
       });
   } catch (err) {
-    successBox.textContent = "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
-  }
-}
-
-    const kontaktSection = document.getElementById("kontakt");
-    if (kontaktSection) {
-      kontaktSection.scrollIntoView({ behavior: "smooth" });
+    if (bookingSuccessText) {
+      bookingSuccessText.textContent =
+        "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
     }
   }
+}
 
   if (setup === "cancel" && successBox) {
     successBox.style.display = "block";
@@ -1674,13 +1766,8 @@ if (pendingBookingMail) {
     successBox.style.border = "1px solid #f0c36d";
     successBox.style.color = "#7a4b00";
     successBox.textContent = "Die Hinterlegung der Zahlungsdaten wurde abgebrochen.";
-
-    const kontaktSection = document.getElementById("kontakt");
-    if (kontaktSection) {
-      kontaktSection.scrollIntoView({ behavior: "smooth" });
-    }
   }
-
+  
   const calReturn = localStorage.getItem("calBookingStarted");
 
   if (calReturn === "mit") {
@@ -1774,19 +1861,11 @@ async function reserveSlot(slotId, slot) {
     p_email: email
   });
 
-  if (error) {
-  console.error("RPC-Fehler:", error);
-  alert("Fehler beim Reservieren: " + error.message);
-  loadSlots(terminart);
-  return;
-}
-
-if (!data || data.length === 0) {
-  alert("Termin wurde nicht reserviert. Der RPC hat 0 Zeilen geändert. Status oder ID passt nicht.");
-  console.log("Slot beim Klick:", slot);
-  loadSlots(terminart);
-  return;
-}
+  if (error || !data || data.length === 0) {
+    alert("Dieser Termin wurde gerade vergeben. Bitte wählen Sie einen anderen Termin.");
+    loadSlots(terminart);
+    return;
+  }
 
   const appointmentDate = new Date(slot.start_time).toLocaleDateString("de-DE", {
     weekday: "long",
@@ -1810,6 +1889,8 @@ if (!data || data.length === 0) {
       : "Online-Sprechstunde ohne Vorbefunde",
     phone: ""
   }));
+
+  console.log("pendingBookingMail wurde gespeichert:", localStorage.getItem("pendingBookingMail"));
 
   showConfirmationFlow({
     termin: new Date(slot.start_time).toLocaleString("de-DE"),
