@@ -751,20 +751,29 @@ select:focus{
   border: 1px solid #e5e7eb;
   background: #f3f4f6;
   color: #9ca3af;
-  border-radius: 12px;
-  padding: 10px 4px;
-  min-height: 58px;
+
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+
+  border-radius: 999px;
+  padding: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto;
   cursor: default;
 }
 
 .booking-day span {
-  display: block;
-  font-size: 12px;
-  margin-bottom: 4px;
+  display: none;
 }
 
 .booking-day strong {
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .booking-day.has-slots {
