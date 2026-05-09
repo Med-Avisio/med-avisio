@@ -813,6 +813,33 @@ select:focus{
   }
 }
 
+.booking-calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.booking-calendar-days::before {
+  content: "Mo";
+}
+
+.booking-day.other-month {
+  opacity: 0.35;
+}
+
+.booking-day {
+  min-height: 44px;
+  padding: 6px 2px;
+}
+
+.booking-day span {
+  display: none;
+}
+
+.booking-day strong {
+  font-size: 15px;
+}
+
 </style>
   <script type="application/ld+json">
 {
@@ -1944,25 +1971,27 @@ data.forEach(slot => {
 });
 
 const firstDate = new Date(data[0].start_time);
-const monday = new Date(firstDate);
-const day = monday.getDay();
-const diffToMonday = day === 0 ? -6 : 1 - day;
-monday.setDate(monday.getDate() + diffToMonday);
 
-const weekDays = [];
+const monthStart = new Date(firstDate.getFullYear(), firstDate.getMonth(), 1);
+const monthEnd = new Date(firstDate.getFullYear(), firstDate.getMonth() + 1, 0);
 
-for (let i = 0; i < 7; i++) {
-  const d = new Date(monday);
-  d.setDate(monday.getDate() + i);
-  weekDays.push(d);
+const calendarStart = new Date(monthStart);
+const startDay = calendarStart.getDay();
+const diffToMonday = startDay === 0 ? -6 : 1 - startDay;
+calendarStart.setDate(calendarStart.getDate() + diffToMonday);
+
+const calendarDays = [];
+
+for (let i = 0; i < 42; i++) {
+  const d = new Date(calendarStart);
+  d.setDate(calendarStart.getDate() + i);
+  calendarDays.push(d);
 }
 
-const weekEnd = new Date(weekDays[6]);
-
-weekTitle.textContent =
-  weekDays[0].toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit" }) +
-  " – " +
-  weekEnd.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+weekTitle.textContent = firstDate.toLocaleDateString("de-DE", {
+  month: "long",
+  year: "numeric"
+});
 
 function renderTimes(dateKey) {
   timeContainer.innerHTML = "";
@@ -1992,13 +2021,17 @@ function renderTimes(dateKey) {
 
 let firstAvailableDateKey = null;
 
-weekDays.forEach((date, index) => {
+calendarDays.forEach((date, index) => {
   const dateKey = date.toISOString().split("T")[0];
   const hasSlots = !!slotsByDate[dateKey];
 
   const dayBtn = document.createElement("button");
   dayBtn.type = "button";
   dayBtn.className = "booking-day";
+
+  if (date.getMonth() !== firstDate.getMonth()) {
+  dayBtn.classList.add("other-month");
+}
 
   if (hasSlots) {
     dayBtn.classList.add("has-slots");
