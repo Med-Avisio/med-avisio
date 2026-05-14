@@ -1524,13 +1524,26 @@ select:focus{
         <textarea id="beschwerden-mit" rows="5" placeholder="Beschwerden kurz schildern"></textarea>
 
         <div class="upload-box">
-          <label>Vorbefunde hochladen</label>
-          <div id="upload-placeholder">
-            <div class="small">
-              Der Upload erfolgt später über eine sichere Verbindung. Bitte senden Sie keine Befunde per E-Mail.
-            </div>
-          </div>
-        </div>
+  <label for="befunde-mit">Vorbefunde hochladen</label>
+
+  <input
+    type="file"
+    id="befunde-mit"
+    multiple
+    accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+  >
+
+  <div class="small" style="margin-top:8px;">
+    Erlaubt sind PDF-, JPG- und PNG-Dateien bis maximal 20 MB pro Datei.
+    Bitte laden Sie nur medizinisch relevante Unterlagen hoch.
+  </div>
+
+  <div class="small" style="margin-top:6px;">
+    Die Übertragung erfolgt verschlüsselt. Die hochgeladenen Rohdaten werden nur für die Vorbereitung der Videosprechstunde verwendet und anschließend gelöscht.
+  </div>
+
+  <div id="upload-status-mit" class="small" style="margin-top:8px;"></div>
+</div>
 
         <label for="beginn-mit">Seit wann bestehen die Beschwerden?</label>
         <input type="text" id="beginn-mit" placeholder="z. B. seit 3 Monaten">
@@ -2246,6 +2259,94 @@ async function reserveSlot(slotId, slot) {
     console.error("Fehler beim Speichern der Patientendaten:", requestError);
     alert("Der Termin wurde reserviert, aber die medizinischen Angaben konnten nicht gespeichert werden. Bitte kontaktieren Sie uns.");
     return;
+  }
+
+  let uploadedFiles = [];
+
+  if (terminart === "mit") {
+    const fileInput = document.getElementById("befunde-mit");
+    const uploadStatus = document.getElementById("upload-status-mit");
+    const files = fileInput ? Array.from(fileInput.files) : [];
+
+    if (files.length === 0) {
+      alert("Bitte laden Sie mindestens einen Vorbefund hoch.");
+      return;
+    }
+
+    if (uploadStatus) {
+      uploadStatus.textContent = "Vorbefunde werden hochgeladen...";
+    }
+
+    for (const file of files) {
+      const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
+
+      if (!allowedTypes.includes(file.type)) {
+        alert("Nicht erlaubter Dateityp: " + file.name);
+        return;
+      }
+
+      if (file.size > 20 * 1024 * 1024) {
+        alert("Die Datei ist größer als 20 MB: " + file.name);
+        return;
+      }
+
+      const safeFileName = file.name
+        .replace(/[^a-zA-Z0-9.\-_]/g, "_")
+        .toLowerCase();
+
+      const filePath =
+        "uploads/" +
+        slotId +
+        "/" +
+        Date.now() +
+        "-" +
+        crypto.randomUUID() +
+        "-" +
+        safeFileName;
+
+      const { error: uploadError } = await supabaseClient.storage
+        .from("patient-documents")
+        .upload(filePath, file, {
+          cacheControl: "3600",
+          upsert: false
+        });
+
+      if (uploadError) {
+        console.error("Upload fehlgeschlagen:", uploadError);
+
+        if (uploadStatus) {
+          uploadStatus.textContent = "Upload fehlgeschlagen.";
+        }
+
+        alert("Der Upload ist fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        return;
+      }
+
+      uploadedFiles.push({
+        name: file.name,
+        path: filePath,
+        type: file.type,
+        size: file.size
+      });
+    }
+
+    if (uploadStatus) {
+      uploadStatus.textContent = "Upload abgeschlossen.";
+    }
+
+    const { error: uploadUpdateError } = await supabaseClient
+      .from("patient_requests")
+      .update({
+        upload_status: "uploaded",
+        uploaded_files: uploadedFiles
+      })
+      .eq("appointment_slot_id", slotId);
+
+    if (uploadUpdateError) {
+      console.error("Upload gespeichert, aber Datenbank-Update fehlgeschlagen:", uploadUpdateError);
+      alert("Die Dateien wurden hochgeladen, aber nicht korrekt mit der Anfrage verknüpft. Bitte kontaktieren Sie uns.");
+      return;
+    }
   }
 
   localStorage.setItem("pendingBookingMail", JSON.stringify({
