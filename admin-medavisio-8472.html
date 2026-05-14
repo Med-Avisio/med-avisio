@@ -423,20 +423,24 @@ function renderCalendar(slots) {
 
         if (matchingSlot) {
           if (matchingSlot.status === "reserved") {
-            cell.classList.add("calendar-reserved");
-            cell.innerHTML = `
-              reserviert<br>
-              ${matchingSlot.appointment_type}<br>
-              ${matchingSlot.duration_minutes} Min
-            `;
-          } else if (matchingSlot.status === "free") {
-            cell.classList.add("calendar-free");
-            cell.innerHTML = `
-              frei<br>
-              ${matchingSlot.appointment_type}<br>
-              ${matchingSlot.duration_minutes} Min
-            `;
-          }
+  cell.classList.add("calendar-reserved");
+  cell.innerHTML = `
+    reserviert<br>
+    ${matchingSlot.appointment_type}<br>
+    ${matchingSlot.duration_minutes} Min
+  `;
+} else if (matchingSlot.status === "pending_payment") {
+  cell.innerHTML = "";
+}
+
+else if (matchingSlot.status === "free") {
+  cell.classList.add("calendar-free");
+  cell.innerHTML = `
+    frei<br>
+    ${matchingSlot.appointment_type}<br>
+    ${matchingSlot.duration_minutes} Min
+  `;
+}
 
           cell.onclick = async function () {
   if (matchingSlot.status === "reserved") {
