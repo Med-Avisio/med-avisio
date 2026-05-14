@@ -600,6 +600,12 @@ box.innerHTML = `
   <p><strong>Bisherige Behandlung:</strong><br>${request.bisherige_behandlung || "-"}</p>
 
   <p><strong>Uploadstatus:</strong><br>${request.upload_status || "-"}</p>
+
+  <br><br>
+
+<button onclick="deleteSlot('${slotId}')">
+  Reservierten Termin löschen
+</button>
 `;
 }
 
