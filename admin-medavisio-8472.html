@@ -414,33 +414,37 @@ function renderCalendar(slots) {
         cell.className = "calendar-cell calendar-slot";
 
         if (matchingSlot) {
-  if (matchingSlot.status === "reserved") {
-    cell.classList.add("calendar-reserved");
-    cell.innerHTML = `
-      reserviert<br>
-      ${matchingSlot.appointment_type}<br>
-      ${matchingSlot.duration_minutes} Min
-    `;
-  } else if (matchingSlot.status === "free") {
-    cell.classList.add("calendar-free");
-    cell.innerHTML = `
-      frei<br>
-      ${matchingSlot.appointment_type}<br>
-      ${matchingSlot.duration_minutes} Min
-    `;
-  }
+          if (matchingSlot.status === "reserved") {
+            cell.classList.add("calendar-reserved");
+            cell.innerHTML = `
+              reserviert<br>
+              ${matchingSlot.appointment_type}<br>
+              ${matchingSlot.duration_minutes} Min
+            `;
+          } else if (matchingSlot.status === "free") {
+            cell.classList.add("calendar-free");
+            cell.innerHTML = `
+              frei<br>
+              ${matchingSlot.appointment_type}<br>
+              ${matchingSlot.duration_minutes} Min
+            `;
+          }
 
           cell.onclick = async function () {
-            const shouldRemove = confirm(
-              "Diesen Termin entfernen?\n\n" +
-              dateText + " um " + timeText + " Uhr\n" +
-              "Status: " + matchingSlot.status
-            );
+  if (matchingSlot.status === "reserved") {
+    await showPatientRequest(matchingSlot.id, dateText, timeText);
+    return;
+  }
 
-            if (shouldRemove) {
-              await deleteSlot(matchingSlot.id);
-            }
-          };
+  const shouldRemove = confirm(
+    "Diesen freien Termin entfernen?\n\n" +
+    dateText + " um " + timeText + " Uhr"
+  );
+
+  if (shouldRemove) {
+    await deleteSlot(matchingSlot.id);
+  }
+};
 
         } else {
           cell.innerHTML = "";
@@ -463,8 +467,85 @@ function createCell(content, className) {
   return cell;
 }
 
-async function deleteSlot(id) {
+async function showPatientRequest(slotId, dateText, timeText) {
+  const { data, error } = await supabaseClient
+    .from("patient_requests")
+    .select("*")
+    .eq("appointment_slot_id", slotId)
+    .order("created_at", { ascending: false })
+    .limit(1);
 
+  if (error) {
+    console.error("Fehler beim Laden der Patientendaten:", error);
+    alert("Patientendaten konnten nicht geladen werden.");
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    alert(
+      "Für diesen reservierten Termin wurden keine Patientendaten gefunden.\n\n" +
+      dateText + " um " + timeText + " Uhr"
+    );
+    return;
+  }
+
+  const request = data[0];
+
+  alert(
+    "Patientendaten\n\n" +
+    "Termin: " + dateText + " um " + timeText + " Uhr\n\n" +
+    "Name: " + (request.patient_name || "-") + "\n" +
+    "E-Mail: " + (request.patient_email || "-") + "\n" +
+    "Terminart: " + (request.terminart || "-") + "\n\n" +
+    "Beschwerden:\n" + (request.beschwerden || "-") + "\n\n" +
+    "Seit wann:\n" + (request.seit_wann || "-") + "\n\n" +
+    "Ein/beide Augen:\n" + (request.augenseite || "-") + "\n\n" +
+    "Kontaktlinsen:\n" + (request.kontaktlinsen || "-") + "\n\n" +
+    "Bisherige Behandlung:\n" + (request.bisherige_behandlung || "-") + "\n\n" +
+    "Uploadstatus: " + (request.upload_status || "-")
+  );
+}
+
+async function showPatientRequest(slotId, dateText, timeText) {
+  const { data, error } = await supabaseClient
+    .from("patient_requests")
+    .select("*")
+    .eq("appointment_slot_id", slotId)
+    .order("created_at", { ascending: false })
+    .limit(1);
+
+  if (error) {
+    console.error("Fehler beim Laden der Patientendaten:", error);
+    alert("Patientendaten konnten nicht geladen werden.");
+    return;
+  }
+
+  if (!data || data.length === 0) {
+    alert(
+      "Für diesen reservierten Termin wurden keine Patientendaten gefunden.\n\n" +
+      dateText + " um " + timeText + " Uhr"
+    );
+    return;
+  }
+
+  const request = data[0];
+
+  alert(
+    "Patientendaten\n\n" +
+    "Termin: " + dateText + " um " + timeText + " Uhr\n\n" +
+    "Name: " + (request.patient_name || "-") + "\n" +
+    "E-Mail: " + (request.patient_email || "-") + "\n" +
+    "Terminart: " + (request.terminart || "-") + "\n\n" +
+    "Beschwerden:\n" + (request.beschwerden || "-") + "\n\n" +
+    "Seit wann:\n" + (request.seit_wann || "-") + "\n\n" +
+    "Ein/beide Augen:\n" + (request.augenseite || "-") + "\n\n" +
+    "Kontaktlinsen:\n" + (request.kontaktlinsen || "-") + "\n\n" +
+    "Bisherige Behandlung:\n" + (request.bisherige_behandlung || "-") + "\n\n" +
+    "Uploadstatus: " + (request.upload_status || "-")
+  );
+}
+
+async function deleteSlot(id) {
   const { data, error } = await supabaseClient.rpc("cancel_appointment_slot", {
     slot_id: id
   });
@@ -485,6 +566,5 @@ async function deleteSlot(id) {
 }
 
 </script>
-
 </body>
 </html>
