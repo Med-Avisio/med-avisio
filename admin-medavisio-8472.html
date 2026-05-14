@@ -560,19 +560,31 @@ async function showPatientRequest(slotId, dateText, timeText) {
 
   const request = data[0];
 
-  alert(
-    "Patientendaten\n\n" +
-    "Termin: " + dateText + " um " + timeText + " Uhr\n\n" +
-    "Name: " + (request.patient_name || "-") + "\n" +
-    "E-Mail: " + (request.patient_email || "-") + "\n" +
-    "Terminart: " + (request.terminart || "-") + "\n\n" +
-    "Beschwerden:\n" + (request.beschwerden || "-") + "\n\n" +
-    "Seit wann:\n" + (request.seit_wann || "-") + "\n\n" +
-    "Ein/beide Augen:\n" + (request.augenseite || "-") + "\n\n" +
-    "Kontaktlinsen:\n" + (request.kontaktlinsen || "-") + "\n\n" +
-    "Bisherige Behandlung:\n" + (request.bisherige_behandlung || "-") + "\n\n" +
-    "Uploadstatus: " + (request.upload_status || "-")
-  );
+ const box = document.getElementById("patientDetailsBox");
+
+box.innerHTML = `
+  <h2>Patientendaten</h2>
+
+  <p><strong>Termin:</strong><br>${dateText} um ${timeText} Uhr</p>
+
+  <p><strong>Name:</strong><br>${request.patient_name || "-"}</p>
+
+  <p><strong>E-Mail:</strong><br>${request.patient_email || "-"}</p>
+
+  <p><strong>Terminart:</strong><br>${request.terminart || "-"}</p>
+
+  <p><strong>Beschwerden:</strong><br>${request.beschwerden || "-"}</p>
+
+  <p><strong>Seit wann:</strong><br>${request.seit_wann || "-"}</p>
+
+  <p><strong>Ein/beide Augen:</strong><br>${request.augenseite || "-"}</p>
+
+  <p><strong>Kontaktlinsen:</strong><br>${request.kontaktlinsen || "-"}</p>
+
+  <p><strong>Bisherige Behandlung:</strong><br>${request.bisherige_behandlung || "-"}</p>
+
+  <p><strong>Uploadstatus:</strong><br>${request.upload_status || "-"}</p>
+`;
 }
 
 async function deleteSlot(id) {
