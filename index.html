@@ -2196,6 +2196,31 @@ async function reserveSlot(slotId, slot) {
     minute: "2-digit"
   });
 
+  const formPrefix = terminart === "mit" ? "mit" : "ohne";
+
+  const patientRequest = {
+    appointment_slot_id: slotId,
+    terminart: terminart === "mit" ? "mit_vorbefunden" : "ohne_vorbefunde",
+    patient_name: name,
+    patient_email: email,
+    beschwerden: document.getElementById("beschwerden-" + formPrefix).value.trim(),
+    seit_wann: document.getElementById("beginn-" + formPrefix).value.trim(),
+    augenseite: document.getElementById("augen-" + formPrefix).value.trim(),
+    kontaktlinsen: document.getElementById("kontaktlinsen-" + formPrefix).value.trim(),
+    bisherige_behandlung: document.getElementById("behandlung-" + formPrefix).value.trim(),
+    upload_status: terminart === "mit" ? "pending" : "none"
+  };
+
+  const { error: requestError } = await supabaseClient
+    .from("patient_requests")
+    .insert([patientRequest]);
+
+  if (requestError) {
+    console.error("Fehler beim Speichern der Patientendaten:", requestError);
+    alert("Der Termin wurde reserviert, aber die medizinischen Angaben konnten nicht gespeichert werden. Bitte kontaktieren Sie uns.");
+    return;
+  }
+
   localStorage.setItem("pendingBookingMail", JSON.stringify({
     patientName: name,
     patientEmail: email,
