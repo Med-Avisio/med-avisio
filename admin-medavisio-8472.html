@@ -175,9 +175,8 @@
   <div class="box">
 
     <label>Passwort</label>
-    <input type="password" id="adminPassword">
+    <input type="email" id="adminEmail" placeholder="E-Mail">
 
-    <button onclick="login()">Admin öffnen</button>
 
   </div>
 
@@ -231,15 +230,22 @@ const supabaseClient = supabase.createClient(
 
 let currentWeekStart = getMonday(new Date());
 
-function login() {
+async function login() {
+  const email = document.getElementById("adminEmail").value.trim();
   const password = document.getElementById("adminPassword").value;
 
-  if (password !== "medavisio2026") {
-    alert("Falsches Passwort");
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  if (error) {
+    alert("Login fehlgeschlagen: " + error.message);
     return;
   }
 
   document.getElementById("adminContent").style.display = "block";
+
   cleanupOldSlots();
 }
 
