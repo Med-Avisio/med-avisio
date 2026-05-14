@@ -2224,6 +2224,11 @@ async function reserveSlot(slotId, slot) {
     return;
   }
 
+console.log("GEWÄHLTER SLOT:", slot);
+console.log("slot.start_time:", slot.start_time);
+console.log("Date lokal:", new Date(slot.start_time).toString());
+console.log("Date ISO:", new Date(slot.start_time).toISOString());
+
  const appointmentDate = new Date(slot.start_time).toLocaleDateString("de-DE", {
   timeZone: "Europe/Berlin",
   weekday: "long",
