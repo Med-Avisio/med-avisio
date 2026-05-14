@@ -8,9 +8,9 @@ const supabaseAdmin = createClient(
 
 export default async function handler(req, res) {
   try {
-   const secret = req.headers["x-cleanup-secret"];
+    const authHeader = req.headers.authorization;
 
-if (secret !== process.env.CLEANUP_SECRET) {
+if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
   return res.status(401).json({ error: "Unauthorized" });
 }
 
