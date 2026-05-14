@@ -2044,11 +2044,17 @@ if (!data || data.length === 0) {
   return;
 }
 
+function getBerlinDateKey(value) {
+  return new Date(value).toLocaleDateString("sv-SE", {
+    timeZone: "Europe/Berlin"
+  });
+}
+
 const slotsByDate = {};
 
 data.forEach(slot => {
   const date = new Date(slot.start_time);
-  const dateKey = date.toISOString().split("T")[0];
+ const dateKey = getBerlinDateKey(slot.start_time);
 
   if (!slotsByDate[dateKey]) {
     slotsByDate[dateKey] = [];
@@ -2120,7 +2126,7 @@ function buildCalendar(monthDate) {
   let firstAvailableDayBtn = null;
 
   calendarDays.forEach(date => {
-    const dateKey = date.toISOString().split("T")[0];
+    const dateKey = getBerlinDateKey(date);
     const hasSlots = !!slotsByDate[dateKey];
 
     const cleanDate = new Date(date);
