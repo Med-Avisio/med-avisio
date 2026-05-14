@@ -1902,6 +1902,31 @@ if (setup === "success") {
   try {
     const bookingData = JSON.parse(pendingBookingMail);
 
+    if (!bookingData.slotId) {
+      if (bookingSuccessText) {
+        bookingSuccessText.textContent =
+          "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Der Termin konnte aber nicht eindeutig bestätigt werden.";
+      }
+      return;
+    }
+
+    const { data: confirmData, error: confirmError } = await supabaseClient.rpc(
+      "confirm_appointment_after_payment",
+      {
+        slot_id: bookingData.slotId
+      }
+    );
+
+    if (confirmError || !confirmData || confirmData.length === 0) {
+      console.error("Termin konnte nach Zahlung nicht bestätigt werden:", confirmError);
+
+      if (bookingSuccessText) {
+        bookingSuccessText.textContent =
+          "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Der Termin konnte aber nicht automatisch bestätigt werden. Bitte kontaktieren Sie uns.";
+      }
+      return;
+    }
+
     fetch("/api/send-booking-mails", {
       method: "POST",
       headers: {
@@ -1920,20 +1945,22 @@ if (setup === "success") {
         } else {
           if (bookingSuccessText) {
             bookingSuccessText.textContent =
-              "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+              "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Der Termin wurde bestätigt, aber die Terminbestätigung konnte nicht automatisch versendet werden.";
           }
         }
       })
       .catch(function () {
         if (bookingSuccessText) {
           bookingSuccessText.textContent =
-            "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+            "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Der Termin wurde bestätigt, aber die Terminbestätigung konnte nicht automatisch versendet werden.";
         }
       });
   } catch (err) {
+    console.error("Fehler nach Stripe-Erfolg:", err);
+
     if (bookingSuccessText) {
       bookingSuccessText.textContent =
-        "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch versendet werden.";
+        "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Die Terminbestätigung konnte nicht automatisch abgeschlossen werden.";
     }
   }
 }
@@ -2222,15 +2249,16 @@ async function reserveSlot(slotId, slot) {
   }
 
   localStorage.setItem("pendingBookingMail", JSON.stringify({
-    patientName: name,
-    patientEmail: email,
-    appointmentDate,
-    appointmentTime,
-    appointmentType: terminart === "mit"
-      ? "Online-Sprechstunde mit Vorbefunden"
-      : "Online-Sprechstunde ohne Vorbefunde",
-    phone: ""
-  }));
+  slotId: slotId,
+  patientName: name,
+  patientEmail: email,
+  appointmentDate,
+  appointmentTime,
+  appointmentType: terminart === "mit"
+    ? "Online-Sprechstunde mit Vorbefunden"
+    : "Online-Sprechstunde ohne Vorbefunde",
+  phone: ""
+}));
 
   console.log("pendingBookingMail wurde gespeichert:", localStorage.getItem("pendingBookingMail"));
 
