@@ -8,11 +8,14 @@ const supabaseAdmin = createClient(
 
 export default async function handler(req, res) {
   try {
-    const secret = req.headers["x-cleanup-secret"];
+   const secret = req.headers["x-cleanup-secret"];
 
-    if (secret !== process.env.CLEANUP_SECRET) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+console.log("HEADER SECRET:", secret);
+console.log("ENV SECRET:", process.env.CLEANUP_SECRET);
+
+if (secret !== process.env.CLEANUP_SECRET) {
+  return res.status(401).json({ error: "Unauthorized" });
+}
 
     const now = Date.now();
     const eightHoursMs = 8 * 60 * 60 * 1000;
