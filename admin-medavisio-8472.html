@@ -503,6 +503,9 @@ async function showPatientRequest(slotId, dateText, timeText) {
 
   const request = data[0];
 
+console.log("Patient request:", request);
+console.log("Uploaded files:", request.uploaded_files);
+
    const box = document.getElementById("patientDetailsBox");
 
   box.innerHTML = `
@@ -582,13 +585,25 @@ if (!data || data.length === 0) {
 
  const box = document.getElementById("patientDetailsBox");
 
+let uploadedFiles = [];
+
+if (Array.isArray(request.uploaded_files)) {
+  uploadedFiles = request.uploaded_files;
+} else if (typeof request.uploaded_files === "string") {
+  try {
+    uploadedFiles = JSON.parse(request.uploaded_files);
+  } catch (e) {
+    uploadedFiles = [];
+  }
+}
+
 let uploadsHtml = "<p><strong>Vorbefunde:</strong><br>Keine hochgeladenen Dateien.</p>";
 
-if (request.uploaded_files && Array.isArray(request.uploaded_files) && request.uploaded_files.length > 0) {
+if (uploadedFiles.length > 0) {
   uploadsHtml = `
     <p><strong>Vorbefunde:</strong></p>
     <div>
-      ${request.uploaded_files.map((file, index) => `
+      ${uploadedFiles.map((file, index) => `
         <button type="button" onclick="openPatientFile('${file.path}')">
           Datei ${index + 1}: ${file.name || "Befund öffnen"}
         </button>
