@@ -2224,17 +2224,19 @@ async function reserveSlot(slotId, slot) {
     return;
   }
 
-  const appointmentDate = new Date(slot.start_time).toLocaleDateString("de-DE", {
-    weekday: "long",
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric"
-  });
+ const appointmentDate = new Date(slot.start_time).toLocaleDateString("de-DE", {
+  timeZone: "Europe/Berlin",
+  weekday: "long",
+  day: "2-digit",
+  month: "2-digit",
+  year: "numeric"
+});
 
-  const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
-    hour: "2-digit",
-    minute: "2-digit"
-  });
+const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
+  timeZone: "Europe/Berlin",
+  hour: "2-digit",
+  minute: "2-digit"
+});
 
   const formPrefix = terminart === "mit" ? "mit" : "ohne";
 
