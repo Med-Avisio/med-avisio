@@ -533,6 +533,12 @@ async function showPatientRequest(slotId, dateText, timeText) {
 
     <p><strong>Uploadstatus:</strong><br>
     ${request.upload_status || "-"}</p>
+
+    <br><br>
+
+<button onclick="deleteSlot('${request.appointment_slot_id}')">
+  Termin löschen
+</button>
   `;
 }
 
