@@ -172,13 +172,17 @@
 
   <h1>med-avisio Admin</h1>
 
-  <div class="box">
+  <div class="box" id="loginBox">
 
-    <label>Passwort</label>
-    <input type="email" id="adminEmail" placeholder="E-Mail">
+  <label for="adminEmail">E-Mail</label>
+  <input type="email" id="adminEmail" placeholder="kontakt@med-avisio.com">
 
+  <label for="adminPassword">Passwort</label>
+  <input type="password" id="adminPassword" placeholder="Passwort">
 
-  </div>
+  <button onclick="login()">Einloggen</button>
+
+</div>
 
   <div id="adminContent" style="display:none;">
 
