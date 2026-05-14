@@ -582,6 +582,22 @@ if (!data || data.length === 0) {
 
  const box = document.getElementById("patientDetailsBox");
 
+let uploadsHtml = "<p><strong>Vorbefunde:</strong><br>Keine hochgeladenen Dateien.</p>";
+
+if (request.uploaded_files && Array.isArray(request.uploaded_files) && request.uploaded_files.length > 0) {
+  uploadsHtml = `
+    <p><strong>Vorbefunde:</strong></p>
+    <div>
+      ${request.uploaded_files.map((file, index) => `
+        <button type="button" onclick="openPatientFile('${file.path}')">
+          Datei ${index + 1}: ${file.name || "Befund öffnen"}
+        </button>
+        <br><br>
+      `).join("")}
+    </div>
+  `;
+}
+
 box.innerHTML = `
   <h2>Patientendaten</h2>
 
@@ -605,12 +621,28 @@ box.innerHTML = `
 
   <p><strong>Uploadstatus:</strong><br>${request.upload_status || "-"}</p>
 
+  ${uploadsHtml}
+
   <br><br>
 
 <button onclick="deleteSlot('${slotId}')">
   Reservierten Termin löschen
 </button>
 `;
+}
+
+async function openPatientFile(filePath) {
+  const { data, error } = await supabaseClient.storage
+    .from("patient-documents")
+    .createSignedUrl(filePath, 60);
+
+  if (error || !data || !data.signedUrl) {
+    console.error("Signed URL Fehler:", error);
+    alert("Datei konnte nicht geöffnet werden.");
+    return;
+  }
+
+  window.open(data.signedUrl, "_blank");
 }
 
 async function deleteSlot(id) {
