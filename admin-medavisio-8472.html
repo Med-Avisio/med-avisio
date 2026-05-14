@@ -534,12 +534,12 @@ async function showPatientRequest(slotId, dateText, timeText) {
     <p><strong>Uploadstatus:</strong><br>
     ${request.upload_status || "-"}</p>
 
-    <br><br>
+   <br><br>
 
-<button onclick="deleteSlot('${request.appointment_slot_id}')">
-  Termin löschen
+<button onclick="deleteSlot('${slotId}')">
+  Reservierten Termin löschen
 </button>
-  `;
+`;
 }
 
 async function showPatientRequest(slotId, dateText, timeText) {
@@ -556,13 +556,23 @@ async function showPatientRequest(slotId, dateText, timeText) {
     return;
   }
 
-  if (!data || data.length === 0) {
-    alert(
-      "Für diesen reservierten Termin wurden keine Patientendaten gefunden.\n\n" +
-      dateText + " um " + timeText + " Uhr"
-    );
-    return;
-  }
+if (!data || data.length === 0) {
+  const box = document.getElementById("patientDetailsBox");
+
+  box.innerHTML = `
+    <h2>Patientendaten</h2>
+
+    <p>Für diesen reservierten Termin wurden keine Patientendaten gefunden.</p>
+
+    <p><strong>Termin:</strong><br>${dateText} um ${timeText} Uhr</p>
+
+    <button onclick="deleteSlot('${slotId}')">
+      Reservierten Termin löschen
+    </button>
+  `;
+
+  return;
+}
 
   const request = data[0];
 
