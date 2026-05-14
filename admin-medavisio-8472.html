@@ -610,6 +610,15 @@ box.innerHTML = `
 }
 
 async function deleteSlot(id) {
+
+const shouldDelete = confirm(
+  "Diesen Termin wirklich endgültig löschen?"
+);
+
+if (!shouldDelete) {
+  return;
+}
+
   const { data, error } = await supabaseClient.rpc("cancel_appointment_slot", {
     slot_id: id
   });
