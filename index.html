@@ -2010,8 +2010,8 @@ if (setup === "success") {
       leistung: "Beratung ohne Vorbefunde",
       dauer: "ca. 20 Minuten",
       ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "6,3-fach",
-      betrag: "55,00 €"
+      faktor: "bis zu 6,3-fach",
+      betrag: "bis zu 55,00 €"
     });
 
     localStorage.removeItem("calBookingStarted");
@@ -2384,8 +2384,8 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
     leistung: terminart === "mit" ? "Beratung mit Vorbefunden" : "Beratung ohne Vorbefunde",
     dauer: terminart === "mit" ? "ca. 30 Minuten" : "ca. 20 Minuten",
     ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-    faktor: terminart === "mit" ? "10,0-fach" : "6,3-fach",
-    betrag: terminart === "mit" ? "87,00 €" : "55,00 €"
+    faktor: terminart === "mit" ? "bis zu 10,0-fach" : "bis zu 6,3-fach",
+    betrag: terminart === "mit" ? "bis zu 87,00 €" : "bis zu 55,00 €"
   });
 }
   
@@ -2412,8 +2412,8 @@ function setTerminAndContinue(terminText, terminart) {
       leistung: "Beratung mit Vorbefunden",
       dauer: "ca. 30 Minuten",
       ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "10,0-fach",
-      betrag: "87,00 €"
+      faktor: "bis zu 10,0-fach",
+      betrag: "bis zu 87,00 €"
     });
   }
 
@@ -2423,8 +2423,8 @@ function setTerminAndContinue(terminText, terminart) {
       leistung: "Beratung ohne Vorbefunde",
       dauer: "ca. 20 Minuten",
       ziffer: "GOÄ Nr. 3 – Eingehende Beratung",
-      faktor: "6,3-fach",
-      betrag: "55,00 €"
+      faktor: "bis zu 6,3-fach",
+      betrag: "bis zu 55,00 €"
     });
   }
 }
