@@ -1883,7 +1883,7 @@ function submitMit() {
       }
 
 localStorage.setItem("pendingBookingMail", JSON.stringify({
-  slotId: slotId,
+  slotId: currentBooking.slotId,
   patientName: name,
   patientEmail: email,
   appointmentDate,
@@ -1897,7 +1897,7 @@ localStorage.setItem("pendingBookingMail", JSON.stringify({
 }));
 
 sessionStorage.setItem("pendingBookingMail", JSON.stringify({
-  slotId: slotId,
+  slotId: currentBooking.slotId,
   patientName: name,
   patientEmail: email,
   appointmentDate,
@@ -2271,7 +2271,7 @@ async function reserveSlot(slotId, slot) {
   }
 
   const { data, error } = await supabaseClient.rpc("reserve_appointment_slot", {
-    slot_id: slotId,
+    slotId: currentBooking.slotId,
     p_name: name,
     p_email: email
   });
@@ -2327,7 +2327,7 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
   }
 
   localStorage.setItem("pendingBookingMail", JSON.stringify({
-  slotId: slotId,
+  slotId: currentBooking.slotId,
   patientName: name,
   patientEmail: email,
   appointmentDate,
@@ -2341,7 +2341,7 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
 }));
 
 sessionStorage.setItem("pendingBookingMail", JSON.stringify({
-  slotId: slotId,
+  slotId: currentBooking.slotId,
   patientName: name,
   patientEmail: email,
   appointmentDate,
