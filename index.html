@@ -1928,6 +1928,8 @@ const postStripeFiles = document.getElementById("postStripeFiles");
   try {
     const bookingData = JSON.parse(pendingBookingMail);
 
+    console.log("bookingData:", bookingData);
+
     if (
   bookingData.terminart === "mit" &&
   postStripeUploadBox
