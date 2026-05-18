@@ -922,6 +922,33 @@ select:focus{
       Ihre Zahlungsdaten wurden erfolgreich hinterlegt.
     </p>
 
+<div id="postStripeUploadBox" style="display:none; margin-top:18px; padding:16px; border:1px dashed #b7d6d8; border-radius:14px; background:#f8fbfb;">
+  <h3 style="margin-top:0;">Vorbefunde hochladen</h3>
+
+  <p class="small">
+    Sie können jetzt einen oder mehrere Vorbefunde hochladen. Erlaubt sind PDF-, JPG- und PNG-Dateien bis maximal 20 MB pro Datei.
+  </p>
+
+  <input
+    type="file"
+    id="postStripeFiles"
+    multiple
+    accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png"
+  >
+
+  <div id="postStripeUploadList" style="margin-top:12px; display:grid; gap:8px;"></div>
+
+  <div class="button-row" style="margin-top:14px;">
+    <button type="button" class="btn" id="postStripeUploadButton">
+      Ausgewählte Dateien hochladen
+    </button>
+  </div>
+
+  <p id="postStripeUploadHint" class="small" style="margin-top:10px;">
+    Bitte schließen Sie dieses Fenster erst, wenn der Upload abgeschlossen ist.
+  </p>
+</div>
+
     <button
       type="button"
       class="modal-button"
@@ -1883,6 +1910,11 @@ if (setup === "success") {
 
   const pendingBookingMail = localStorage.getItem("pendingBookingMail");
 
+const postStripeUploadBox = document.getElementById("postStripeUploadBox");
+const postStripeUploadButton = document.getElementById("postStripeUploadButton");
+const postStripeUploadList = document.getElementById("postStripeUploadList");
+const postStripeFiles = document.getElementById("postStripeFiles");
+
   console.log("pendingBookingMail aus localStorage:", pendingBookingMail);
 
   if (!pendingBookingMail) {
@@ -1895,6 +1927,13 @@ if (setup === "success") {
 
   try {
     const bookingData = JSON.parse(pendingBookingMail);
+
+    if (
+  bookingData.terminart === "mit" &&
+  postStripeUploadBox
+) {
+  postStripeUploadBox.style.display = "block";
+}
 
     if (!bookingData.slotId) {
       if (bookingSuccessText) {
@@ -1930,9 +1969,11 @@ if (setup === "success") {
     })
       .then(function (mailResponse) {
         if (mailResponse.ok) {
-          localStorage.removeItem("pendingBookingMail");
+  if (bookingData.terminart !== "mit") {
+    localStorage.removeItem("pendingBookingMail");
+  }
 
-          if (bookingSuccessText) {
+  if (bookingSuccessText) {
             bookingSuccessText.textContent =
               "Ihre Zahlungsdaten wurden erfolgreich hinterlegt. Eine Terminbestätigung wurde per E-Mail versendet.";
           }
@@ -2264,6 +2305,7 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
   appointmentType: terminart === "mit"
     ? "Online-Sprechstunde mit Vorbefunden"
     : "Online-Sprechstunde ohne Vorbefunde",
+  terminart: terminart,
   phone: ""
 }));
 
@@ -2288,6 +2330,265 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
     }
   });
   
+async function uploadPostStripeFiles() {
+  const fileInput = document.getElementById("postStripeFiles");
+  const uploadList = document.getElementById("postStripeUploadList");
+  const hint = document.getElementById("postStripeUploadHint");
+
+  const pendingBookingMail = localStorage.getItem("pendingBookingMail");
+
+  if (!pendingBookingMail) {
+    alert("Buchungsdaten nicht gefunden.");
+    return;
+  }
+
+  const bookingData = JSON.parse(pendingBookingMail);
+
+  if (!bookingData.slotId) {
+    alert("Termin konnte nicht zugeordnet werden.");
+    return;
+  }
+
+  const files = fileInput ? Array.from(fileInput.files || []) : [];
+
+  if (files.length === 0) {
+    alert("Bitte mindestens eine Datei auswählen.");
+    return;
+  }
+
+  const allowedTypes = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png"
+  ];
+
+  const uploadedFiles = [];
+
+  uploadList.innerHTML = "";
+
+  for (const file of files) {
+    const row = document.createElement("div");
+
+    row.style.padding = "10px";
+    row.style.border = "1px solid #d7e0e4";
+    row.style.borderRadius = "10px";
+    row.style.background = "#fff";
+
+    row.textContent = `${file.name}: Upload läuft...`;
+
+    uploadList.appendChild(row);
+
+    try {
+      if (!allowedTypes.includes(file.type)) {
+        row.textContent =
+          `${file.name}: nicht erlaubt (nur PDF/JPG/PNG).`;
+        continue;
+      }
+
+      if (file.size > 20 * 1024 * 1024) {
+        row.textContent =
+          `${file.name}: Datei größer als 20 MB.`;
+        continue;
+      }
+
+      const safeFileName = file.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-zA-Z0-9.\-_]/g, "_")
+        .toLowerCase();
+
+      const filePath =
+        "uploads/" +
+        bookingData.slotId +
+        "/" +
+        Date.now() +
+        "-" +
+        crypto.randomUUID() +
+        "-" +
+        safeFileName;
+
+      const { data, error } =
+        await supabaseClient.storage
+          .from("patient-documents")
+          .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false,
+            contentType:
+              file.type || "application/octet-stream"
+          });
+
+      if (error || !data) {
+        console.error(error);
+
+        row.textContent =
+          `${file.name}: Upload fehlgeschlagen.`;
+
+        continue;
+      }
+
+      uploadedFiles.push({
+        name: file.name,
+        path: filePath,
+        type: file.type,
+        size: file.size
+      });
+
+      row.innerHTML = `
+        <span>${file.name}: erfolgreich hochgeladen.</span>
+        <button
+          type="button"
+          onclick="deleteUploadedPostStripeFile('${filePath.replace(/'/g, "\\'")}', this)"
+          style="
+            float:right;
+            border:none;
+            background:#fee2e2;
+            color:#991b1b;
+            border-radius:999px;
+            padding:2px 8px;
+            cursor:pointer;
+          "
+        >
+          ×
+        </button>
+      `;
+    } catch (err) {
+      console.error(err);
+
+      row.textContent =
+        `${file.name}: technischer Fehler beim Upload.`;
+    }
+  }
+
+  if (uploadedFiles.length === 0) {
+    hint.textContent =
+      "Keine Datei wurde erfolgreich hochgeladen.";
+    return;
+  }
+
+  const { data: existingRows } =
+    await supabaseClient
+      .from("patient_requests")
+      .select("uploaded_files")
+      .eq(
+        "appointment_slot_id",
+        bookingData.slotId
+      )
+      .limit(1);
+
+  const existingFiles =
+    existingRows &&
+    existingRows[0] &&
+    Array.isArray(existingRows[0].uploaded_files)
+      ? existingRows[0].uploaded_files
+      : [];
+
+  const allFiles =
+    existingFiles.concat(uploadedFiles);
+
+  const { error: updateError } =
+    await supabaseClient
+      .from("patient_requests")
+      .update({
+        upload_status: "uploaded",
+        uploaded_files: allFiles
+      })
+      .eq(
+        "appointment_slot_id",
+        bookingData.slotId
+      );
+
+  if (updateError) {
+    console.error(updateError);
+
+    hint.textContent =
+      "Dateien hochgeladen, aber Datenbankupdate fehlgeschlagen.";
+
+    return;
+  }
+
+  hint.textContent =
+    "Upload abgeschlossen.";
+
+  fileInput.value = "";
+}
+
+async function deleteUploadedPostStripeFile(
+  filePath,
+  buttonElement
+) {
+  const pendingBookingMail =
+    localStorage.getItem("pendingBookingMail");
+
+  if (!pendingBookingMail) {
+    return;
+  }
+
+  const bookingData =
+    JSON.parse(pendingBookingMail);
+
+  const { error: storageError } =
+    await supabaseClient.storage
+      .from("patient-documents")
+      .remove([filePath]);
+
+  if (storageError) {
+    alert("Datei konnte nicht gelöscht werden.");
+    return;
+  }
+
+  const { data: existingRows } =
+    await supabaseClient
+      .from("patient_requests")
+      .select("uploaded_files")
+      .eq(
+        "appointment_slot_id",
+        bookingData.slotId
+      )
+      .limit(1);
+
+  const existingFiles =
+    existingRows &&
+    existingRows[0] &&
+    Array.isArray(existingRows[0].uploaded_files)
+      ? existingRows[0].uploaded_files
+      : [];
+
+  const remainingFiles =
+    existingFiles.filter(
+      file => file.path !== filePath
+    );
+
+  await supabaseClient
+    .from("patient_requests")
+    .update({
+      upload_status:
+        remainingFiles.length > 0
+          ? "uploaded"
+          : "pending",
+      uploaded_files: remainingFiles
+    })
+    .eq(
+      "appointment_slot_id",
+      bookingData.slotId
+    );
+
+  const row =
+    buttonElement.closest("div");
+
+  if (row) {
+    row.remove();
+  }
+}
+
+document.addEventListener("click", function (event) {
+  if (
+    event.target &&
+    event.target.id === "postStripeUploadButton"
+  ) {
+    uploadPostStripeFiles();
+  }
+});
+
   function getSelectedTermin() {
   const saved = localStorage.getItem("selectedTermin");
   return saved ? saved : "Noch kein Termin ausgewählt";
