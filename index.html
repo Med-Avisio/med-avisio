@@ -2311,6 +2311,19 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
   phone: ""
 }));
 
+sessionStorage.setItem("pendingBookingMail", JSON.stringify({
+  slotId: slotId,
+  patientName: name,
+  patientEmail: email,
+  appointmentDate,
+  appointmentTime,
+  appointmentType: terminart === "mit"
+    ? "Online-Sprechstunde mit Vorbefunden"
+    : "Online-Sprechstunde ohne Vorbefunde",
+  terminart: terminart,
+  phone: ""
+}));
+
   console.log("pendingBookingMail wurde gespeichert:", localStorage.getItem("pendingBookingMail"));
 
   showConfirmationFlow({
@@ -2337,7 +2350,9 @@ async function uploadPostStripeFiles() {
   const uploadList = document.getElementById("postStripeUploadList");
   const hint = document.getElementById("postStripeUploadHint");
 
-  const pendingBookingMail = localStorage.getItem("pendingBookingMail");
+  const pendingBookingMail =
+  localStorage.getItem("pendingBookingMail") ||
+  sessionStorage.getItem("pendingBookingMail");
 
   if (!pendingBookingMail) {
     alert("Buchungsdaten nicht gefunden.");
