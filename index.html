@@ -1882,6 +1882,34 @@ function submitMit() {
         return;
       }
 
+localStorage.setItem("pendingBookingMail", JSON.stringify({
+  slotId: slotId,
+  patientName: name,
+  patientEmail: email,
+  appointmentDate,
+  appointmentTime,
+  appointmentType: terminart === "mit"
+    ? "Online-Sprechstunde mit Vorbefunden"
+    : "Online-Sprechstunde ohne Vorbefunde",
+  terminart: terminart,
+  debugVersion: "upload-test-1",
+  phone: ""
+}));
+
+sessionStorage.setItem("pendingBookingMail", JSON.stringify({
+  slotId: slotId,
+  patientName: name,
+  patientEmail: email,
+  appointmentDate,
+  appointmentTime,
+  appointmentType: terminart === "mit"
+    ? "Online-Sprechstunde mit Vorbefunden"
+    : "Online-Sprechstunde ohne Vorbefunde",
+  terminart: terminart,
+  debugVersion: "upload-test-1",
+  phone: ""
+}));
+
       window.location.href = data.url;
     } catch (err) {
       alert("Fehler beim Start von Stripe: " + err.message);
