@@ -2279,34 +2279,59 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
 
   let uploadedFiles = [];
 
-  if (terminart === "mit") {
-    const fileInput = document.getElementById("befunde-mit");
-    const uploadStatus = document.getElementById("upload-status-mit");
-    const files = fileInput ? Array.from(fileInput.files) : [];
+if (terminart === "mit") {
+  const fileInput = document.getElementById("befunde-mit");
+  const uploadStatus = document.getElementById("upload-status-mit");
+  const files = fileInput ? Array.from(fileInput.files || []) : [];
 
-    if (files.length === 0) {
-      alert("Bitte laden Sie mindestens einen Vorbefund hoch.");
-      return;
-    }
+  if (uploadStatus) {
+    uploadStatus.innerHTML = "";
+  }
+
+  if (files.length === 0) {
+    alert("Bitte laden Sie mindestens einen Vorbefund hoch.");
+    return;
+  }
+
+  const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
+
+  for (const file of files) {
+    const row = document.createElement("div");
+    row.style.marginTop = "6px";
+    row.textContent = `${file.name}: Upload läuft...`;
 
     if (uploadStatus) {
-      uploadStatus.textContent = "Vorbefunde werden hochgeladen...";
+      uploadStatus.appendChild(row);
     }
 
-    for (const file of files) {
-      const allowedTypes = ["application/pdf", "image/jpeg", "image/png"];
+    try {
+      console.log("Datei erkannt:", {
+        name: file.name,
+        size: file.size,
+        type: file.type
+      });
+
+      if (!file || file.size === 0) {
+        row.textContent = `${file.name}: fehlgeschlagen – Datei konnte nicht gelesen werden.`;
+        alert("Eine Datei konnte nicht gelesen werden. Bitte wählen Sie die Datei erneut aus.");
+        return;
+      }
 
       if (!allowedTypes.includes(file.type)) {
+        row.textContent = `${file.name}: fehlgeschlagen – nicht erlaubter Dateityp.`;
         alert("Nicht erlaubter Dateityp: " + file.name);
         return;
       }
 
       if (file.size > 20 * 1024 * 1024) {
+        row.textContent = `${file.name}: fehlgeschlagen – Datei größer als 20 MB.`;
         alert("Die Datei ist größer als 20 MB: " + file.name);
         return;
       }
 
       const safeFileName = file.name
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
         .replace(/[^a-zA-Z0-9.\-_]/g, "_")
         .toLowerCase();
 
@@ -2320,21 +2345,18 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
         "-" +
         safeFileName;
 
-      const { error: uploadError } = await supabaseClient.storage
+      const { data, error: uploadError } = await supabaseClient.storage
         .from("patient-documents")
         .upload(filePath, file, {
           cacheControl: "3600",
-          upsert: false
+          upsert: false,
+          contentType: file.type || "application/octet-stream"
         });
 
-      if (uploadError) {
+      if (uploadError || !data) {
         console.error("Upload fehlgeschlagen:", uploadError);
-
-        if (uploadStatus) {
-          uploadStatus.textContent = "Upload fehlgeschlagen.";
-        }
-
-        alert("Der Upload ist fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        row.textContent = `${file.name}: fehlgeschlagen – bitte erneut versuchen.`;
+        alert("Der Upload ist fehlgeschlagen. Bitte versuchen Sie es erneut oder nutzen Sie ein anderes Gerät.");
         return;
       }
 
@@ -2344,26 +2366,45 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
         type: file.type,
         size: file.size
       });
-    }
 
-    if (uploadStatus) {
-      uploadStatus.textContent = "Upload abgeschlossen.";
-    }
+      row.textContent = `${file.name}: erfolgreich hochgeladen.`;
 
-    const { error: uploadUpdateError } = await supabaseClient
-      .from("patient_requests")
-      .update({
-        upload_status: "uploaded",
-        uploaded_files: uploadedFiles
-      })
-      .eq("appointment_slot_id", slotId);
-
-    if (uploadUpdateError) {
-      console.error("Upload gespeichert, aber Datenbank-Update fehlgeschlagen:", uploadUpdateError);
-      alert("Die Dateien wurden hochgeladen, aber nicht korrekt mit der Anfrage verknüpft. Bitte kontaktieren Sie uns.");
+    } catch (err) {
+      console.error("Unerwarteter Upload-Fehler:", err);
+      row.textContent = `${file.name}: fehlgeschlagen – technischer Fehler.`;
+      alert("Der Upload ist fehlgeschlagen. Bitte versuchen Sie es erneut oder nutzen Sie ein anderes Gerät.");
       return;
     }
   }
+
+  if (uploadedFiles.length !== files.length) {
+    alert("Nicht alle Dateien konnten hochgeladen werden. Bitte versuchen Sie es erneut.");
+    return;
+  }
+
+  const { error: uploadUpdateError } = await supabaseClient
+    .from("patient_requests")
+    .update({
+      upload_status: "uploaded",
+      uploaded_files: uploadedFiles
+    })
+    .eq("appointment_slot_id", slotId);
+
+  if (uploadUpdateError) {
+    console.error("Upload gespeichert, aber Datenbank-Update fehlgeschlagen:", uploadUpdateError);
+
+    if (uploadStatus) {
+      uploadStatus.innerHTML += "<div>Die Dateien wurden hochgeladen, aber nicht korrekt gespeichert. Bitte kontaktieren Sie uns.</div>";
+    }
+
+    alert("Die Dateien wurden hochgeladen, aber nicht korrekt mit der Anfrage verknüpft. Bitte kontaktieren Sie uns.");
+    return;
+  }
+
+  if (uploadStatus) {
+    uploadStatus.innerHTML += "<div><strong>Alle Dateien wurden erfolgreich hochgeladen.</strong></div>";
+  }
+}
 
   localStorage.setItem("pendingBookingMail", JSON.stringify({
   slotId: slotId,
