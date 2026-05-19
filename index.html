@@ -2285,6 +2285,10 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
     const uploadStatus = document.getElementById("upload-status-mit");
     const files = fileInput ? Array.from(fileInput.files) : [];
 
+if (uploadStatus) {
+  uploadStatus.textContent = "Gefundene Dateien: " + files.length;
+}
+
 const uploadList = document.getElementById("upload-list-mit");
 
 if (uploadList) {
