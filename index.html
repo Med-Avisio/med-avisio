@@ -1749,6 +1749,8 @@ select:focus{
 
   const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+let selectedBefundeMit = [];
+
   function toggleTerminart(value) {
     const terminInfo = document.getElementById("terminInfo");
     const formOhne = document.getElementById("form-ohne-befunde");
@@ -1806,6 +1808,28 @@ function submitOhne() {
 
   loadSlots("ohne");
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fileInput = document.getElementById("befunde-mit");
+  const uploadStatus = document.getElementById("upload-status-mit");
+
+  if (!fileInput) return;
+
+  fileInput.addEventListener("change", function () {
+    selectedBefundeMit = Array.from(fileInput.files || []);
+
+    if (uploadStatus) {
+      if (selectedBefundeMit.length === 0) {
+        uploadStatus.textContent = "";
+      } else {
+        uploadStatus.textContent =
+          selectedBefundeMit.length === 1
+            ? "1 Datei ausgewählt. Der Upload erfolgt beim Absenden der Terminanfrage."
+            : selectedBefundeMit.length + " Dateien ausgewählt. Der Upload erfolgt beim Absenden der Terminanfrage.";
+      }
+    }
+  });
+});
 
 function submitMit() {
   const name = document.getElementById("name-mit").value.trim();
@@ -2282,7 +2306,7 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
   if (terminart === "mit") {
     const fileInput = document.getElementById("befunde-mit");
     const uploadStatus = document.getElementById("upload-status-mit");
-    const files = fileInput ? Array.from(fileInput.files) : [];
+    const files = selectedBefundeMit;
 
     if (files.length === 0) {
       alert("Bitte laden Sie mindestens einen Vorbefund hoch.");
