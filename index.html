@@ -1546,6 +1546,7 @@ select:focus{
   </div>
 
   <div id="upload-status-mit" class="small" style="margin-top:8px;"></div>
+  <div id="upload-list-mit" class="upload-list"></div>
 </div>
 
         <label for="beginn-mit">Seit wann bestehen die Beschwerden?</label>
@@ -2284,6 +2285,30 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
     const uploadStatus = document.getElementById("upload-status-mit");
     const files = fileInput ? Array.from(fileInput.files) : [];
 
+const uploadList = document.getElementById("upload-list-mit");
+
+if (uploadList) {
+  uploadList.innerHTML = "";
+
+  files.forEach((file) => {
+    const item = document.createElement("div");
+
+    item.style.marginTop = "6px";
+    item.style.padding = "8px";
+    item.style.border = "1px solid #d7d7d7";
+    item.style.borderRadius = "8px";
+    item.style.fontSize = "14px";
+
+    item.textContent =
+      file.name +
+      " (" +
+      Math.round(file.size / 1024) +
+      " KB)";
+
+    uploadList.appendChild(item);
+  });
+}
+
     if (files.length === 0) {
       alert("Bitte laden Sie mindestens einen Vorbefund hoch.");
       return;
@@ -2310,15 +2335,16 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
         .replace(/[^a-zA-Z0-9.\-_]/g, "_")
         .toLowerCase();
 
-      const filePath =
-        "uploads/" +
-        slotId +
-        "/" +
-        Date.now() +
-        "-" +
-        crypto.randomUUID() +
-        "-" +
-        safeFileName;
+      const uploadId =
+  Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+
+const filePath =
+  "uploads/" +
+  slotId +
+  "/" +
+  uploadId +
+  "-" +
+  safeFileName;
 
       const { error: uploadError } = await supabaseClient.storage
         .from("patient-documents")
