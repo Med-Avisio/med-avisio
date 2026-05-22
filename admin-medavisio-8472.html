@@ -563,87 +563,115 @@ async function showPatientRequest(slotId, dateText, timeText) {
     return;
   }
 
-if (!data || data.length === 0) {
+  if (!data || data.length === 0) {
+    alert(
+      "Für diesen reservierten Termin wurden keine Patientendaten gefunden.\n\n" +
+      dateText + " um " + timeText + " Uhr"
+    );
+    return;
+  }
+
+  const request = data[0];
+
+    let filesForDisplay = Array.isArray(request.uploaded_files)
+    ? request.uploaded_files
+    : [];
+
+  if (filesForDisplay.length === 0 && request.appointment_slot_id) {
+    const { data: storageFiles, error: storageError } = await supabaseClient
+      .storage
+      .from("patient-documents")
+      .list("uploads/" + request.appointment_slot_id);
+
+    if (storageError) {
+      console.error("Fehler beim Laden der Dateien aus Storage:", storageError);
+    }
+
+    if (storageFiles && storageFiles.length > 0) {
+      filesForDisplay = storageFiles.map(function (file) {
+        return {
+          name: file.name,
+          path: "uploads/" + request.appointment_slot_id + "/" + file.name
+        };
+      });
+    }
+  }
+
+  let fileLinksHtml = "<li>Keine hochgeladenen Daten</li>";
+
+  if (filesForDisplay.length > 0) {
+    const fileLinkItems = await Promise.all(
+      filesForDisplay.map(async function (file) {
+        const { data: signedUrlData, error: signedUrlError } = await supabaseClient
+          .storage
+          .from("patient-documents")
+          .createSignedUrl(file.path, 3600);
+
+        if (signedUrlError) {
+          console.error("Fehler beim Erzeugen des Downloadlinks:", signedUrlError);
+        }
+
+        const fileUrl = signedUrlData?.signedUrl || "#";
+
+        return `
+          <li>
+            <a href="${fileUrl}" target="_blank">
+              ${file.name || file.path}
+            </a>
+          </li>
+        `;
+      })
+    );
+
+    fileLinksHtml = fileLinkItems.join("");
+  }
+
   const box = document.getElementById("patientDetailsBox");
 
   box.innerHTML = `
     <h2>Patientendaten</h2>
 
-    <p>Für diesen reservierten Termin wurden keine Patientendaten gefunden.</p>
+    <p><strong>Termin:</strong><br>
+    ${dateText} um ${timeText} Uhr</p>
 
-    <p><strong>Termin:</strong><br>${dateText} um ${timeText} Uhr</p>
+    <p><strong>Name:</strong><br>
+    ${request.patient_name || "-"}</p>
+
+    <p><strong>E-Mail:</strong><br>
+    ${request.patient_email || "-"}</p>
+
+    <p><strong>Terminart:</strong><br>
+    ${request.terminart || "-"}</p>
+
+    <p><strong>Beschwerden:</strong><br>
+    ${request.beschwerden || "-"}</p>
+
+    <p><strong>Seit wann:</strong><br>
+    ${request.seit_wann || "-"}</p>
+
+    <p><strong>Ein/beide Augen:</strong><br>
+    ${request.augenseite || "-"}</p>
+
+    <p><strong>Kontaktlinsen:</strong><br>
+    ${request.kontaktlinsen || "-"}</p>
+
+    <p><strong>Bisherige Behandlung:</strong><br>
+    ${request.bisherige_behandlung || "-"}</p>
+
+    <p><strong>Uploadstatus:</strong><br>
+    ${request.upload_status || "-"}</p>
+
+    <p><strong>Hochgeladene Dateien:</strong></p>
+    <ul>
+      ${fileLinksHtml}
+    </ul>
+
+    <br><br>
 
     <button onclick="deleteSlot('${slotId}')">
       Reservierten Termin löschen
     </button>
   `;
-
-  return;
-}
-
-  const request = data[0];
-
- const box = document.getElementById("patientDetailsBox");
-
-let uploadedFiles = [];
-
-if (Array.isArray(request.uploaded_files)) {
-  uploadedFiles = request.uploaded_files;
-} else if (typeof request.uploaded_files === "string") {
-  try {
-    uploadedFiles = JSON.parse(request.uploaded_files);
-  } catch (e) {
-    uploadedFiles = [];
-  }
-}
-
-let uploadsHtml = "<p><strong>Vorbefunde:</strong><br>Keine hochgeladenen Dateien.</p>";
-
-if (uploadedFiles.length > 0) {
-  uploadsHtml = `
-    <p><strong>Vorbefunde:</strong></p>
-    <div>
-      ${uploadedFiles.map((file, index) => `
-        <button type="button" onclick="openPatientFile('${file.path}')">
-          Datei ${index + 1}: ${file.name || "Befund öffnen"}
-        </button>
-        <br><br>
-      `).join("")}
-    </div>
-  `;
-}
-
-box.innerHTML = `
-  <h2>Patientendaten</h2>
-
-  <p><strong>Termin:</strong><br>${dateText} um ${timeText} Uhr</p>
-
-  <p><strong>Name:</strong><br>${request.patient_name || "-"}</p>
-
-  <p><strong>E-Mail:</strong><br>${request.patient_email || "-"}</p>
-
-  <p><strong>Terminart:</strong><br>${request.terminart || "-"}</p>
-
-  <p><strong>Beschwerden:</strong><br>${request.beschwerden || "-"}</p>
-
-  <p><strong>Seit wann:</strong><br>${request.seit_wann || "-"}</p>
-
-  <p><strong>Ein/beide Augen:</strong><br>${request.augenseite || "-"}</p>
-
-  <p><strong>Kontaktlinsen:</strong><br>${request.kontaktlinsen || "-"}</p>
-
-  <p><strong>Bisherige Behandlung:</strong><br>${request.bisherige_behandlung || "-"}</p>
-
-  <p><strong>Uploadstatus:</strong><br>${request.upload_status || "-"}</p>
-
-  ${uploadsHtml}
-
-  <br><br>
-
-<button onclick="deleteSlot('${slotId}')">
-  Reservierten Termin löschen
-</button>
-`;
 }
 
 async function openPatientFile(filePath) {
