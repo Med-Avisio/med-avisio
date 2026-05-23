@@ -1823,6 +1823,29 @@ function submitMit() {
   loadSlots("mit");
 }
 
+let selectedBefundFiles = [];
+
+document.addEventListener("DOMContentLoaded", function () {
+  const fileInput = document.getElementById("befunde-mit");
+  const uploadStatus = document.getElementById("upload-status-mit");
+
+  if (!fileInput || !uploadStatus) return;
+
+  fileInput.addEventListener("change", function () {
+    const newlySelectedFiles = Array.from(fileInput.files || []);
+
+    newlySelectedFiles.forEach(function (file) {
+      selectedBefundFiles.push(file);
+    });
+
+    uploadStatus.innerHTML = selectedBefundFiles
+      .map(function (file) {
+        return "⏳ " + file.name + " – wartet auf Upload";
+      })
+      .join("<br>");
+  });
+});
+
   async function confirmAndStartCheckout() {
     const abdingungOk = document.getElementById("confirmAbdingung").checked;
     const paymentOk = document.getElementById("confirmPayment").checked;
@@ -2282,7 +2305,9 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
   if (terminart === "mit") {
     const fileInput = document.getElementById("befunde-mit");
     const uploadStatus = document.getElementById("upload-status-mit");
-    const files = fileInput ? Array.from(fileInput.files) : [];
+   const files = selectedBefundFiles.length > 0
+  ? selectedBefundFiles
+  : (fileInput ? Array.from(fileInput.files) : []);
 
     if (files.length === 0) {
       alert("Bitte laden Sie mindestens einen Vorbefund hoch.");
@@ -2344,6 +2369,19 @@ const appointmentTime = new Date(slot.start_time).toLocaleTimeString("de-DE", {
         type: file.type,
         size: file.size
       });
+      if (uploadStatus) {
+  uploadStatus.innerHTML = files
+    .map(function (statusFile) {
+      const uploaded = uploadedFiles.some(function (uploadedFile) {
+        return uploadedFile.name === statusFile.name;
+      });
+
+      return (uploaded ? "✅ " : "⏳ ") +
+        statusFile.name +
+        (uploaded ? " – hochgeladen" : " – wartet auf Upload");
+    })
+    .join("<br>");
+}
     }
 
     if (uploadStatus) {
