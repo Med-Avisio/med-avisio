@@ -55,12 +55,31 @@ if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
 
       if (!dueForDeletion) continue;
 
+            let paths = [];
+
       const files = Array.isArray(request.uploaded_files)
         ? request.uploaded_files
         : [];
 
-      const paths = files.map(file => file.path).filter(Boolean);
+      paths = files
+        .map(file => file.path)
+        .filter(Boolean);
 
+      if (paths.length === 0 && request.appointment_slot_id) {
+        const { data: storageFiles, error: listError } = await supabaseAdmin.storage
+          .from("patient-documents")
+          .list("uploads/" + request.appointment_slot_id);
+
+        if (listError) {
+          console.error("Storage list error:", listError);
+          continue;
+        }
+
+        paths = (storageFiles || []).map(file =>
+          "uploads/" + request.appointment_slot_id + "/" + file.name
+        );
+      }
+      
       if (paths.length > 0) {
         const { error: removeError } = await supabaseAdmin.storage
           .from("patient-documents")
