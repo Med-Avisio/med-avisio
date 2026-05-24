@@ -55,6 +55,7 @@ console.log("Current time:", new Date(now).toISOString());
 
       const appointmentTime = new Date(slot.start_time).getTime();
       const dueForDeletion = appointmentTime + eightHoursMs <= now;
+console.log("Due for deletion:", dueForDeletion);
 
 console.log("Checking request:", {
   requestId: request.id,
@@ -91,8 +92,9 @@ console.log("Checking request:", {
       }
 
       if (paths.length > 0) {
-        const { error: removeError } = await supabaseAdmin.storage
-          .from("patient-documents")
+        console.log("Deleting paths:", paths);
+        const { error: removeError } = await supabaseAdmin.storage  
+        .from("patient-documents")
           .remove(paths);
 
         if (removeError) {
