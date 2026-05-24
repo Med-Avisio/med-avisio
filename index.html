@@ -862,8 +862,12 @@ select:focus{
   gap: 6px;
 }
 
-.booking-calendar-days::before {
-  content: "Mo";
+.booking-weekday {
+  text-align: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #6b7280;
+  padding: 4px 0 6px;
 }
 
 .booking-day.other-month {
@@ -2061,6 +2065,16 @@ const weekTitle = document.getElementById("booking-week-title");
 calendarContainer.innerHTML = "";
 timeContainer.innerHTML = "";
 
+const weekdays = ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"];
+
+weekdays.forEach(day => {
+  const weekdayLabel = document.createElement("div");
+  weekdayLabel.className = "booking-weekday";
+  weekdayLabel.textContent = day;
+
+  calendarContainer.appendChild(weekdayLabel);
+});
+
 if (!data || data.length === 0) {
   weekTitle.textContent = "";
   calendarContainer.innerHTML = '<div class="helper-box">Aktuell sind keine freien Termine verfügbar.</div>';
@@ -2125,7 +2139,15 @@ let currentMonthDate = new Date(data[0].start_time);
 currentMonthDate.setDate(1);
 
 function buildCalendar(monthDate) {
-  calendarContainer.innerHTML = "";
+  calendarContainer.innerHTML = `
+  <div class="booking-weekday">Mo</div>
+  <div class="booking-weekday">Di</div>
+  <div class="booking-weekday">Mi</div>
+  <div class="booking-weekday">Do</div>
+  <div class="booking-weekday">Fr</div>
+  <div class="booking-weekday">Sa</div>
+  <div class="booking-weekday">So</div>
+`;
   timeContainer.innerHTML = "";
 
   const monthStart = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1);
