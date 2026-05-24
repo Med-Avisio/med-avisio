@@ -45,12 +45,23 @@ if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
 
     let deletedCount = 0;
 
+console.log("Cleanup started");
+console.log("Requests found:", requests.length);
+console.log("Current time:", new Date(now).toISOString());
+
     for (const request of requests) {
       const slot = slotMap.get(request.appointment_slot_id);
       if (!slot || !slot.start_time) continue;
 
       const appointmentTime = new Date(slot.start_time).getTime();
       const dueForDeletion = appointmentTime + eightHoursMs <= now;
+
+console.log("Checking request:", {
+  requestId: request.id,
+  slotId: request.appointment_slot_id,
+  appointmentTime: slot.start_time,
+  dueForDeletion
+});
 
       if (!dueForDeletion) continue;
 
@@ -107,9 +118,13 @@ if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     }
 
     return res.status(200).json({
-      checked: requests.length,
-      deleted: deletedCount
-    });
+  checked: requests.length,
+  deleted: deletedCount,
+  slotIds,
+  slotsFound: slots ? slots.length : 0,
+  now: new Date(now).toISOString()
+});
+
   } catch (err) {
     console.error("Cleanup failed:", err);
     return res.status(500).json({ error: err.message });
