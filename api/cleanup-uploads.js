@@ -20,8 +20,7 @@ if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     const { data: requests, error: requestError } = await supabaseAdmin
       .from("patient_requests")
       .select("id, appointment_slot_id, uploaded_files, upload_status")
-      .eq("upload_status", "uploaded")
-      .not("uploaded_files", "is", null);
+      .not("appointment_slot_id", "is", null);
 
     if (requestError) {
       throw requestError;
@@ -79,7 +78,7 @@ if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
           "uploads/" + request.appointment_slot_id + "/" + file.name
         );
       }
-      
+
       if (paths.length > 0) {
         const { error: removeError } = await supabaseAdmin.storage
           .from("patient-documents")
