@@ -186,6 +186,10 @@
 
   <div id="adminContent" style="display:none;">
 
+<div style="margin-bottom:20px;">
+  <button onclick="logout()">Logout</button>
+</div>
+
     <div class="admin-grid">
 
   <div class="box">
@@ -256,9 +260,10 @@ async function login() {
     return;
   }
 
-  document.getElementById("adminContent").style.display = "block";
+  document.getElementById("loginBox").style.display = "none";
+document.getElementById("adminContent").style.display = "block";
 
-  cleanupOldSlots();
+cleanupOldSlots();
 }
 
 function getMonday(date) {
@@ -716,6 +721,37 @@ if (!shouldDelete) {
   alert("Termin entfernt.");
   await loadSlots();
 }
+
+
+async function logout() {
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    alert("Logout fehlgeschlagen: " + error.message);
+    return;
+  }
+
+  location.reload();
+}
+
+async function checkAdminSession() {
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    console.error("Session konnte nicht geprüft werden:", error);
+    return;
+  }
+
+  if (data.session) {
+    document.getElementById("loginBox").style.display = "none";
+    document.getElementById("adminContent").style.display = "block";
+
+    await cleanupOldSlots();
+  }
+}
+
+checkAdminSession();
 
 </script>
 </body>
