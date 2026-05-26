@@ -2092,9 +2092,16 @@ function getBerlinDateKey(value) {
 
 const slotsByDate = {};
 
+const now = new Date();
+
 data.forEach(slot => {
-  const date = new Date(slot.start_time);
- const dateKey = getBerlinDateKey(slot.start_time);
+  const slotStart = new Date(slot.start_time);
+
+  if (slotStart <= now) {
+    return;
+  }
+
+  const dateKey = getBerlinDateKey(slot.start_time);
 
   if (!slotsByDate[dateKey]) {
     slotsByDate[dateKey] = [];
