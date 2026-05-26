@@ -25,7 +25,7 @@ export default async function handler(req, res) {
     const session = await stripe.checkout.sessions.create({
       mode: 'setup',
       customer: customer.id,
-      payment_method_types: ['card'],
+      payment_method_types: ['card', 'sepa_debit'],
       success_url:
         "https://www.med-avisio.com/?setup=success&session_id={CHECKOUT_SESSION_ID}",
       cancel_url: "https://www.med-avisio.com/?setup=cancel",
