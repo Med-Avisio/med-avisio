@@ -184,6 +184,29 @@
 
 </div>
 
+<div class="box" id="mfaBox" style="display:none;">
+
+  <h2>Zwei-Faktor-Anmeldung</h2>
+
+  <div id="mfaEnrollBox" style="display:none;">
+    <p>Scanne diesen QR-Code mit deiner Authenticator-App.</p>
+    <div id="mfaQrCode"></div>
+
+    <label for="mfaVerifyCode">6-stelliger Code</label>
+    <input type="text" id="mfaVerifyCode" inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
+
+    <button onclick="verifyNewMfa()">2FA aktivieren</button>
+  </div>
+
+  <div id="mfaChallengeBox" style="display:block;">
+    <label for="mfaLoginCode">Code aus der Authenticator-App</label>
+    <input type="text" id="mfaLoginCode" inputmode="numeric" autocomplete="one-time-code" placeholder="123456">
+
+   <button onclick="verifyMfa()">Bestätigen</button>
+  </div>
+
+</div>
+
   <div id="adminContent" style="display:none;">
 
 <div style="margin-bottom:20px;">
@@ -246,6 +269,10 @@ const supabaseClient = supabase.createClient(
 
 let currentWeekStart = getMonday(new Date());
 
+let currentMfaFactorId = null;
+
+let currentChallengeId = null;
+
 async function login() {
   const email = document.getElementById("adminEmail").value.trim();
   const password = document.getElementById("adminPassword").value;
@@ -261,9 +288,129 @@ async function login() {
   }
 
   document.getElementById("loginBox").style.display = "none";
-document.getElementById("adminContent").style.display = "block";
+document.getElementById("mfaBox").style.display = "block";
 
-cleanupOldSlots();
+setupMfa();
+}
+
+function showAdmin() {
+  document.getElementById("loginBox").style.display = "none";
+  document.getElementById("mfaBox").style.display = "none";
+  document.getElementById("adminContent").style.display = "block";
+
+  cleanupOldSlots();
+}
+
+async function setupMfa() {
+  const factorsResult = await supabaseClient.auth.mfa.listFactors();
+
+  if (factorsResult.error) {
+    alert("2FA konnte nicht geladen werden.");
+    return;
+  }
+
+  if (factorsResult.data.totp.length > 0) {
+    document.getElementById("mfaChallengeBox").style.display = "block";
+    return;
+  }
+
+  const enrollResult = await supabaseClient.auth.mfa.enroll({
+    factorType: "totp"
+  });
+
+  if (enrollResult.error) {
+    alert("2FA-Einrichtung fehlgeschlagen: " + enrollResult.error.message);
+    return;
+  }
+
+  currentMfaFactorId = enrollResult.data.id;
+
+  document.getElementById("mfaEnrollBox").style.display = "block";
+
+  document.getElementById("mfaQrCode").innerHTML =
+    '<img src="' + enrollResult.data.totp.qr_code + '" width="220">';
+}
+
+async function verifyNewMfa() {
+  const code = document.getElementById("mfaVerifyCode").value.trim();
+
+  if (!code) {
+    alert("Bitte Code eingeben.");
+    return;
+  }
+
+  if (!currentMfaFactorId) {
+    alert("2FA konnte nicht gestartet werden. Bitte erneut einloggen.");
+    return;
+  }
+
+  const challengeResult = await supabaseClient.auth.mfa.challenge({
+    factorId: currentMfaFactorId
+  });
+
+  if (challengeResult.error) {
+    alert("Challenge fehlgeschlagen: " + challengeResult.error.message);
+    return;
+  }
+
+  const verifyResult = await supabaseClient.auth.mfa.verify({
+    factorId: currentMfaFactorId,
+    challengeId: challengeResult.data.id,
+    code
+  });
+
+  if (verifyResult.error) {
+    alert("Code falsch oder abgelaufen.");
+    return;
+  }
+
+  alert("2FA wurde aktiviert.");
+  showAdmin();
+}
+
+async function verifyMfa() {
+  const code = document.getElementById("mfaLoginCode").value.trim();
+
+  if (!code) {
+    alert("Bitte Code eingeben.");
+    return;
+  }
+
+  const factorsResult = await supabaseClient.auth.mfa.listFactors();
+
+  if (factorsResult.error) {
+    alert("2FA-Fehler: " + factorsResult.error.message);
+    return;
+  }
+
+  const factor = factorsResult.data.totp[0];
+
+  if (!factor) {
+    alert("Keine Authenticator-App eingerichtet.");
+    return;
+  }
+
+  const challengeResult = await supabaseClient.auth.mfa.challenge({
+    factorId: factor.id
+  });
+
+  if (challengeResult.error) {
+    alert("Challenge fehlgeschlagen: " + challengeResult.error.message);
+    return;
+  }
+
+  const verifyResult = await supabaseClient.auth.mfa.verify({
+    factorId: factor.id,
+    challengeId: challengeResult.data.id,
+    code
+  });
+
+  if (verifyResult.error) {
+    alert("Code falsch oder abgelaufen.");
+    return;
+  }
+
+  showAdmin();
 }
 
 function getMonday(date) {
