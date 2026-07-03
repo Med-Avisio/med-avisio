@@ -174,6 +174,108 @@
       display:block;
     }
 
+.about-doctor{
+  background:#ffffff;
+  border-bottom:1px solid var(--line);
+  padding:72px 0;
+}
+
+.about-doctor-intro{
+  display:grid;
+  grid-template-columns:280px 1fr;
+  gap:24px;
+  align-items:start;
+  margin-bottom:12px;
+}
+
+.about-intro-text{
+  width:560px;
+}
+
+.about-photo-placeholder{
+  width:280px;
+  height:360px;
+  border-radius:22px;
+  background:#eef8f8;
+  border:1px solid var(--line);
+  box-shadow:var(--shadow-soft);
+}
+
+.about-intro-text h2{
+  font-size:42px;
+  line-height:1.15;
+  margin:0 0 48px;
+  letter-spacing:-0.02em;
+  color:var(--text);
+}
+
+.doctor-name{
+  font-size:24px;
+  font-weight:800;
+  color:var(--text);
+  margin-bottom:4px;
+}
+
+.doctor-title{
+  font-size:20px;
+  font-weight:700;
+  color:var(--brand);
+  margin-bottom:36px;
+}
+
+.about-intro-text p,
+.about-fulltext p{
+  font-size:19px;
+  line-height:1.75;
+  color:var(--muted);
+  margin:0 0 22px;
+}
+
+.about-intro-text p{
+  max-width:420px;
+}
+
+.about-fulltext p{
+  max-width:760px;
+}
+
+.about-quote{
+  color:var(--text) !important;
+  font-weight:700;
+  border-left:4px solid var(--brand);
+  padding-left:18px;
+}
+
+@media (max-width:768px){
+  .about-doctor{
+    padding:56px 0;
+  }
+
+  .about-doctor-intro{
+    grid-template-columns:1fr;
+    gap:30px;
+  }
+
+  .about-intro-text{
+  width:100%;
+}
+
+  .about-photo-placeholder{
+    width:100%;
+    max-width:320px;
+    height:380px;
+  }
+
+  .about-intro-text h2{
+    font-size:36px;
+  }
+
+  .about-intro-text p,
+  .about-fulltext p{
+    font-size:18px;
+  }
+}
+
     section{
       padding:68px 0;
     }
@@ -999,6 +1101,45 @@ select:focus{
   </div>
 </section>
 
+<section class="about-doctor">
+  <div class="container">
+
+    <div class="about-doctor-intro">
+      <div class="about-photo-placeholder" aria-hidden="true"></div>
+
+      <div class="about-intro-text">
+        <h2>Über mich</h2>
+
+        <div class="doctor-name">Dr. Daniela Erhard</div>
+        <div class="doctor-title">Fachärztin für Augenheilkunde</div>
+
+        <p>
+          Nach meiner fachärztlichen Ausbildung an einer Augenklinik bin ich seit fast 20 Jahren als Augenärztin in einer Praxis tätig.
+        </p>
+      </div>
+    </div>
+
+    <div class="about-fulltext">
+      <p>
+        In dieser Zeit habe ich viele Menschen mit trockenen Augen begleitet und immer wieder erlebt, wie groß der Leidensdruck sein kann. Brennende oder tränende Augen, Fremdkörpergefühl oder schwankendes Sehen beeinträchtigen oft Beruf, Alltag und Lebensqualität. Viele Betroffene haben bereits zahlreiche Behandlungen ausprobiert und wünschen sich vor allem eines: Zeit, um ihre Beschwerden in Ruhe zu besprechen und verstanden zu werden.
+      </p>
+
+      <p class="about-quote">
+        Ich bin überzeugt, dass gute Medizin nicht nur Fachwissen braucht, sondern vor allem Zeit, Aufmerksamkeit und ein persönliches Gespräch.
+      </p>
+
+      <p>
+        Genau aus diesem Gedanken heraus habe ich med-avisio gegründet. In der Online-Sprechstunde nehme ich mir Zeit für Sie. Gemeinsam besprechen wir Ihre Beschwerden, ordnen Ihre bisherigen Befunde und Behandlungen ein und entwickeln einen verständlichen und individuell passenden Weg für das weitere Vorgehen. Dabei ist mir wichtig, dass Sie das Gespräch nicht nur mit einer Empfehlung, sondern auch mit einem besseren Verständnis Ihrer Erkrankung verlassen.
+      </p>
+
+      <p>
+        Die Online-Sprechstunde erfolgt unabhängig von meiner Tätigkeit in einer augenärztlichen Praxis.
+      </p>
+    </div>
+
+  </div>
+</section>
+
 <section class="section-white">
   <div class="container">
     <h2>Wobei möchten Sie zuerst Orientierung?</h2>
@@ -1353,42 +1494,6 @@ select:focus{
           Entzündliche Prozesse können die Augenoberfläche reizen, den Tränenfilm destabilisieren und Beschwerden aufrechterhalten.
           Deshalb reicht reine Befeuchtung bei chronischen Verläufen nicht immer aus.
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="section-white">
-  <div class="container">
-    <div class="grid-2" style="align-items:center;">
-     <!--
-<div class="image-box">
- <img
-  src="Images/_MG_3487.jpg"
-  alt="Dr. Daniela Erhard, Fachärztin für Augenheilkunde"
-/>
-</div>
--->
-
-      <div>
-        <h2>Über med-avisio</h2>
-        <div class="profile-name">Dr. Daniela Erhard</div>
-        <div class="profile-role">Fachärztin für Augenheilkunde</div>
-
-        <p class="muted">
-          med-avisio ist eine ärztliche Online-Sprechstunde für Menschen mit trockenen Augen,
-          brennenden Augen, tränenden Augen, schwankendem Sehen oder Beschwerden der Augenoberfläche.
-        </p>
-
-        <p class="muted">
-          Im Mittelpunkt steht eine strukturierte, verständliche Einordnung komplexer Beschwerden:
-          Was passt zu einer Tränenfilmstörung? Welche Rolle können Lidrand, Meibomdrüsen, Bildschirmarbeit,
-          Hormone, Medikamente oder bisherige Therapieversuche spielen? Und wann ist eine Untersuchung vor Ort notwendig?
-        </p>
-
-        <p class="muted">
-          Die Online-Sprechstunde erfolgt unabhängig von meiner Tätigkeit in einer augenärztlichen Praxis.
-        </p>
       </div>
     </div>
   </div>
