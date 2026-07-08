@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta name="robots" content="noindex,nofollow">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>med-avisio – Fachärztliche Online-Beratung</title>
+  <meta name="description" content="Persönliche fachärztliche Beratung und Einordnung komplexer Beschwerden per Videosprechstunde." />
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    :root{
+      --brand:#2FA4A9;
+      --brand-dark:#278b8f;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#d7e0e4;
+      --bg:#F9FAFB;
+      --card:#ffffff;
+      --hero-top:#ffffff;
+      --hero-bottom:#f1f7f7;
+      --shadow:0 10px 28px rgba(15,23,42,.07);
+      --shadow-soft:0 6px 18px rgba(15,23,42,.05);
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+
+    body{
+      margin:0;
+      font-family:'Inter', Arial, Helvetica, sans-serif;
+      color:var(--text);
+      background:var(--bg);
+      line-height:1.6;
+    }
+
+    .container{
+      max-width:1100px;
+      margin:0 auto;
+      padding:0 24px;
+    }
+
+    .hero{
+      background:linear-gradient(to bottom,var(--hero-top),var(--hero-bottom));
+      border-bottom:1px solid var(--line);
+      padding:48px 0 64px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin-bottom:38px;
+      line-height:1.1;
+      flex-wrap:wrap;
+    }
+
+    .brand-logo{
+      height:232px;
+      width:auto;
+    }
+
+    .brand .brand-sub{
+      font-family:'Inter', Arial, Helvetica, sans-serif;
+      font-size:22px;
+      font-weight:600;
+      color:var(--text);
+      letter-spacing:-0.2px;
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns:1.08fr 0.92fr;
+      gap:40px;
+      align-items:center;
+    }
+
+    h1{
+      font-size:44px;
+      line-height:1.12;
+      margin:0 0 18px;
+      letter-spacing:-0.02em;
+    }
+
+    h1 .sub{
+      display:block;
+      color:var(--brand);
+      font-size:30px;
+      font-weight:700;
+      margin-top:14px;
+      line-height:1.25;
+    }
+
+    p.lead{
+      font-size:19px;
+      color:var(--muted);
+      margin:0 0 28px;
+      max-width:700px;
+    }
+
+    .hero-highlight{
+      font-size:19px;
+      line-height:1.8;
+      font-weight:500;
+      color:var(--brand);
+      margin:0 0 28px;
+      max-width:700px;
+    }
+
+    .button-row{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:24px;
+    }
+
+    .btn{
+      flex:1;
+      min-width:220px;
+      background:var(--brand);
+      color:#fff;
+      text-decoration:none;
+      text-align:center;
+      font-weight:700;
+      font-size:18px;
+      padding:16px 20px;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      cursor:pointer;
+      transition:background-color .18s ease, transform .18s ease, box-shadow .18s ease;
+      box-shadow:0 8px 20px rgba(47,164,169,.16);
+    }
+
+    .btn:hover{
+      background:var(--brand-dark);
+      transform:translateY(-1px);
+      box-shadow:0 10px 24px rgba(39,139,143,.18);
+    }
+
+    .btn-muted{
+      background:#ffffff;
+      color:var(--brand-dark);
+      border:1px solid #cfe7e8;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .btn-muted:hover{
+      background:#f1f7f7;
+      color:var(--brand-dark);
+    }
+
+   .hero-image{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  padding:0;
+}
+
+.hero-image-photo{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+    section{
+      padding:68px 0;
+    }
+
+    .section-white{
+      background:#fff;
+      border-top:1px solid var(--line);
+      border-bottom:1px solid var(--line);
+    }
+
+    h2{
+      font-size:34px;
+      margin:0 0 16px;
+      letter-spacing:-0.02em;
+    }
+
+    .intro{
+      max-width:760px;
+      color:var(--muted);
+      margin-bottom:28px;
+      font-size:17px;
+    }
+
+   .grid-2{
+  display:grid;
+  grid-template-columns:1.15fr 0.85fr;
+  gap:28px;
+  align-items:start;
+}
+
+    .cards{
+      display:grid;
+      gap:14px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:18px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .card h3{
+      margin:0 0 8px;
+      font-size:20px;
+      letter-spacing:-0.01em;
+    }
+
+.health-topic-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:22px;
+  margin-top:28px;
+}
+
+.health-topic-card{
+  display:block;
+  text-decoration:none;
+  color:var(--text);
+  background:linear-gradient(to bottom,#ffffff,#f1f7f7);
+  border:1px solid #cfe7e8;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:var(--shadow-soft);
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.health-topic-card:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow);
+  border-color:#9ed5d8;
+}
+
+.health-topic-card h3{
+  margin:0 0 10px;
+  font-size:22px;
+  color:var(--brand-dark);
+}
+
+.health-topic-card p{
+  margin:0;
+  color:var(--muted);
+  font-size:16px;
+}
+
+.topic-button{
+  margin-top:20px;
+  font-weight:700;
+  color:var(--brand);
+}
+
+.health-topic-card-warm{
+  background:linear-gradient(to bottom,#ffffff,#fff4f1);
+  border-color:#f1d2ca;
+}
+
+.more-topics{
+  margin-top:22px;
+  font-size:17px;
+  font-weight:700;
+  color:var(--brand-dark);
+}
+
+    .small{
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .muted{color:var(--muted)}
+
+  .image-box{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  background:#fff;
+  border:1px solid var(--line);
+  padding:0;
+
+  max-height:600px;
+  align-self:start;
+}
+
+    .image-placeholder{
+  width:100%;
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.image-placeholder img{
+  width:100%;
+  display:block;
+  border-radius:16px;
+}
+
+.image-placeholder img{
+  width:100%;
+  height:20px;
+  object-fit:contain;
+  display:block;
+  border-radius:16px;
+}
+
+    .ablauf-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:22px;
+    }
+
+    .ablauf-card{
+      position:relative;
+      background:#fff;
+      border:1px solid #dceced;
+      border-radius:18px;
+      padding:22px 20px 20px;
+      box-shadow:var(--shadow-soft);
+      overflow:hidden;
+    }
+
+    .ablauf-card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      height:5px;
+      background:var(--brand);
+    }
+
+    .ablauf-number{
+      width:34px;
+      height:34px;
+      border-radius:999px;
+      background:rgba(47,164,169,.12);
+      color:var(--brand-dark);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      margin-bottom:14px;
+    }
+
+    .ablauf-card h3{
+      margin:0 0 8px;
+      font-size:19px;
+    }
+
+    .ablauf-extra{
+      margin-top:34px;
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:22px;
+    }
+
+    .ablauf-note{
+      background:linear-gradient(to bottom,#ffffff,#f1f7f7);
+      border:1px solid #cfe7e8;
+      border-radius:18px;
+      padding:20px;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .ablauf-note h3{
+      margin:0 0 8px;
+      font-size:20px;
+      color:var(--brand-dark);
+    }
+
+    .ablauf-final-note{
+      margin-top:24px;
+      max-width:860px;
+      border-left:4px solid var(--brand);
+      padding:14px 16px;
+      background:#fff;
+      border-radius:0 14px 14px 0;
+    }
+
+    .footer{
+      border-top:1px solid var(--line);
+      text-align:center;
+      padding:28px 0;
+      color:#64748b;
+      font-size:14px;
+      background:var(--bg);
+    }
+
+    .footer a{
+      color:#64748b;
+      text-decoration:none;
+    }
+
+    .footer a:hover{
+      color:var(--brand-dark);
+      text-decoration:underline;
+    }
+
+    @media (max-width: 900px){
+  .hero-grid,
+  .grid-2,
+  .ablauf-grid,
+  .ablauf-extra,
+  .health-topic-grid{
+    grid-template-columns:1fr;
+  }
+
+      .brand{
+        gap:6px;
+      }
+
+      .brand-logo{
+        height:150px;
+      }
+
+      .brand .brand-sub{
+        font-size:18px;
+      }
+
+      h1{font-size:34px}
+      h1 .sub{font-size:23px}
+      .btn{min-width:100%}
+      .hero{padding:40px 0 54px}
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    "name": "med-avisio – Fachärztliche Online-Beratung",
+    "description": "Persönliche fachärztliche Beratung und Einordnung komplexer Beschwerden per Videosprechstunde.",
+    "about": {
+      "@type": "MedicalCondition",
+      "name": "Komplexe medizinische Beschwerden mit hohem Beratungsbedarf"
+    }
+  }
+  </script>
+</head>
+
+<body>
+
+<section class="hero">
+  <div class="container">
+    <div class="brand">
+     <a href="index.html">
+  <img src="../Logo.png" alt="med-avisio Logo" class="brand-logo">
+</a>
+      <span class="brand-sub">
+        Persönliche fachärztliche Beratung und Einordnung komplexer Beschwerden
+      </span>
+    </div>
+
+    <div class="hero-grid">
+      <div>
+        <h1>
+          Hoher Leidensdruck, viele Fragen und zu wenig Zeit im Praxisalltag?
+          <span class="sub">Persönliche fachärztliche Beratung per Videosprechstunde</span>
+        </h1>
+
+        <p class="hero-highlight">
+          Zeit für Ihre Fragen. Verständliche Erklärungen. Individuelle Beratung durch Fachärztinnen und Fachärzte des jeweiligen Fachgebiets.
+        </p>
+
+        <p class="lead">
+          Viele medizinische Beschwerden sind nicht lebensbedrohlich und verursachen dennoch einen erheblichen Leidensdruck.
+          <br><br>
+          Im Praxisalltag bleibt häufig zu wenig Zeit, um Beschwerden, Vorbefunde und offene Fragen ausführlich zu besprechen.
+          <br><br>
+          med-avisio bietet persönliche fachärztliche Beratung und medizinische Einordnung komplexer Beschwerden – durch erfahrene Fachärztinnen und Fachärzte des jeweiligen Fachgebiets.
+          <br><br>
+          Mit oder ohne Vorbefunde. Persönlich per Videosprechstunde. Mit ausreichend Zeit für Ihre Fragen.
+        </p>
+
+        <p class="small" style="margin-top:14px;">
+          Fachärztliche Beratung · Privatärztliche Abrechnung nach GOÄ · Keine Behandlung akuter Notfälle
+        </p>
+      </div>
+
+      <div class="hero-image">
+  <img src="header-medavisio.png"
+     alt="Persönliche fachärztliche Online-Beratung"
+     class="hero-image-photo">
+</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white" id="gesundheitsthemen">
+  <div class="container">
+    <h2>Unsere Gesundheitsthemen</h2>
+
+    <p class="intro">
+      Wählen Sie den Bereich, zu dem Sie eine persönliche fachärztliche Beratung und Einordnung wünschen.
+    </p>
+
+    <div class="health-topic-grid">
+
+      <a class="health-topic-card" href="/trockene-augen/">
+        <h3>Trockene Augen</h3>
+        <p>
+          Augenärztliche Beratung und Einordnung bei trockenen, brennenden oder tränenden Augen.
+        </p>
+
+        <div class="topic-button">
+  Zum Fachbereich →
+</div>
+      </a>
+
+      <a class="health-topic-card health-topic-card-warm" href="/wechseljahresbeschwerden/">
+        <h3>Wechseljahresbeschwerden</h3>
+        <p>
+          Gynäkologische Beratung zu hormonellen Veränderungen und ihren Auswirkungen auf Alltag und Lebensqualität.
+        </p>
+        <div class="topic-button">
+  Zum Fachbereich →
+</div>
+      </a>
+
+    </div>
+
+    <p class="more-topics">
+      Weitere Fachbereiche folgen.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="container">
+    <h2>Online-Beratung: Worum geht es?</h2>
+
+    <p class="intro">
+      med-avisio richtet sich an Menschen mit Beschwerden, die im Alltag stark belasten, aber häufig nicht in wenigen Minuten ausreichend erklärt, eingeordnet oder besprochen werden können.
+    </p>
+
+    <div class="grid-2">
+      <div class="cards">
+        <div class="card">
+          <h3>Für wen ist med-avisio gedacht?</h3>
+          <div class="small">
+            Für Patientinnen und Patienten mit komplexen, wiederkehrenden oder länger bestehenden Beschwerden, bei denen eine ausführliche fachärztliche Beratung und Einordnung gewünscht wird.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Was passiert in der Beratung?</h3>
+          <div class="small">
+            Ihre Beschwerden, Fragen, bisherigen Behandlungen und vorhandenen Befunde werden strukturiert besprochen. Ziel ist eine verständliche medizinische Einordnung und eine Orientierung für sinnvolle nächste Schritte.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Was kann online geklärt werden?</h3>
+          <div class="small">
+            Eine Videosprechstunde kann helfen, Beschwerden zu sortieren, Befunde zu verstehen, Therapieansätze einzuordnen und eine gezielte Vorbereitung für weitere ärztliche Schritte zu ermöglichen.
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Was kann online nicht ersetzt werden?</h3>
+          <div class="small">
+            Eine körperliche Untersuchung, apparative Diagnostik oder akute Behandlung vor Ort kann online nicht ersetzt werden. Bei Warnzeichen, akuten oder bedrohlichen Beschwerden ist eine persönliche ärztliche Vorstellung erforderlich.
+          </div>
+        </div>
+      </div>
+
+      <div class="image-box">
+       <div class="info-image">
+    <img src="Laptop am Schreibtisch.png"
+         alt="Persönliche fachärztliche Online-Beratung"
+         class="info-image-photo">
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-white" id="ablauf">
+  <div class="container">
+    <h2>Ablauf</h2>
+
+    <p class="intro">
+      Die Online-Sprechstunde folgt einem klaren Ablauf: erst Anfrage und Einordnung, dann Terminbestätigung, Beratung, Abrechnung und Zahlung.
+    </p>
+
+    <div class="ablauf-grid">
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">1</div>
+        <h3>Terminart auswählen</h3>
+        <div class="small">
+          Sie wählen, ob bereits Vorbefunde vorliegen oder ob eine erste ärztliche Einschätzung ohne Unterlagen erfolgen soll.
+        </div>
+      </div>
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">2</div>
+        <h3>Termin anfragen & Zahlungsdaten hinterlegen</h3>
+        <div class="small">
+          Sie geben Ihre Anfrage und Ihre Kontaktdaten ein und hinterlegen eine Zahlungsmethode.
+          Es erfolgt zunächst keine Abbuchung.
+        </div>
+      </div>
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">3</div>
+        <h3>Ärztliche Prüfung & Terminbestätigung</h3>
+        <div class="small">
+          Ihre Angaben werden ärztlich geprüft. Anschließend wird der Termin bestätigt, sofern eine Beratung im Rahmen der Videosprechstunde sinnvoll ist.
+        </div>
+      </div>
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">4</div>
+        <h3>Videosprechstunde</h3>
+        <div class="small">
+          Persönliches Gespräch mit Einordnung Ihrer Beschwerden und individuellen Empfehlungen für das weitere Vorgehen.
+        </div>
+      </div>
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">5</div>
+        <h3>Abrechnung</h3>
+        <div class="small">
+          Die Abrechnung erfolgt nach der Beratung gemäß Gebührenordnung für Ärzte (GOÄ).
+          Der Rechnungsbetrag richtet sich nach Art und Umfang der ärztlichen Leistung.
+        </div>
+      </div>
+
+      <div class="ablauf-card">
+        <div class="ablauf-number">6</div>
+        <h3>Zahlung</h3>
+        <div class="small">
+          Der Rechnungsbetrag wird im Anschluss über die hinterlegte Zahlungsmethode abgebucht.
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ablauf-extra">
+
+      <div class="ablauf-note">
+        <h3>Hinweis zu Kosten</h3>
+        <div class="small">
+          Für eine Beratung ohne vorliegende Befunde können Sie in der Regel mit Kosten bis zu 55€ rechnen,
+          bei zusätzlicher Auswertung vorliegender Befunde bis zu 87€. Die genannten Beträge stellen eine verlässliche Orientierung und werden nicht überschritten.
+        </div>
+      </div>
+
+      <div class="ablauf-note">
+        <h3>Datenschutz & Fernbehandlung</h3>
+        <div class="small">
+          Vor Absenden der Anfrage ist eine Einwilligung in die Verarbeitung personenbezogener Daten sowie in die Durchführung der Beratung im Rahmen einer Videosprechstunde erforderlich.
+        </div>
+      </div>
+
+    </div>
+
+    <p class="small ablauf-final-note">
+      Die Online-Sprechstunde dient der ärztlichen Beratung und Einordnung von Beschwerden und ersetzt keine vollständige ärztliche Untersuchung vor Ort. Je nach Fragestellung kann eine persönliche Vorstellung bei einer Ärztin oder einem Arzt erforderlich sein.
+    </p>
+
+  </div>
+</section>
+
+<div class="footer">
+  <a href="/impressum.html">Impressum</a> |
+  <a href="/datenschutz.html">Datenschutz</a> |
+  © 2026 med-avisio
+</div>
+
+</body>
+</html>
